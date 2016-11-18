@@ -17,13 +17,49 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+ext {
+    supportVersion = '25.0.1'
+    retrofitVersion = '2.1.0'
+    powermockVersion = '1.6.5'
+    dexmarkVersion = '1.2'
+    junitVersion = '4.12'
+    supportTestsLibVersion = '0.5'
+    espressoVersion = '2.2.2'
+    okhttpVersion = '3.4.1'
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile "com.android.support:cardview-v7:$supportVersion"
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    testCompile "junit:junit:$junitVersion"
+
+    // UI tests
+    androidTestCompile "junit:junit:$junitVersion"
+    androidTestCompile "com.android.support.test:runner:$supportTestsLibVersion"
+    androidTestCompile "com.android.support.test:rules:$supportTestsLibVersion"
+    androidTestCompile "com.android.support:support-annotations:$supportVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:$espressoVersion"
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    testCompile 'junit:junit:4.12'
+
+    // Image loading
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    // RxJava
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
+
 }

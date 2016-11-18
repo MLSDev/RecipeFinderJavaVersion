@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_analyse_nutrition"
+        android:enabled="true"
+        android:title="@string/navigation_title_analyse"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_search_recipe"
+        android:enabled="true"
+        android:title="@string/navigation_title_analyse"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_favorites"
+        android:enabled="true"
+        android:title="@string/navigation_title_analyse"
+        app:showAsAction="ifRoom" />
+</menu>
