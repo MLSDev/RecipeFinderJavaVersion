@@ -28,21 +28,26 @@ public class NavigationManager implements BottomNavigationView.OnNavigationItemS
         switch (item.getItemId()) {
             case R.id.action_analyse_nutrition:
                 replaceFragment(analyseNutritionFragment);
-                break;
+                return true;
             case R.id.action_search_recipe:
                 replaceFragment(searchRecipesFragment);
-                break;
+                return true;
             case R.id.action_favorites:
                 replaceFragment(favoriteRecipesFragment);
-                break;
+                return true;
+            default:
+                return false;
         }
 
-        return false;
     }
 
     private void replaceFragment(NavigationFragment fragment) {
         fragmentManager.beginTransaction()
                 .replace(R.id.fl_content, fragment)
                 .commit();
+    }
+
+    public void resetTabs() {
+        replaceFragment(searchRecipesFragment);
     }
 }

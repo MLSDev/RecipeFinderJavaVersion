@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.ActivityMainBinding;
+import com.mlsdev.recipefinder.view.enums.NavigationItem;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;

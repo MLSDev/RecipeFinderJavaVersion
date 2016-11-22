@@ -20,7 +20,7 @@ public class FavoriteRecipesFragment extends NavigationFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite_recipes, container, false);
 
         return binding.getRoot();
     }
