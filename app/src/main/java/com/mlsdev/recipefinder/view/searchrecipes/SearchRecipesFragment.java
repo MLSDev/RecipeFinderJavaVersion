@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
+import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 
-public class SearchRecipesFragment extends Fragment {
+public class SearchRecipesFragment extends NavigationFragment {
     private FragmentSearchRecipesBinding binding;
 
     @Nullable

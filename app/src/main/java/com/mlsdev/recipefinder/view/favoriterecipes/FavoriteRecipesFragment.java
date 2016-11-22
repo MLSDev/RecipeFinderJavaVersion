@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentFavoriteRecipesBinding;
+import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 
-public class FavoriteRecipesFragment extends Fragment {
+public class FavoriteRecipesFragment extends NavigationFragment {
     private FragmentFavoriteRecipesBinding binding;
 
     @Nullable
