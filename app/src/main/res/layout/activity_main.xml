@@ -1,44 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.mlsdev.recipefinder.MainActivity">
+<layout>
 
-    <!--<android.support.design.widget.AppBarLayout-->
-    <!--android:id="@+id/appbar"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/appbar_height">-->
+    <data>
 
-    <!--<android.support.v7.widget.AppCompatEditText-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
-    <!--android:layout_marginStart="@dimen/activity_horizontal_margin"-->
-    <!--android:background="@android:color/transparent"-->
-    <!--android:hint="Search..."-->
-    <!--android:imeOptions="actionSearch"-->
-    <!--android:textColor="@android:color/white"-->
-    <!--android:textColorHint="@android:color/white" />-->
+    </data>
 
-    <!--</android.support.design.widget.AppBarLayout>-->
-
-    <FrameLayout
-        android:id="@+id/fl_content"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bnv_navigation_view" />
+        tools:context="com.mlsdev.recipefinder.view.MainActivity">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bnv_navigation_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_bar_height"
-        android:layout_alignParentBottom="true"
-        android:elevation="@dimen/bottom_bar_elevation"
-        app:elevation="@dimen/bottom_bar_elevation"
-        app:itemBackground="@color/colorPrimary"
-        tools:targetApi="lollipop" />
+        <FrameLayout
+            android:id="@+id/fl_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bnv_navigation_view" />
 
-</RelativeLayout>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bnv_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_bar_height"
+            android:layout_alignParentBottom="true"
+            android:elevation="@dimen/bottom_bar_elevation"
+            app:elevation="@dimen/bottom_bar_elevation"
+            app:itemBackground="@color/colorPrimary"
+            app:itemIconTint="@android:color/white"
+            app:itemTextColor="@android:color/white"
+            app:menu="@menu/navigation"
+            tools:targetApi="lollipop" />
+
+    </RelativeLayout>
+</layout>

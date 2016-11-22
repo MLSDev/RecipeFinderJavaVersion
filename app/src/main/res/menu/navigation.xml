@@ -4,18 +4,21 @@
     <item
         android:id="@+id/action_analyse_nutrition"
         android:enabled="true"
+        android:icon="@drawable/ic_navigation_analyse"
         android:title="@string/navigation_title_analyse"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_search_recipe"
         android:enabled="true"
-        android:title="@string/navigation_title_analyse"
+        android:icon="@drawable/ic_navigation_search"
+        android:title="@string/navigation_title_search"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_favorites"
         android:enabled="true"
-        android:title="@string/navigation_title_analyse"
+        android:icon="@drawable/ic_navigation_favorites"
+        android:title="@string/navigation_title_favorites"
         app:showAsAction="ifRoom" />
 </menu>

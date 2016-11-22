@@ -5,4 +5,5 @@
     <string name="navigation_title_analyse">Analyse</string>
     <string name="navigation_title_search">Search</string>
     <string name="navigation_title_favorites">Favorites</string>
+    <string name="hint_search">Search...</string>
 </resources>
