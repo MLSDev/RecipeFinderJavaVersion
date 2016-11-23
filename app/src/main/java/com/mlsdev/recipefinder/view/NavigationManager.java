@@ -6,8 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.view.enums.NavigationItem;
 import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
+
+import static com.mlsdev.recipefinder.view.enums.NavigationItem.ANALYSE;
+import static com.mlsdev.recipefinder.view.enums.NavigationItem.FAVORITES;
+import static com.mlsdev.recipefinder.view.enums.NavigationItem.SEARCH;
 
 public class NavigationManager implements BottomNavigationView.OnNavigationItemSelectedListener {
     private FragmentManager fragmentManager;
@@ -17,9 +20,9 @@ public class NavigationManager implements BottomNavigationView.OnNavigationItemS
 
     public NavigationManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
-        analyseNutritionFragment = NavigationFragment.getNewInstance(NavigationItem.ANALYSE);
-        searchRecipesFragment = NavigationFragment.getNewInstance(NavigationItem.SEARCH);
-        favoriteRecipesFragment = NavigationFragment.getNewInstance(NavigationItem.FAVORITES);
+        analyseNutritionFragment = NavigationFragment.getNewInstance(ANALYSE);
+        searchRecipesFragment = NavigationFragment.getNewInstance(SEARCH);
+        favoriteRecipesFragment = NavigationFragment.getNewInstance(FAVORITES);
     }
 
     @Override
@@ -47,7 +50,4 @@ public class NavigationManager implements BottomNavigationView.OnNavigationItemS
                 .commit();
     }
 
-    public void resetTabs() {
-        replaceFragment(searchRecipesFragment);
-    }
 }
