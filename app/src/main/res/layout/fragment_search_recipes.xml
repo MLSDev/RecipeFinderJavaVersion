@@ -6,6 +6,7 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cl_search_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true">
@@ -16,6 +17,7 @@
             android:layout_height="@dimen/appbar_height">
 
             <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
