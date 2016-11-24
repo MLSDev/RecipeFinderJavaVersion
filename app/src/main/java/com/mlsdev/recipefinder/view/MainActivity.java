@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private void initNavigation() {
         navigationManager = new NavigationManager(getSupportFragmentManager());
         binding.bnvNavigationView.setOnNavigationItemSelectedListener(navigationManager);
-        binding.bnvNavigationView.getMenu().getItem(0).setChecked(false);
-        binding.bnvNavigationView.getMenu().getItem(1).setChecked(true);
-        navigationManager.onNavigationItemSelected(binding.bnvNavigationView.getMenu().getItem(1));
+        navigationManager.onNavigationItemSelected(binding.bnvNavigationView.getMenu().getItem(0));
     }
 }

@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_analyse_nutrition"
-        android:enabled="true"
-        android:icon="@drawable/ic_navigation_analyse"
-        android:title="@string/navigation_title_analyse"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/action_search_recipe"
         android:enabled="true"
         android:icon="@drawable/ic_navigation_search"
         android:title="@string/navigation_title_search"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_analyse_nutrition"
+        android:enabled="true"
+        android:icon="@drawable/ic_navigation_analyse"
+        android:title="@string/navigation_title_analyse"
         app:showAsAction="ifRoom" />
 
     <item
