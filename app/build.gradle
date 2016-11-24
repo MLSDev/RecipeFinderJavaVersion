@@ -62,4 +62,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
 
+    // JSON parsing
+    compile 'com.google.code.gson:gson:2.8.0'
+
 }
