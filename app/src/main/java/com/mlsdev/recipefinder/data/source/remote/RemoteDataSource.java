@@ -1,24 +1,25 @@
 package com.mlsdev.recipefinder.data.source.remote;
 
-import android.support.v4.util.ArrayMap;
+import android.content.Context;
 
+import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.SearchResult;
+import com.mlsdev.recipefinder.data.source.DataSource;
 
 import java.util.Map;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import rx.Observable;
 
-public class ApiClient {
+public class RemoteDataSource implements DataSource {
+    private Context context;
     private String baseUrl;
     private SearchRecipesService searchRecipesService;
 
-    public ApiClient() {
+    public RemoteDataSource(Context context) {
+        this.context = context;
         baseUrl = PathConstants.BASE_URL;
         initApiServices();
     }
@@ -37,11 +38,17 @@ public class ApiClient {
         searchRecipesService = retrofit.create(SearchRecipesService.class);
     }
 
-    public Subscription searchRecipes(Subscriber<SearchResult> subscriber) {
-        Map<String, String> params = new ArrayMap<>();
-        return searchRecipesService.searchRecipes(params)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+    @Override
+    public Observable<SearchResult> searchRecipes(Map<String, String> params) {
+        setSearchCredentials(params);
+        return searchRecipesService.searchRecipes(params);
+    }
+
+    private void setSearchCredentials(Map<String, String> params) {
+        String appId = context.getString(R.string.search_app_id);
+        String appKey = context.getString(R.string.search_app_key);
+
+        params.put(ParameterKeys.APP_ID, appId);
+        params.put(ParameterKeys.APP_KEY, appKey);
     }
 }
