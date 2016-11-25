@@ -1,6 +1,7 @@
 package com.mlsdev.recipefinder.data.source.repository;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import com.mlsdev.recipefinder.data.entity.Hit;
@@ -71,6 +72,7 @@ public class DataRepository {
         return getRecipes(params);
     }
 
+    @NonNull
     private Observable<List<Recipe>> getRecipes(Map<String, String> params) {
         return remoteDataSource.searchRecipes(params)
                 .map(new Func1<SearchResult, List<Recipe>>() {
@@ -87,7 +89,7 @@ public class DataRepository {
 
                         cachedRecipes.putAll(recipes);
 
-                        return (List<Recipe>) recipes.values();
+                        return new ArrayList<>(recipes.values());
                     }
                 })
                 .doOnCompleted(new Action0() {
