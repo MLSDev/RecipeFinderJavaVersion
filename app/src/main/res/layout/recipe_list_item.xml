@@ -3,27 +3,32 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.mlsdev.recipefinder.view.searchrecipes.RecipeListItemViewModel" />
     </data>
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardUseCompatPadding="true"
+        card_view:cardCornerRadius="1dp"
         card_view:cardElevation="3dp"
-        card_view:cardCornerRadius="1dp">
+        card_view:cardUseCompatPadding="true">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_recipe_image"
             android:layout_width="match_parent"
+            android:src="@mipmap/ic_launcher"
             android:layout_height="225dp" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_recipe_title"
             style="@style/BaseTextViewStyle.RecipeItemTextStyle"
-            android:layout_gravity="bottom"
             android:layout_height="70dp"
+            android:layout_gravity="bottom"
             android:gravity="bottom|center_horizontal"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp"
+            android:text="@{viewModel.recipeTitle}" />
 
     </android.support.v7.widget.CardView>
 </layout>
