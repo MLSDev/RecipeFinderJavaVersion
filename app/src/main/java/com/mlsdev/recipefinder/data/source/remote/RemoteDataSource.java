@@ -15,7 +15,7 @@ import rx.Observable;
 
 public class RemoteDataSource implements DataSource {
     private Context context;
-    private String baseUrl;
+    private static String baseUrl;
     private SearchRecipesService searchRecipesService;
 
     public RemoteDataSource(Context context) {
@@ -24,8 +24,8 @@ public class RemoteDataSource implements DataSource {
         initApiServices();
     }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
+    public static void setBaseUrl(String url) {
+        baseUrl = url;
     }
 
     private void initApiServices() {

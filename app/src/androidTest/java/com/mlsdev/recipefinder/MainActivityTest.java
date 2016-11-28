@@ -31,15 +31,6 @@ public class MainActivityTest {
         assertTabOpened(R.id.cl_search_recipes);
     }
 
-    @Test
-    public void testStartSearching() {
-        String searchText = "Cake with apples";
-        Espresso.onView(ViewMatchers.withId(R.id.et_search))
-                .perform(ViewActions.typeText(searchText))
-                .perform(ViewActions.pressImeActionButton())
-                .perform(ViewActions.closeSoftKeyboard());
-    }
-
     private void performClickUponTab(@IdRes int tabId) {
         Espresso.onView(ViewMatchers.withId(tabId)).perform(ViewActions.click());
     }
