@@ -49,9 +49,9 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/tab_item_background"
+                    android:onClick="@{viewModel.onClearSearchTextButtonClick}"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_close"
-                    android:onClick="@{viewModel.onClearSearchTextButtonClick}"
                     app:visibility="@{viewModel.clearSearTextButtonVisibility}" />
 
             </RelativeLayout>
@@ -63,6 +63,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <FrameLayout
+            android:id="@+id/fl_progress_bar_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorProgressBarWrapper"
+            app:visibility="@{viewModel.progressBarVisibility}">
+
+            <android.support.v4.widget.ContentLoadingProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

@@ -23,6 +23,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class SearchViewModel {
     public final ObservableInt clearSearTextButtonVisibility;
+    public final ObservableInt progressBarVisibility;
     public final ObservableField<String> searchText;
     private DataRepository repository;
     private CompositeSubscription subscriptions;
@@ -33,6 +34,7 @@ public class SearchViewModel {
         repository = DataRepository.getInstance(context);
         subscriptions = new CompositeSubscription();
         clearSearTextButtonVisibility = new ObservableInt(View.INVISIBLE);
+        progressBarVisibility = new ObservableInt(View.INVISIBLE);
         searchText = new ObservableField<>();
     }
 
@@ -44,6 +46,8 @@ public class SearchViewModel {
         if (forceUpdate)
             repository.setCacheIsDirty();
 
+        progressBarVisibility.set(View.VISIBLE);
+
         Subscription subscription = repository.searchRecipes(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -52,6 +56,7 @@ public class SearchViewModel {
                     public void onCompleted() {
                         // TODO: 11/25/16 stop progress bar
                         Log.d("RF", "onCompleted()");
+                        progressBarVisibility.set(View.INVISIBLE);
                     }
 
                     @Override
