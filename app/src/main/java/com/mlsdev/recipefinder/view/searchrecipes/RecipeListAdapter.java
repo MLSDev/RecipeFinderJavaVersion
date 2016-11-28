@@ -36,6 +36,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
         holder.bindRecipe(recipes.get(position));
+        if (position == getItemCount() - 1)
+            onLastItemShownListener.onLastItemShown();
     }
 
     @Override
@@ -46,6 +48,11 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void setData(List<Recipe> recipes) {
         this.recipes.clear();
         this.recipes.addAll(recipes);
+        notifyDataSetChanged();
+    }
+
+    public void setMoreData(List<Recipe> moreRecipes) {
+        recipes.addAll(moreRecipes);
         notifyDataSetChanged();
     }
 
@@ -65,7 +72,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         }
     }
 
-    public interface OnLastItemShownListener{
+    public interface OnLastItemShownListener {
         void onLastItemShown();
     }
 

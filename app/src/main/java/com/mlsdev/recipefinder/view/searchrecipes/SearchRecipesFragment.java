@@ -3,6 +3,8 @@ package com.mlsdev.recipefinder.view.searchrecipes;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,13 +30,15 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
 
         if (viewModel == null)
             viewModel = new SearchViewModel(getActivity().getApplicationContext(), this);
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
+
         binding.setViewModel(viewModel);
         binding.etSearch.setOnEditorActionListener(new OnActionButtonClickListener());
         initRecyclerView();
+
         return binding.getRoot();
     }
 
@@ -44,6 +48,16 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
         binding.rvRecipeList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         binding.rvRecipeList.setHasFixedSize(true);
         binding.rvRecipeList.setAdapter(recipeListAdapter);
+    }
+
+    @Override
+    public void scrollToTop() {
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) binding.appbar.getLayoutParams();
+        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+        if (behavior != null)
+            behavior.onNestedFling(binding.clSearchRecipes, binding.appbar, null, 0, -1000, true);
+
+        binding.rvRecipeList.smoothScrollToPosition(0);
     }
 
     @Override
@@ -58,8 +72,13 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
     }
 
     @Override
+    public void onMoreRecipesLoaded(List<Recipe> moreRecipes) {
+        recipeListAdapter.setMoreData(moreRecipes);
+    }
+
+    @Override
     public void onLastItemShown() {
-        // TODO: 11/25/16 load more recipes
+        viewModel.loadMoreRecipes();
     }
 
     public class OnActionButtonClickListener implements TextView.OnEditorActionListener {

@@ -25,6 +25,7 @@ public class SearchViewModel {
     public final ObservableInt clearSearTextButtonVisibility;
     public final ObservableInt progressBarVisibility;
     public final ObservableField<String> searchText;
+    private String searchedText;
     private DataRepository repository;
     private CompositeSubscription subscriptions;
     private OnRecipesLoadedListener onRecipesLoadedListener;
@@ -39,6 +40,7 @@ public class SearchViewModel {
     }
 
     public void searchRecipes(String searchText, boolean forceUpdate) {
+        searchedText = searchText;
         Map<String, String> params = new ArrayMap<>();
         params.put(ParameterKeys.QUERY, searchText);
         subscriptions.clear();
@@ -74,12 +76,46 @@ public class SearchViewModel {
         subscriptions.add(subscription);
     }
 
+    public void loadMoreRecipes() {
+        Map<String, String> params = new ArrayMap<>();
+        params.put(ParameterKeys.QUERY, searchedText);
+        subscriptions.clear();
+        progressBarVisibility.set(View.VISIBLE);
+
+        Subscription subscription = repository.loadMore(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<List<Recipe>>() {
+                    @Override
+                    public void onCompleted() {
+                        // TODO: 11/25/16 stop progress bar
+                        Log.d("RF", "onCompleted()");
+                        progressBarVisibility.set(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // TODO: 11/25/16 show errors
+                        Log.d("RF", "onError()");
+                    }
+
+                    @Override
+                    public void onNext(List<Recipe> recipes) {
+                        onRecipesLoadedListener.onMoreRecipesLoaded(recipes);
+                    }
+                });
+
+        subscriptions.add(subscription);
+
+    }
+
     public void onDestroy() {
         subscriptions.clear();
     }
 
     public interface OnRecipesLoadedListener {
         void onRecipesLoaded(List<Recipe> recipes);
+        void onMoreRecipesLoaded(List<Recipe> moreRecipes);
     }
 
     public void onClearSearchTextButtonClick(View view) {

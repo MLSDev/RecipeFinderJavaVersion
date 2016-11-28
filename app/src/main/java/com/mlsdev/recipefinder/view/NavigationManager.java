@@ -17,6 +17,8 @@ public class NavigationManager implements BottomNavigationView.OnNavigationItemS
     private NavigationFragment analyseNutritionFragment;
     private NavigationFragment searchRecipesFragment;
     private NavigationFragment favoriteRecipesFragment;
+    private NavigationFragment currentFragment;
+    private int checkedItemId = -1;
 
     public NavigationManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -27,6 +29,13 @@ public class NavigationManager implements BottomNavigationView.OnNavigationItemS
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        if (checkedItemId == item.getItemId()) {
+            currentFragment.scrollToTop();
+            return true;
+        }
+
+        checkedItemId = item.getItemId();
 
         switch (item.getItemId()) {
             case R.id.action_analyse_nutrition:
@@ -40,11 +49,13 @@ public class NavigationManager implements BottomNavigationView.OnNavigationItemS
                 return true;
             default:
                 return false;
+
         }
 
     }
 
     private void replaceFragment(NavigationFragment fragment) {
+        currentFragment = fragment;
         fragmentManager.beginTransaction()
                 .replace(R.id.fl_content, fragment)
                 .commit();

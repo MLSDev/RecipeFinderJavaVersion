@@ -26,4 +26,8 @@ public abstract class NavigationFragment extends Fragment {
 
     }
 
+    public void scrollToTop() {
+
+    }
+
 }
