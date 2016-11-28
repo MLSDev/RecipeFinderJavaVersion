@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.Recipe;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
+import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 
 import java.util.List;
@@ -44,11 +45,6 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
         binding.rvRecipeList.setAdapter(recipeListAdapter);
     }
 
-    private void showCachedData() {
-        if (!binding.etSearch.getText().toString().isEmpty())
-            viewModel.searchRecipes(binding.etSearch.getText().toString(), false);
-    }
-
     @Override
     public void onDestroy() {
         viewModel.onDestroy();
@@ -72,6 +68,7 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
 
             if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchRecipes(binding.etSearch.getText().toString(), true);
+                ((MainActivity) getActivity()).hideSoftKeyboard();
                 return true;
             }
 
