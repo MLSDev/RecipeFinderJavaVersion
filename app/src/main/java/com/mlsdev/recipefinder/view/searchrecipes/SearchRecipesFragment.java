@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.Recipe;
@@ -21,7 +22,8 @@ import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 
 import java.util.List;
 
-public class SearchRecipesFragment extends NavigationFragment implements SearchViewModel.OnRecipesLoadedListener, RecipeListAdapter.OnLastItemShownListener {
+public class SearchRecipesFragment extends NavigationFragment implements SearchViewModel.OnRecipesLoadedListener,
+        RecipeListAdapter.OnItemClickListener, RecipeListAdapter.OnLastItemShownListener {
     private FragmentSearchRecipesBinding binding;
     private SearchViewModel viewModel;
     private RecipeListAdapter recipeListAdapter;
@@ -44,7 +46,7 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
 
     private void initRecyclerView() {
         if (recipeListAdapter == null)
-            recipeListAdapter = new RecipeListAdapter(this);
+            recipeListAdapter = new RecipeListAdapter(this, this);
         binding.rvRecipeList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         binding.rvRecipeList.setHasFixedSize(true);
         binding.rvRecipeList.setAdapter(recipeListAdapter);
@@ -79,6 +81,12 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
     @Override
     public void onLastItemShown() {
         viewModel.loadMoreRecipes();
+    }
+
+    @Override
+    public void onItemClicked(Recipe recipe) {
+        // TODO: 11/28/16 show a recipe details fragment
+        Toast.makeText(getActivity(), recipe.getLabel(), Toast.LENGTH_SHORT).show();
     }
 
     public class OnActionButtonClickListener implements TextView.OnEditorActionListener {

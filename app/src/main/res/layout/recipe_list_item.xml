@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/tools">
+<layout xmlns:app="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,6 +12,8 @@
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="@drawable/recipe_list_item_foreground"
         card_view:cardCornerRadius="1dp"
         card_view:cardElevation="3dp"
         card_view:cardUseCompatPadding="true">
@@ -21,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="225dp"
             android:scaleType="centerCrop"
-            app:imageUrl="@{viewModel.recipeImageUrl}"/>
+            app:imageUrl="@{viewModel.recipeImageUrl}" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_recipe_title"
