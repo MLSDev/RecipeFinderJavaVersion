@@ -32,6 +32,7 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
         if (viewModel == null)
             viewModel = new SearchViewModel(getActivity().getApplicationContext(), this);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
+        binding.setViewModel(viewModel);
         binding.etSearch.setOnEditorActionListener(new OnActionButtonClickListener());
         initRecyclerView();
         return binding.getRoot();
