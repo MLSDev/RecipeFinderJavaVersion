@@ -26,9 +26,9 @@
             android:layout_alignParentBottom="true"
             android:elevation="@dimen/bottom_bar_elevation"
             app:elevation="@dimen/bottom_bar_elevation"
-            app:itemBackground="@color/colorPrimary"
-            app:itemIconTint="@android:color/white"
-            app:itemTextColor="@android:color/white"
+            app:itemBackground="@drawable/tab_item_background"
+            app:itemIconTint="@color/tab_item_text_color"
+            app:itemTextColor="@color/tab_item_text_color"
             app:menu="@menu/navigation"
             tools:targetApi="lollipop" />
 
