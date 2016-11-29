@@ -56,9 +56,19 @@ public class NavigationManager implements BottomNavigationView.OnNavigationItemS
 
     private void replaceFragment(NavigationFragment fragment) {
         currentFragment = fragment;
+
+        clearBackStack();
+
         fragmentManager.beginTransaction()
                 .replace(R.id.fl_content, fragment)
                 .commit();
+    }
+
+    private void clearBackStack() {
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
+            clearBackStack();
+        }
     }
 
 }

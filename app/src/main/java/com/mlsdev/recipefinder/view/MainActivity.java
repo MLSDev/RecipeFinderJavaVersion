@@ -3,6 +3,7 @@ package com.mlsdev.recipefinder.view;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -35,5 +36,13 @@ public class MainActivity extends AppCompatActivity {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void addFragmentToBackstack(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack("RecipeDetails")
+                .replace(R.id.fl_content, fragment)
+                .commit();
     }
 }
