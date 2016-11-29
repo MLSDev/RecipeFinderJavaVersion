@@ -2,7 +2,6 @@ package com.mlsdev.recipefinder.data.source.repository;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.util.ArrayMap;
 
 import com.mlsdev.recipefinder.data.entity.Hit;
 import com.mlsdev.recipefinder.data.entity.Recipe;
@@ -28,12 +27,12 @@ public class DataRepository {
     private static DataRepository instance;
     private DataSource remoteDataSource;
 
-    private Map<String, Recipe> cachedRecipes;
+    private List<Recipe> cachedRecipes;
     private boolean cacheIsDirty = false;
 
     private DataRepository(Context context) {
         remoteDataSource = new RemoteDataSource(context);
-        cachedRecipes = new ArrayMap<>();
+        cachedRecipes = new ArrayList<>();
     }
 
     public static DataRepository getInstance(Context context) {
@@ -49,7 +48,7 @@ public class DataRepository {
 
     public Observable<List<Recipe>> searchRecipes(Map<String, String> params) {
         if (!cacheIsDirty) {
-            return Observable.from(cachedRecipes.values()).toList();
+            return Observable.from(cachedRecipes).toList();
         }
 
         cachedRecipes.clear();
@@ -82,14 +81,13 @@ public class DataRepository {
                         to = from + offset;
                         more = searchResult.isMore();
 
-                        Map<String, Recipe> recipes = new ArrayMap<>();
-
+                        List<Recipe> recipes = new ArrayList<>();
                         for (Hit hit : searchResult.getHits())
-                            recipes.put(hit.getRecipe().getUri(), hit.getRecipe());
+                            recipes.add(hit.getRecipe());
 
-                        cachedRecipes.putAll(recipes);
+                        cachedRecipes.addAll(recipes);
 
-                        return new ArrayList<>(recipes.values());
+                        return recipes;
                     }
                 })
                 .doOnCompleted(new Action0() {
