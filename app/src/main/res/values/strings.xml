@@ -10,4 +10,7 @@
     <string name="navigation_title_search">Search</string>
     <string name="navigation_title_favorites">Favorites</string>
     <string name="hint_search">Search…</string>
+    <string name="label_health_labels">Health labels</string>
+    <string name="label_diet_labels">Diet labels</string>
+    <string name="label_ingredients">Ingredients</string>
 </resources>
