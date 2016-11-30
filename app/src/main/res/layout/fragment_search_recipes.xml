@@ -52,7 +52,7 @@
                     android:onClick="@{viewModel.onClearSearchTextButtonClick}"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_close"
-                    app:visibility="@{viewModel.clearSearTextButtonVisibility}" />
+                    app:onAnimate="@{viewModel.clearSearTextButtonVisibility}" />
 
             </RelativeLayout>
 
@@ -64,12 +64,36 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+        <LinearLayout
+            android:id="@+id/ll_search_label_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            app:onAnimate="@{viewModel.searchLabelVisibility}">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_nothing_found" />
+
+            <TextView
+                android:id="@+id/tv_search_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.searchLabelText}"
+                android:textColor="@color/colorSearchLabel"
+                android:textSize="18sp" />
+        </LinearLayout>
+
         <FrameLayout
             android:id="@+id/fl_progress_bar_wrapper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorProgressBarWrapper"
-            app:visibility="@{viewModel.progressBarVisibility}">
+            android:visibility="invisible"
+            app:onAnimate="@{viewModel.progressBarVisibility}">
 
             <android.support.v4.widget.ContentLoadingProgressBar
                 android:id="@+id/progress_bar"

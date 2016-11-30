@@ -8,6 +8,7 @@ import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 
+import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
 import com.mlsdev.recipefinder.data.source.repository.DataRepository;
@@ -22,21 +23,27 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class SearchViewModel {
+    private Context context;
     public final ObservableInt clearSearTextButtonVisibility;
     public final ObservableInt progressBarVisibility;
+    public final ObservableInt searchLabelVisibility;
     public final ObservableField<String> searchText;
+    public final ObservableField<String> searchLabelText;
     private String searchedText;
     private DataRepository repository;
     private CompositeSubscription subscriptions;
     private OnRecipesLoadedListener onRecipesLoadedListener;
 
     public SearchViewModel(@NonNull Context context, @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
+        this.context = context;
         this.onRecipesLoadedListener = onRecipesLoadedListener;
         repository = DataRepository.getInstance(context);
         subscriptions = new CompositeSubscription();
         clearSearTextButtonVisibility = new ObservableInt(View.INVISIBLE);
         progressBarVisibility = new ObservableInt(View.INVISIBLE);
         searchText = new ObservableField<>();
+        searchLabelVisibility = new ObservableInt(View.VISIBLE);
+        searchLabelText = new ObservableField<>(context.getString(R.string.label_search));
     }
 
     public void searchRecipes(String searchText, boolean forceUpdate) {
@@ -49,6 +56,7 @@ public class SearchViewModel {
             repository.setCacheIsDirty();
 
         progressBarVisibility.set(View.VISIBLE);
+        searchLabelVisibility.set(View.INVISIBLE);
 
         Subscription subscription = repository.searchRecipes(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -69,6 +77,11 @@ public class SearchViewModel {
 
                     @Override
                     public void onNext(List<Recipe> recipes) {
+                        String commonSearchLabelText = context.getString(R.string.label_search);
+                        String nothingFoundText = context.getString(R.string.label_search_nothing_found);
+                        searchLabelText.set(recipes.isEmpty() ? nothingFoundText : commonSearchLabelText);
+                        searchLabelVisibility.set(recipes.isEmpty() ? View.VISIBLE : View.INVISIBLE);
+
                         onRecipesLoadedListener.onRecipesLoaded(recipes);
                     }
                 });
@@ -115,6 +128,7 @@ public class SearchViewModel {
 
     public interface OnRecipesLoadedListener {
         void onRecipesLoaded(List<Recipe> recipes);
+
         void onMoreRecipesLoaded(List<Recipe> moreRecipes);
     }
 

@@ -5,4 +5,5 @@
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#03A9F4</color>
     <color name="colorProgressBarWrapper">#55ffffff</color>
+    <color name="colorSearchLabel">#BDBDBD</color>
 </resources>
