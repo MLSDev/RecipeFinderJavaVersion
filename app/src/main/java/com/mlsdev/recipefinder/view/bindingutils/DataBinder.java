@@ -1,10 +1,6 @@
 package com.mlsdev.recipefinder.view.bindingutils;
 
 import android.databinding.BindingAdapter;
-import android.support.annotation.AnimRes;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -23,11 +19,4 @@ public final class DataBinder {
                 .into(imageView);
     }
 
-    @BindingAdapter("onAnimate")
-    public static void animateView(View view, int visibility) {
-        @AnimRes int animResId = visibility == View.VISIBLE ? R.anim.fade_in : R.anim.fade_out;
-        Animation animation = AnimationUtils.loadAnimation(view.getContext(), animResId);
-        view.startAnimation(animation);
-        view.setVisibility(visibility);
-    }
 }

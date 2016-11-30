@@ -41,8 +41,8 @@ public class SearchViewModel {
         subscriptions = new CompositeSubscription();
         clearSearTextButtonVisibility = new ObservableInt(View.INVISIBLE);
         progressBarVisibility = new ObservableInt(View.INVISIBLE);
-        searchText = new ObservableField<>();
         searchLabelVisibility = new ObservableInt(View.VISIBLE);
+        searchText = new ObservableField<>();
         searchLabelText = new ObservableField<>(context.getString(R.string.label_search));
     }
 

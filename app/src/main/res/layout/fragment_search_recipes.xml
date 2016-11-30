@@ -52,7 +52,7 @@
                     android:onClick="@{viewModel.onClearSearchTextButtonClick}"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_close"
-                    app:onAnimate="@{viewModel.clearSearTextButtonVisibility}" />
+                    app:visibility="@{viewModel.clearSearTextButtonVisibility}" />
 
             </RelativeLayout>
 
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
-            app:onAnimate="@{viewModel.searchLabelVisibility}">
+            app:visibility="@{viewModel.searchLabelVisibility}">
 
             <ImageView
                 android:layout_width="100dp"
@@ -92,8 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorProgressBarWrapper"
-            android:visibility="invisible"
-            app:onAnimate="@{viewModel.progressBarVisibility}">
+            app:visibility="@{viewModel.progressBarVisibility}">
 
             <android.support.v4.widget.ContentLoadingProgressBar
                 android:id="@+id/progress_bar"
