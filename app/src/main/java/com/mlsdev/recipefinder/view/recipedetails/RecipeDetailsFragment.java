@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentRecipeDetailsBinding;
+import com.mlsdev.recipefinder.view.MainActivity;
 
 public class RecipeDetailsFragment extends Fragment {
     private FragmentRecipeDetailsBinding binding;
@@ -20,6 +21,12 @@ public class RecipeDetailsFragment extends Fragment {
         viewModel = new RecipeViewModel(getArguments());
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_details, container, false);
         binding.setViewModel(viewModel);
+
+        ((MainActivity) getActivity()).setSupportActionBar(binding.toolbar);
+        if (((MainActivity) getActivity()).getSupportActionBar() != null) {
+            ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         return binding.getRoot();
     }
 }
