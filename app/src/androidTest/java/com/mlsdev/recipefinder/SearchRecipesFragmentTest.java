@@ -7,6 +7,7 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
+import com.mlsdev.recipefinder.data.entity.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.RemoteDataSource;
 import com.mlsdev.recipefinder.idlingutils.BetterIdlingResource;
 import com.mlsdev.recipefinder.view.MainActivity;
@@ -66,5 +67,24 @@ public class SearchRecipesFragmentTest {
         Espresso.onView(ViewMatchers.withText(lastRecipeTitle))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
 
+        // Scroll to top and click upon the first item
+        Recipe recipe = AssetUtils.getRecipeEntity(rule.getActivity());
+        Espresso.onView(ViewMatchers.withId(R.id.rv_recipe_list))
+                .perform(RecyclerViewActions.scrollToPosition(0));
+
+        Espresso.onView(ViewMatchers.withText(recipe.getLabel()))
+                .perform(ViewActions.click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.tv_health_labels))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.tv_diet_labels))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.iv_recipe_image))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.toolbar))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 }

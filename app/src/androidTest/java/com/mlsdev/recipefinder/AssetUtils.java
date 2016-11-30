@@ -2,6 +2,9 @@ package com.mlsdev.recipefinder;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.mlsdev.recipefinder.data.entity.Recipe;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -13,6 +16,10 @@ public class AssetUtils {
 
     public static String getMoreRecipesJsonData(Context context) {
         return getJsonStringFromAssets(context, "more_items_search_result.json");
+    }
+
+    public static Recipe getRecipeEntity(Context context) {
+        return new Gson().fromJson(getJsonStringFromAssets(context, "recipe.json"), Recipe.class);
     }
 
     private static String getJsonStringFromAssets(Context context, String fileName) {
