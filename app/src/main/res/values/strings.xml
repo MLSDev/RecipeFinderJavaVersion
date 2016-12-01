@@ -32,20 +32,10 @@
 
     <string-array name="health_labels_prompt">
         <item>Alcohol-free</item>
-        <item>Celery-free</item>
-        <item>Crustcean-free</item>
-        <item>Dairy-free</item>
-        <item>Eggs-free</item>
-        <item>Fish-free</item>
-        <item>Gluten-free</item>
-        <item>Kidney friendly</item>
-        <item>Kosher</item>
-        <item>Low potassium</item>
-        <item>Lupine-free</item>
-        <item>Mustard-free</item>
-        <item>Low fat abs</item>
-        <item>No oil added</item>
-        <item>Low sugar</item>
+        <item>Vegan</item>
+        <item>Vegetarian</item>
         <item>paleo</item>
+        <item>Peanut-free</item>
+        <item>Tree-nut-free</item>
     </string-array>
 </resources>

@@ -18,6 +18,15 @@ public class FilterDialogFragment extends DialogFragment {
     private DialogFragmentSearchFilterBinding binding;
     public static final String HEALTH_LABEL_KEY = "health_label_key";
     public static final String DIET_LABEL_KEY = "diet_label_key";
+    private int healthSelectedIndex;
+    private int dietSelectedIndex;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        binding.spHealthLabels.setSelection(healthSelectedIndex);
+        binding.spDietLabels.setSelection(dietSelectedIndex);
+    }
 
     @NonNull
     @Override
@@ -32,6 +41,8 @@ public class FilterDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent data = new Intent();
+                        healthSelectedIndex = binding.spHealthLabels.getSelectedItemPosition();
+                        dietSelectedIndex = binding.spDietLabels.getSelectedItemPosition();
                         data.putExtra(HEALTH_LABEL_KEY, (String) binding.spHealthLabels.getSelectedItem());
                         data.putExtra(DIET_LABEL_KEY, (String) binding.spDietLabels.getSelectedItem());
 

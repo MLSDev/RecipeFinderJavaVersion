@@ -4,6 +4,7 @@ import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
 import com.mlsdev.recipefinder.data.source.repository.DataRepository;
+import com.mlsdev.recipefinder.view.utils.ParamsHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,7 @@ public class SearchViewModel {
     private CompositeSubscription subscriptions;
     private OnRecipesLoadedListener onRecipesLoadedListener;
     private Map<String, String> searchParams;
+    private DialogFragment filterFragment;
 
     public SearchViewModel(@NonNull Fragment fragment, @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
         this.fragment = fragment;
@@ -48,6 +51,7 @@ public class SearchViewModel {
         searchText = new ObservableField<>();
         searchLabelText = new ObservableField<>(fragment.getString(R.string.label_search));
         searchParams = new ArrayMap<>();
+        filterFragment = new FilterDialogFragment();
     }
 
     public void searchRecipes(String searchText, boolean forceUpdate) {
@@ -76,7 +80,7 @@ public class SearchViewModel {
                     @Override
                     public void onError(Throwable e) {
                         // TODO: 11/25/16 show errors
-                        Log.d("RF", "onError()");
+                        Log.e("RF", e.getMessage());
                     }
 
                     @Override
@@ -131,22 +135,28 @@ public class SearchViewModel {
     }
 
     public void onApplyFilterOptions(Bundle filterData) {
-        String healthLabel = filterData.getString(FilterDialogFragment.HEALTH_LABEL_KEY);
-        String dietLabel = filterData.getString(FilterDialogFragment.DIET_LABEL_KEY);
+        String healthLabel = ParamsHelper.formatLabel(filterData.getString(FilterDialogFragment.HEALTH_LABEL_KEY));
+        String dietLabel = ParamsHelper.formatLabel(filterData.getString(FilterDialogFragment.DIET_LABEL_KEY));
 
-        // TODO: 12/1/16 format labels to appropriate style and make search request
+        searchParams.put(ParameterKeys.HEALTH, healthLabel);
+        searchParams.put(ParameterKeys.DIET, dietLabel);
+
+        searchRecipes(searchedText, true);
     }
 
     public void onFilterClick(View view) {
-        FilterDialogFragment filterDialogFragment = new FilterDialogFragment();
-        filterDialogFragment.setTargetFragment(fragment, FILTER_REQUEST_CODE);
-        filterDialogFragment.show(fragment.getActivity().getSupportFragmentManager(), "Filter");
+        filterFragment.setTargetFragment(fragment, FILTER_REQUEST_CODE);
+        filterFragment.show(fragment.getActivity().getSupportFragmentManager(), "Filter");
     }
 
     public interface OnRecipesLoadedListener {
         void onRecipesLoaded(List<Recipe> recipes);
 
         void onMoreRecipesLoaded(List<Recipe> moreRecipes);
+    }
+
+    public void onTextChanged(CharSequence text, int start, int before, int count) {
+        searchText.set(text.toString());
     }
 
 }

@@ -37,6 +37,7 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:onTextChanged="@{viewModel.onTextChanged}"
                     android:text="@{viewModel.searchText}"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white" />
