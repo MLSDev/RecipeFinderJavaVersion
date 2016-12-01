@@ -32,6 +32,7 @@ ext {
     supportTestsLibVersion = '0.5'
     espressoVersion = '2.2.2'
     okhttpVersion = '3.4.1'
+    ormLiteVersion = '5.0'
 }
 
 dependencies {
@@ -80,5 +81,9 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
+    // Local data source
+    compile "com.j256.ormlite:ormlite-core:$ormLiteVersion"
+    compile "com.j256.ormlite:ormlite-android:$ormLiteVersion"
 
 }
