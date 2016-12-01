@@ -33,7 +33,6 @@ public class SearchViewModel {
     public final ObservableInt filterButtonVisibility;
     public final ObservableField<String> searchText;
     public final ObservableField<String> searchLabelText;
-    private String searchedText;
     private DataRepository repository;
     private CompositeSubscription subscriptions;
     private OnRecipesLoadedListener onRecipesLoadedListener;
@@ -55,10 +54,8 @@ public class SearchViewModel {
     }
 
     public void searchRecipes(String searchText, boolean forceUpdate) {
-        if (forceUpdate || !(searchedText.equals(searchText.toLowerCase())))
+        if (forceUpdate || !(this.searchText.get().toLowerCase().equals(searchText.toLowerCase())))
             repository.setCacheIsDirty();
-
-        searchedText = searchText.toLowerCase();
 
         searchParams.put(ParameterKeys.QUERY, searchText);
         subscriptions.clear();
@@ -99,7 +96,7 @@ public class SearchViewModel {
 
     public void loadMoreRecipes() {
         Map<String, String> params = new ArrayMap<>();
-        params.put(ParameterKeys.QUERY, searchedText);
+        params.put(ParameterKeys.QUERY, this.searchText.get().toLowerCase());
         subscriptions.clear();
         progressBarVisibility.set(View.VISIBLE);
 
@@ -141,7 +138,7 @@ public class SearchViewModel {
         searchParams.put(ParameterKeys.HEALTH, healthLabel);
         searchParams.put(ParameterKeys.DIET, dietLabel);
 
-        searchRecipes(searchedText, true);
+        searchRecipes(this.searchText.get().toLowerCase(), true);
     }
 
     public void onFilterClick(View view) {
