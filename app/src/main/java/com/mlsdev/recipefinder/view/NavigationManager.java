@@ -3,6 +3,7 @@ package com.mlsdev.recipefinder.view;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import com.mlsdev.recipefinder.R;
@@ -60,6 +61,7 @@ public class NavigationManager implements BottomNavigationView.OnNavigationItemS
         clearBackStack();
 
         fragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.fl_content, fragment)
                 .commit();
     }
