@@ -1,9 +1,10 @@
 package com.mlsdev.recipefinder.view.searchrecipes;
 
-import android.content.Context;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
@@ -23,42 +24,45 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class SearchViewModel {
-    private Context context;
-    public final ObservableInt clearSearTextButtonVisibility;
+    public static final int FILTER_REQUEST_CODE = 0;
+    private Fragment fragment;
     public final ObservableInt progressBarVisibility;
     public final ObservableInt searchLabelVisibility;
+    public final ObservableInt filterButtonVisibility;
     public final ObservableField<String> searchText;
     public final ObservableField<String> searchLabelText;
     private String searchedText;
     private DataRepository repository;
     private CompositeSubscription subscriptions;
     private OnRecipesLoadedListener onRecipesLoadedListener;
+    private Map<String, String> searchParams;
 
-    public SearchViewModel(@NonNull Context context, @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
-        this.context = context;
+    public SearchViewModel(@NonNull Fragment fragment, @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
+        this.fragment = fragment;
         this.onRecipesLoadedListener = onRecipesLoadedListener;
-        repository = DataRepository.getInstance(context);
+        repository = DataRepository.getInstance(fragment.getActivity());
         subscriptions = new CompositeSubscription();
-        clearSearTextButtonVisibility = new ObservableInt(View.INVISIBLE);
         progressBarVisibility = new ObservableInt(View.INVISIBLE);
         searchLabelVisibility = new ObservableInt(View.VISIBLE);
+        filterButtonVisibility = new ObservableInt(View.INVISIBLE);
         searchText = new ObservableField<>();
-        searchLabelText = new ObservableField<>(context.getString(R.string.label_search));
+        searchLabelText = new ObservableField<>(fragment.getString(R.string.label_search));
+        searchParams = new ArrayMap<>();
     }
 
     public void searchRecipes(String searchText, boolean forceUpdate) {
-        searchedText = searchText;
-        Map<String, String> params = new ArrayMap<>();
-        params.put(ParameterKeys.QUERY, searchText);
-        subscriptions.clear();
-
-        if (forceUpdate)
+        if (forceUpdate || !(searchedText.equals(searchText.toLowerCase())))
             repository.setCacheIsDirty();
+
+        searchedText = searchText.toLowerCase();
+
+        searchParams.put(ParameterKeys.QUERY, searchText);
+        subscriptions.clear();
 
         progressBarVisibility.set(View.VISIBLE);
         searchLabelVisibility.set(View.INVISIBLE);
 
-        Subscription subscription = repository.searchRecipes(params)
+        Subscription subscription = repository.searchRecipes(searchParams)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<List<Recipe>>() {
@@ -77,11 +81,11 @@ public class SearchViewModel {
 
                     @Override
                     public void onNext(List<Recipe> recipes) {
-                        String commonSearchLabelText = context.getString(R.string.label_search);
-                        String nothingFoundText = context.getString(R.string.label_search_nothing_found);
+                        String commonSearchLabelText = fragment.getString(R.string.label_search);
+                        String nothingFoundText = fragment.getString(R.string.label_search_nothing_found);
                         searchLabelText.set(recipes.isEmpty() ? nothingFoundText : commonSearchLabelText);
                         searchLabelVisibility.set(recipes.isEmpty() ? View.VISIBLE : View.INVISIBLE);
-
+                        filterButtonVisibility.set(recipes.isEmpty() ? View.INVISIBLE : View.VISIBLE);
                         onRecipesLoadedListener.onRecipesLoaded(recipes);
                     }
                 });
@@ -126,18 +130,23 @@ public class SearchViewModel {
         subscriptions.clear();
     }
 
+    public void onApplyFilterOptions(Bundle filterData) {
+        String healthLabel = filterData.getString(FilterDialogFragment.HEALTH_LABEL_KEY);
+        String dietLabel = filterData.getString(FilterDialogFragment.DIET_LABEL_KEY);
+
+        // TODO: 12/1/16 format labels to appropriate style and make search request
+    }
+
+    public void onFilterClick(View view) {
+        FilterDialogFragment filterDialogFragment = new FilterDialogFragment();
+        filterDialogFragment.setTargetFragment(fragment, FILTER_REQUEST_CODE);
+        filterDialogFragment.show(fragment.getActivity().getSupportFragmentManager(), "Filter");
+    }
+
     public interface OnRecipesLoadedListener {
         void onRecipesLoaded(List<Recipe> recipes);
 
         void onMoreRecipesLoaded(List<Recipe> moreRecipes);
     }
 
-    public void onClearSearchTextButtonClick(View view) {
-        searchText.set("");
-    }
-
-    public void onTextChanged(CharSequence text, int start, int before, int count) {
-        clearSearTextButtonVisibility.set(text.toString().isEmpty() ? View.INVISIBLE : View.VISIBLE);
-        searchText.set(text.toString());
-    }
 }

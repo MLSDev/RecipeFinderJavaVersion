@@ -30,29 +30,27 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_toLeftOf="@+id/img_btn_clear_search_text"
-                    android:layout_toStartOf="@+id/img_btn_clear_search_text"
+                    android:layout_toLeftOf="@+id/btn_filter"
+                    android:layout_toStartOf="@+id/btn_filter"
                     android:background="@android:color/transparent"
                     android:hint="@string/hint_search"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:onTextChanged="@{viewModel.onTextChanged}"
                     android:text="@{viewModel.searchText}"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white" />
 
                 <ImageButton
-                    android:id="@+id/img_btn_clear_search_text"
+                    android:id="@+id/btn_filter"
                     android:layout_width="@dimen/appbar_height"
                     android:layout_height="@dimen/appbar_height"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/tab_item_background"
-                    android:onClick="@{viewModel.onClearSearchTextButtonClick}"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_close"
-                    app:visibility="@{viewModel.clearSearTextButtonVisibility}" />
+                    android:background="@drawable/toolbar_item_selector"
+                    android:onClick="@{viewModel.onFilterClick}"
+                    android:src="@drawable/ic_filter"
+                    app:visibility="@{viewModel.filterButtonVisibility}" />
 
             </RelativeLayout>
 

@@ -6,4 +6,5 @@
     <dimen name="bottom_bar_height">56dp</dimen>
     <dimen name="appbar_elevation">6dp</dimen>
     <dimen name="bottom_bar_elevation">8dp</dimen>
+    <dimen name="toolbar_item_margin">8dp</dimen>
 </resources>

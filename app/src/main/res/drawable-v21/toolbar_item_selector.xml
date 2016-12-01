@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/colorPressedToolbarItem">
+
+    <item
+        android:id="@android:id/mask"
+        android:bottom="@dimen/toolbar_item_margin"
+        android:left="@dimen/toolbar_item_margin"
+        android:right="@dimen/toolbar_item_margin"
+        android:top="@dimen/toolbar_item_margin">
+        <shape android:shape="oval">
+            <solid android:color="#b7ffffff" />
+        </shape>
+    </item>
+
+</ripple>

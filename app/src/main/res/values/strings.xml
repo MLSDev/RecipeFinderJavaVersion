@@ -15,4 +15,37 @@
     <string name="label_ingredients">Ingredients</string>
     <string name="label_search">Find something tasty</string>
     <string name="label_search_nothing_found">Nothing. Try again.</string>
+
+    <string name="btn_apply_filter">apply</string>
+    <string name="dialog_title_filter">Filter Nutrition</string>
+    <string name="spinner_label_diet_label">Diet label</string>
+    <string name="spinner_label_health_label">Health label</string>
+
+    <string-array name="diet_labels_prompt">
+        <item>Balanced</item>
+        <item>High-Fiber</item>
+        <item>High-Protein</item>
+        <item>Low-Carb</item>
+        <item>Low-Fat</item>
+        <item>Low-Sodium</item>
+    </string-array>
+
+    <string-array name="health_labels_prompt">
+        <item>Alcohol-free</item>
+        <item>Celery-free</item>
+        <item>Crustcean-free</item>
+        <item>Dairy-free</item>
+        <item>Eggs-free</item>
+        <item>Fish-free</item>
+        <item>Gluten-free</item>
+        <item>Kidney friendly</item>
+        <item>Kosher</item>
+        <item>Low potassium</item>
+        <item>Lupine-free</item>
+        <item>Mustard-free</item>
+        <item>Low fat abs</item>
+        <item>No oil added</item>
+        <item>Low sugar</item>
+        <item>paleo</item>
+    </string-array>
 </resources>

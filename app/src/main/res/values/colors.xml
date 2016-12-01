@@ -6,4 +6,5 @@
     <color name="colorAccent">#03A9F4</color>
     <color name="colorProgressBarWrapper">#55ffffff</color>
     <color name="colorSearchLabel">#BDBDBD</color>
+    <color name="colorPressedToolbarItem">#46ffffff</color>
 </resources>

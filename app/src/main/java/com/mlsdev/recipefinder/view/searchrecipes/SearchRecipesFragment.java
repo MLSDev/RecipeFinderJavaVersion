@@ -1,5 +1,7 @@
 package com.mlsdev.recipefinder.view.searchrecipes;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,7 +39,7 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
 
         if (viewModel == null)
-            viewModel = new SearchViewModel(getActivity().getApplicationContext(), this);
+            viewModel = new SearchViewModel(this, this);
 
         binding.setViewModel(viewModel);
         binding.etSearch.setOnEditorActionListener(new OnActionButtonClickListener());
@@ -92,6 +94,12 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
         Fragment fragment = new RecipeDetailsFragment();
         fragment.setArguments(recipeData);
         ((MainActivity) getActivity()).addFragmentToBackstack(fragment);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SearchViewModel.FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK)
+            viewModel.onApplyFilterOptions(data.getExtras());
     }
 
     public class OnActionButtonClickListener implements TextView.OnEditorActionListener {
