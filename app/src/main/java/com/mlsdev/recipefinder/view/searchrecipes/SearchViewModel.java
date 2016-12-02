@@ -13,8 +13,9 @@ import android.view.View;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
-import com.mlsdev.recipefinder.data.source.repository.DataRepository;
+import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.utils.ParamsHelper;
+import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.List;
 import java.util.Map;
@@ -23,9 +24,8 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
-public class SearchViewModel {
+public class SearchViewModel extends BaseViewModel {
     public static final int FILTER_REQUEST_CODE = 0;
     private Fragment fragment;
     public final ObservableInt progressBarVisibility;
@@ -33,17 +33,14 @@ public class SearchViewModel {
     public final ObservableInt filterButtonVisibility;
     public final ObservableField<String> searchText;
     public final ObservableField<String> searchLabelText;
-    private DataRepository repository;
-    private CompositeSubscription subscriptions;
     private OnRecipesLoadedListener onRecipesLoadedListener;
     private Map<String, String> searchParams;
     private DialogFragment filterFragment;
 
     public SearchViewModel(@NonNull Fragment fragment, @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
+        super(fragment.getActivity());
         this.fragment = fragment;
         this.onRecipesLoadedListener = onRecipesLoadedListener;
-        repository = DataRepository.getInstance(fragment.getActivity());
-        subscriptions = new CompositeSubscription();
         progressBarVisibility = new ObservableInt(View.INVISIBLE);
         searchLabelVisibility = new ObservableInt(View.VISIBLE);
         filterButtonVisibility = new ObservableInt(View.INVISIBLE);
@@ -127,10 +124,6 @@ public class SearchViewModel {
 
     }
 
-    public void onDestroy() {
-        subscriptions.clear();
-    }
-
     public void onApplyFilterOptions(Bundle filterData) {
         String healthLabel = ParamsHelper.formatLabel(filterData.getString(FilterDialogFragment.HEALTH_LABEL_KEY));
         String dietLabel = ParamsHelper.formatLabel(filterData.getString(FilterDialogFragment.DIET_LABEL_KEY));
@@ -144,12 +137,6 @@ public class SearchViewModel {
     public void onFilterClick(View view) {
         filterFragment.setTargetFragment(fragment, FILTER_REQUEST_CODE);
         filterFragment.show(fragment.getActivity().getSupportFragmentManager(), "Filter");
-    }
-
-    public interface OnRecipesLoadedListener {
-        void onRecipesLoaded(List<Recipe> recipes);
-
-        void onMoreRecipesLoaded(List<Recipe> moreRecipes);
     }
 
     public void onTextChanged(CharSequence text, int start, int before, int count) {

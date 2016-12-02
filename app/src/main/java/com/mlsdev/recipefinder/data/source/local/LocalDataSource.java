@@ -36,7 +36,7 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     public Observable<Boolean> addToFavorites(Recipe favoriteRecipe) {
         boolean result = false;
         try {
-            result = dataBaseHelper.getRecipeDao().create(favoriteRecipe) == 1;
+            result = dataBaseHelper.getRecipeDao().createIfNotExists(favoriteRecipe) == null;
         } catch (SQLException e) {
             e.printStackTrace();
         }

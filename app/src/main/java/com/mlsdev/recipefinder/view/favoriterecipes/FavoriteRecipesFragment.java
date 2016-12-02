@@ -3,25 +3,34 @@ package com.mlsdev.recipefinder.view.favoriterecipes;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentFavoriteRecipesBinding;
-import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
+import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
 
-public class FavoriteRecipesFragment extends NavigationFragment {
+import static com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter.OnLastItemShownListener;
+
+public class FavoriteRecipesFragment extends RecipeListFragment implements OnLastItemShownListener {
     private FragmentFavoriteRecipesBinding binding;
+    private FavoritesViewModel viewModel;
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite_recipes, container, false);
+        viewModel = new FavoritesViewModel(getActivity(), this);
+        binding.setViewModel(viewModel);
+        initRecyclerView(binding.rvRecipeList);
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void scrollToTop() {
+        binding.rvRecipeList.smoothScrollToPosition(0);
     }
 }

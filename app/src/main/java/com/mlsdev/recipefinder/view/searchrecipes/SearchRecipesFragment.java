@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,20 +15,13 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.data.entity.Recipe;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
 import com.mlsdev.recipefinder.view.MainActivity;
-import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
-import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
-import com.mlsdev.recipefinder.view.recipedetails.RecipeViewModel;
+import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
 
-import java.util.List;
-
-public class SearchRecipesFragment extends NavigationFragment implements SearchViewModel.OnRecipesLoadedListener,
-        RecipeListAdapter.OnItemClickListener, RecipeListAdapter.OnLastItemShownListener {
+public class SearchRecipesFragment extends RecipeListFragment implements RecipeListAdapter.OnLastItemShownListener {
     private FragmentSearchRecipesBinding binding;
     private SearchViewModel viewModel;
-    private RecipeListAdapter recipeListAdapter;
 
     @Nullable
     @Override
@@ -43,17 +34,9 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
 
         binding.setViewModel(viewModel);
         binding.etSearch.setOnEditorActionListener(new OnActionButtonClickListener());
-        initRecyclerView();
+        initRecyclerView(binding.rvRecipeList);
 
         return binding.getRoot();
-    }
-
-    private void initRecyclerView() {
-        if (recipeListAdapter == null)
-            recipeListAdapter = new RecipeListAdapter(this, this);
-        binding.rvRecipeList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        binding.rvRecipeList.setHasFixedSize(true);
-        binding.rvRecipeList.setAdapter(recipeListAdapter);
     }
 
     @Override
@@ -73,27 +56,8 @@ public class SearchRecipesFragment extends NavigationFragment implements SearchV
     }
 
     @Override
-    public void onRecipesLoaded(List<Recipe> recipes) {
-        recipeListAdapter.setData(recipes);
-    }
-
-    @Override
-    public void onMoreRecipesLoaded(List<Recipe> moreRecipes) {
-        recipeListAdapter.setMoreData(moreRecipes);
-    }
-
-    @Override
     public void onLastItemShown() {
         viewModel.loadMoreRecipes();
-    }
-
-    @Override
-    public void onItemClicked(Recipe recipe) {
-        Bundle recipeData = new Bundle();
-        recipeData.putParcelable(RecipeViewModel.RECIPE_DATA_KEY, recipe);
-        Fragment fragment = new RecipeDetailsFragment();
-        fragment.setArguments(recipeData);
-        ((MainActivity) getActivity()).addFragmentToBackstack(fragment);
     }
 
     @Override
