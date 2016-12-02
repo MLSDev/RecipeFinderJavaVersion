@@ -18,7 +18,7 @@ public class RecipeDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewModel = new RecipeViewModel(getArguments());
+        viewModel = new RecipeViewModel(getActivity(), getArguments());
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_details, container, false);
         binding.setViewModel(viewModel);
 
