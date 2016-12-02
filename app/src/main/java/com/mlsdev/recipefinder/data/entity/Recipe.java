@@ -4,41 +4,58 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@DatabaseTable(tableName = "recipes", daoClass = Recipe.class)
 public class Recipe implements Parcelable {
+    @DatabaseField(id = true)
     @SerializedName("uri")
     private String uri;
+    @DatabaseField
     @SerializedName("label")
     private String label;
+    @DatabaseField
     @SerializedName("image")
     private String image;
+    @DatabaseField
     @SerializedName("source")
     private String source;
+    @DatabaseField(columnName = "source_icon")
     @SerializedName("sourceIcon")
     private String sourceIcon;
+    @DatabaseField
     @SerializedName("url")
     private String url;
+    @DatabaseField(columnName = "share_as")
     @SerializedName("shareAs")
     private String shareAs;
+    @DatabaseField
     @SerializedName("yield")
     private double yield;
+    @DatabaseField
     @SerializedName("calories")
     private double calories;
+    @DatabaseField(columnName = "total_weight")
     @SerializedName("totalWeight")
     private double totalWeight;
     @SerializedName("totalNutrients")
     private TotalNutrients totalNutrients;
     @SerializedName("totalDaily")
     private TotalDaily totalDaily;
+    @DatabaseField(columnName = "diet_labels")
     @SerializedName("dietLabels")
     private List<String> dietLabels = new ArrayList<>();
+    @DatabaseField(columnName = "health_labels")
     @SerializedName("healthLabels")
     private List<String> healthLabels = new ArrayList<>();
+    @DatabaseField
     @SerializedName("cautions")
     private List<String> cautions = new ArrayList<>();
+    @DatabaseField(columnName = "ingredient_lines")
     @SerializedName("ingredientLines")
     private List<String> ingredientLines = new ArrayList<>();
     @SerializedName("ingredients")
@@ -111,7 +128,6 @@ public class Recipe implements Parcelable {
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
-
 
     @Override
     public int describeContents() {

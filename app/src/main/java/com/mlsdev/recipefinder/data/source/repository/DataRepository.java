@@ -7,6 +7,7 @@ import com.mlsdev.recipefinder.data.entity.Hit;
 import com.mlsdev.recipefinder.data.entity.Recipe;
 import com.mlsdev.recipefinder.data.entity.SearchResult;
 import com.mlsdev.recipefinder.data.source.DataSource;
+import com.mlsdev.recipefinder.data.source.local.LocalDataSource;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
 import com.mlsdev.recipefinder.data.source.remote.RemoteDataSource;
 
@@ -26,12 +27,14 @@ public class DataRepository {
 
     private static DataRepository instance;
     private DataSource remoteDataSource;
+    private DataSource localDataSource;
 
     private List<Recipe> cachedRecipes;
     private boolean cacheIsDirty = false;
 
     private DataRepository(Context context) {
         remoteDataSource = new RemoteDataSource(context);
+        localDataSource = new LocalDataSource(context);
         cachedRecipes = new ArrayList<>();
     }
 
@@ -96,6 +99,18 @@ public class DataRepository {
                         cacheIsDirty = false;
                     }
                 });
+    }
+
+    public Observable<List<Recipe>> getFavoriteRecipes() {
+        return localDataSource.getFavorites();
+    }
+
+    public Observable<Boolean> addToFavorites(Recipe favoriteRecipe) {
+        return localDataSource.addToFavorites(favoriteRecipe);
+    }
+
+    public Observable<Boolean> removeFromFavorites(Recipe removedRecipe) {
+        return localDataSource.removeFromFavorites(removedRecipe);
     }
 
 }

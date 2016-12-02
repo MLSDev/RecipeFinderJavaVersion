@@ -3,6 +3,7 @@ package com.mlsdev.recipefinder.data.source.remote;
 import android.content.Context;
 
 import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.entity.SearchResult;
 import com.mlsdev.recipefinder.data.source.DataSource;
 
@@ -13,7 +14,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
-public class RemoteDataSource implements DataSource {
+public class RemoteDataSource extends BaseDataSource implements DataSource {
     private Context context;
     private static String baseUrl;
     private SearchRecipesService searchRecipesService;
