@@ -11,11 +11,6 @@ import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.List;
 
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
 public class RecipeViewModel extends BaseViewModel {
     public static final String RECIPE_DATA_KEY = "recipe_data_key";
     private Recipe recipe;
@@ -36,7 +31,7 @@ public class RecipeViewModel extends BaseViewModel {
         favoriteImageStateChecked = new ObservableBoolean(false);
 
         if (recipeData != null && recipeData.containsKey(RECIPE_DATA_KEY)) {
-            recipe = recipeData.getParcelable(RECIPE_DATA_KEY);
+            recipe = (Recipe) recipeData.getSerializable(RECIPE_DATA_KEY);
             if (recipe != null) {
                 recipeTitle.set(recipe.getLabel());
                 recipeImageUrl.set(recipe.getImage());
@@ -46,6 +41,10 @@ public class RecipeViewModel extends BaseViewModel {
                 recipeIngredients.set(getIngredientsAsString(recipe.getIngredientLines()));
             }
         }
+    }
+
+    public void onStart() {
+        favoriteImageStateChecked.set(repository.isInFavorites(recipe));
     }
 
     private String getIngredientsAsString(List<String> ingredients) {
@@ -75,47 +74,10 @@ public class RecipeViewModel extends BaseViewModel {
     }
 
     public void onFavoriteButtonClick(View view) {
-        if (favoriteImageStateChecked.get()) {
-            Subscription addToFavorites = repository.addToFavorites(recipe)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new Observer<Boolean>() {
-                        @Override
-                        public void onCompleted() {
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                        }
-
-                        @Override
-                        public void onNext(Boolean added) {
-                            if (added)
-                                favoriteImageStateChecked.set(true);
-                        }
-                    });
-            subscriptions.add(addToFavorites);
-        } else {
-            Subscription removeFromFavorites = repository.addToFavorites(recipe)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new Observer<Boolean>() {
-                        @Override
-                        public void onCompleted() {
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                        }
-
-                        @Override
-                        public void onNext(Boolean removed) {
-                            if (removed)
-                                favoriteImageStateChecked.set(false);
-                        }
-                    });
-            subscriptions.add(removeFromFavorites);
-        }
+        if (favoriteImageStateChecked.get())
+            favoriteImageStateChecked.set(!repository.removeFromFavorites(recipe));
+        else
+            favoriteImageStateChecked.set(repository.addToFavorites(recipe));
     }
 
 }

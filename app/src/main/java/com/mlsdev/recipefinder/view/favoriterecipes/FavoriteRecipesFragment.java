@@ -33,4 +33,10 @@ public class FavoriteRecipesFragment extends RecipeListFragment implements OnLas
     public void scrollToTop() {
         binding.rvRecipeList.smoothScrollToPosition(0);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        viewModel.getFavoriteRecipes();
+    }
 }

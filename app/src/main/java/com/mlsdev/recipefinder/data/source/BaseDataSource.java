@@ -16,17 +16,22 @@ public abstract class BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<List<Recipe>> getFavorites() {
-        return Observable.from(new ArrayList<Recipe>()).toList();
+    public List<Recipe> getFavorites() {
+        return new ArrayList<>();
     }
 
     @Override
-    public Observable<Boolean> addToFavorites(Recipe favoriteRecipe) {
-        return Observable.from(new Boolean[]{});
+    public boolean addToFavorites(Recipe favoriteRecipe) {
+        return false;
     }
 
     @Override
-    public Observable<Boolean> removeFromFavorites(Recipe removedRecipe) {
-        return Observable.from(new Boolean[]{});
+    public boolean removeFromFavorites(Recipe removedRecipe) {
+        return false;
+    }
+
+    @Override
+    public boolean isInFavorites(Recipe recipe) {
+        return false;
     }
 }

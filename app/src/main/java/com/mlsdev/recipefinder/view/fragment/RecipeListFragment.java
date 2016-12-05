@@ -24,7 +24,7 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
     @Override
     public void onItemClicked(Recipe recipe) {
         Bundle recipeData = new Bundle();
-        recipeData.putParcelable(RecipeViewModel.RECIPE_DATA_KEY, recipe);
+        recipeData.putSerializable(RecipeViewModel.RECIPE_DATA_KEY, recipe);
         Fragment fragment = new RecipeDetailsFragment();
         fragment.setArguments(recipeData);
         ((MainActivity) getActivity()).addFragmentToBackstack(fragment);

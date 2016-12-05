@@ -2,15 +2,13 @@ package com.mlsdev.recipefinder.data.source.local;
 
 import android.content.Context;
 
-import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.source.DataSource;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import rx.Observable;
 
 public class LocalDataSource extends BaseDataSource implements DataSource {
     private DataBaseHelper dataBaseHelper;
@@ -20,7 +18,7 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<List<Recipe>> getFavorites() {
+    public List<Recipe> getFavorites() {
         List<Recipe> favoriteRecipes = new ArrayList<>();
 
         try {
@@ -29,23 +27,23 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
             e.printStackTrace();
         }
 
-        return Observable.from(favoriteRecipes).toList();
+        return favoriteRecipes;
     }
 
     @Override
-    public Observable<Boolean> addToFavorites(Recipe favoriteRecipe) {
+    public boolean addToFavorites(Recipe favoriteRecipe) {
         boolean result = false;
         try {
-            result = dataBaseHelper.getRecipeDao().createIfNotExists(favoriteRecipe) == null;
+            result = dataBaseHelper.getRecipeDao().createIfNotExists(favoriteRecipe) != null;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return Observable.from(new Boolean[]{result});
+        return result;
     }
 
     @Override
-    public Observable<Boolean> removeFromFavorites(Recipe removedRecipe) {
+    public boolean removeFromFavorites(Recipe removedRecipe) {
         boolean result = false;
         try {
             result = dataBaseHelper.getRecipeDao().delete(removedRecipe) == 1;
@@ -53,6 +51,22 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
             e.printStackTrace();
         }
 
-        return Observable.from(new Boolean[]{result});
+        return result;
+    }
+
+    @Override
+    public boolean isInFavorites(Recipe recipe) {
+        if (recipe == null)
+            return false;
+
+        boolean result = false;
+
+        try {
+            result = dataBaseHelper.getRecipeDao().idExists(recipe.getUri());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }

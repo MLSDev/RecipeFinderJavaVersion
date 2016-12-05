@@ -33,6 +33,7 @@ ext {
     espressoVersion = '2.2.2'
     okhttpVersion = '3.4.1'
     ormLiteVersion = '5.0'
+    stethoVersion = '1.4.1'
 }
 
 dependencies {
@@ -85,5 +86,8 @@ dependencies {
     // Local data source
     compile "com.j256.ormlite:ormlite-core:$ormLiteVersion"
     compile "com.j256.ormlite:ormlite-android:$ormLiteVersion"
+
+    compile "com.facebook.stetho:stetho:$stethoVersion"
+    compile "com.facebook.stetho:stetho-urlconnection:$stethoVersion"
 
 }

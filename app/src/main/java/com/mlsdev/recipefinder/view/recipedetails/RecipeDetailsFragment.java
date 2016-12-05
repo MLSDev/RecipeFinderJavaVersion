@@ -29,4 +29,10 @@ public class RecipeDetailsFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        viewModel.onStart();
+    }
 }

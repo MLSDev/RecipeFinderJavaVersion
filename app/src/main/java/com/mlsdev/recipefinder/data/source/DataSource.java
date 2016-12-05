@@ -10,7 +10,8 @@ import rx.Observable;
 
 public interface DataSource {
     Observable<SearchResult> searchRecipes(Map<String, String> params);
-    Observable<List<Recipe>> getFavorites();
-    Observable<Boolean> addToFavorites(Recipe favoriteRecipe);
-    Observable<Boolean> removeFromFavorites(Recipe removedRecipe);
+    List<Recipe> getFavorites();
+    boolean addToFavorites(Recipe favoriteRecipe);
+    boolean removeFromFavorites(Recipe removedRecipe);
+    boolean isInFavorites(Recipe recipe);
 }

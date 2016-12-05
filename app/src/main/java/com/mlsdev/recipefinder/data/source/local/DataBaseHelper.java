@@ -2,12 +2,15 @@ package com.mlsdev.recipefinder.data.source.local;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.mlsdev.recipefinder.data.entity.Ingredient;
 import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.stringwrapper.Label;
 
 import java.sql.SQLException;
 
@@ -23,9 +26,11 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-            TableUtils.clearTable(connectionSource, Recipe.class);
+            TableUtils.createTable(connectionSource, Recipe.class);
+            TableUtils.createTable(connectionSource, Label.class);
+            TableUtils.createTable(connectionSource, Ingredient.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.e(DataBaseHelper.class.getName(), "Unable to create database", e);
         }
     }
 
@@ -35,7 +40,8 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Recipe.class, true);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.e(DataBaseHelper.class.getName(), "Unable to upgrade database from version " + oldVersion + " to new "
+                    + newVersion, e);
         }
     }
 
@@ -48,7 +54,7 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void close() {
-        recipeDao = null;
         super.close();
+        recipeDao = null;
     }
 }

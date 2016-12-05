@@ -1,14 +1,20 @@
 package com.mlsdev.recipefinder.data.entity;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DatabaseField;
 
-public class Ingredient implements Parcelable{
+import java.io.Serializable;
+
+public class Ingredient implements Serializable {
+    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    private Recipe recipe;
+    @DatabaseField(generatedId = true)
+    private long id;
+    @DatabaseField
     @SerializedName("text")
     private String text;
+    @DatabaseField
     @SerializedName("weight")
     private double weight;
 
@@ -20,34 +26,6 @@ public class Ingredient implements Parcelable{
         return weight;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.text);
-        dest.writeDouble(this.weight);
-    }
-
     public Ingredient() {
     }
-
-    protected Ingredient(Parcel in) {
-        this.text = in.readString();
-        this.weight = in.readDouble();
-    }
-
-    public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
-        @Override
-        public Ingredient createFromParcel(Parcel source) {
-            return new Ingredient(source);
-        }
-
-        @Override
-        public Ingredient[] newArray(int size) {
-            return new Ingredient[size];
-        }
-    };
 }
