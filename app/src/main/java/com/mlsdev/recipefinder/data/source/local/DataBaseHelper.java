@@ -10,7 +10,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.mlsdev.recipefinder.data.entity.Ingredient;
 import com.mlsdev.recipefinder.data.entity.Recipe;
-import com.mlsdev.recipefinder.data.entity.stringwrapper.Label;
+import com.mlsdev.recipefinder.data.entity.stringwrapper.DietLabel;
+import com.mlsdev.recipefinder.data.entity.stringwrapper.HealthLabel;
 
 import java.sql.SQLException;
 
@@ -18,7 +19,8 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "local_data.db";
     private static final int DATABASE_VERSION = 1;
     private Dao<Recipe, String> recipeDao;
-    private Dao<Label, Integer> labelDao;
+    private Dao<HealthLabel, Integer> healthLabelDao;
+    private Dao<DietLabel, Integer> dietLabelDao;
     private Dao<Ingredient, Integer> ingredientDao;
 
     public DataBaseHelper(Context context) {
@@ -29,7 +31,8 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Recipe.class);
-            TableUtils.createTable(connectionSource, Label.class);
+            TableUtils.createTable(connectionSource, HealthLabel.class);
+            TableUtils.createTable(connectionSource, DietLabel.class);
             TableUtils.createTable(connectionSource, Ingredient.class);
         } catch (SQLException e) {
             Log.e(DataBaseHelper.class.getName(), "Unable to create database", e);
@@ -54,11 +57,18 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
         return recipeDao;
     }
 
-    public Dao<Label, Integer> getLabelDao() throws SQLException {
-        if (labelDao == null)
-            labelDao = getDao(Label.class);
+    public Dao<HealthLabel, Integer> getHealthLabelDao() throws SQLException {
+        if (healthLabelDao == null)
+            healthLabelDao = getDao(HealthLabel.class);
 
-        return labelDao;
+        return healthLabelDao;
+    }
+
+    public Dao<DietLabel, Integer> getDietLabelDao() throws SQLException {
+        if (dietLabelDao == null)
+            dietLabelDao = getDao(DietLabel.class);
+
+        return dietLabelDao;
     }
 
     public Dao<Ingredient, Integer> getIngredientDao() throws SQLException {
@@ -72,5 +82,8 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     public void close() {
         super.close();
         recipeDao = null;
+        healthLabelDao = null;
+        dietLabelDao = null;
+        ingredientDao = null;
     }
 }

@@ -3,6 +3,8 @@ package com.mlsdev.recipefinder.data.entity;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.mlsdev.recipefinder.data.entity.stringwrapper.DietLabel;
+import com.mlsdev.recipefinder.data.entity.stringwrapper.HealthLabel;
 import com.mlsdev.recipefinder.data.entity.stringwrapper.Label;
 
 import java.io.Serializable;
@@ -55,10 +57,10 @@ public class Recipe implements Serializable {
     private List<String> ingredientLines = new ArrayList<>();
 
     @ForeignCollectionField(columnName = "health_labels", eager = true)
-    private Collection<Label> healthLabelCollection = new ArrayList<>();
+    private Collection<HealthLabel> healthLabelCollection = new ArrayList<>();
 
     @ForeignCollectionField(columnName = "diet_labels", eager = true)
-    private Collection<Label> dietLabelCollection = new ArrayList<>();
+    private Collection<DietLabel> dietLabelCollection = new ArrayList<>();
 
     @ForeignCollectionField(eager = true)
     @SerializedName("ingredients")
@@ -142,30 +144,26 @@ public class Recipe implements Serializable {
     }
 
 
-    public Collection<Label> getHealthLabelCollection() {
+    public Collection<HealthLabel> getHealthLabelCollection() {
         if (!healthLabels.isEmpty()) {
             healthLabelCollection.clear();
 
             for (String healthLabel : healthLabels)
-                healthLabelCollection.add(new Label(healthLabel, this));
+                healthLabelCollection.add(new HealthLabel(healthLabel, this));
         }
 
         return healthLabelCollection;
     }
 
-    public Collection<Label> getDietLabelCollection() {
+    public Collection<DietLabel> getDietLabelCollection() {
         if (!dietLabels.isEmpty()) {
             dietLabelCollection.clear();
 
             for (String dietLabel : dietLabels)
-                dietLabelCollection.add(new Label(dietLabel, this));
+                dietLabelCollection.add(new DietLabel(dietLabel, this));
         }
 
         return dietLabelCollection;
-    }
-
-    public void setHealthLabelCollection(Collection<Label> healthLabelCollection) {
-        this.healthLabelCollection = healthLabelCollection;
     }
 
     public Collection<Ingredient> getIngredients() {

@@ -6,14 +6,13 @@ import com.mlsdev.recipefinder.data.entity.Recipe;
 
 import java.io.Serializable;
 
-@DatabaseTable(tableName = "label")
-public class Label implements Serializable {
+public abstract class Label implements Serializable {
     @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
-    private Recipe recipe;
+    protected Recipe recipe;
     @DatabaseField(generatedId = true)
-    private long id;
+    protected long id;
     @DatabaseField
-    private String value;
+    protected String value;
 
     public Label() {
     }

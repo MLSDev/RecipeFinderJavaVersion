@@ -38,8 +38,8 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
             for (Ingredient ingredient : favoriteRecipe.getIngredients())
                 ingredient.setRecipe(favoriteRecipe);
 
-            dataBaseHelper.getLabelDao().create(favoriteRecipe.getHealthLabelCollection());
-            dataBaseHelper.getLabelDao().create(favoriteRecipe.getDietLabelCollection());
+            dataBaseHelper.getHealthLabelDao().create(favoriteRecipe.getHealthLabelCollection());
+            dataBaseHelper.getDietLabelDao().create(favoriteRecipe.getDietLabelCollection());
             dataBaseHelper.getIngredientDao().create(favoriteRecipe.getIngredients());
             result = dataBaseHelper.getRecipeDao().createIfNotExists(favoriteRecipe) != null;
         } catch (SQLException e) {
