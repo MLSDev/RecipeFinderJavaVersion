@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;

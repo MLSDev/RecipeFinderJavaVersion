@@ -6,8 +6,8 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.view.View;
 
-import com.mlsdev.recipefinder.data.entity.Ingredient;
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.Collection;

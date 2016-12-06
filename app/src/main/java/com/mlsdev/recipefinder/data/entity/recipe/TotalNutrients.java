@@ -1,4 +1,4 @@
-package com.mlsdev.recipefinder.data.entity;
+package com.mlsdev.recipefinder.data.entity.recipe;
 
 import java.io.Serializable;
 

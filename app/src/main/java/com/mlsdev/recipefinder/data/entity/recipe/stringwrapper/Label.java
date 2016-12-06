@@ -1,8 +1,7 @@
-package com.mlsdev.recipefinder.data.entity.stringwrapper;
+package com.mlsdev.recipefinder.data.entity.recipe.stringwrapper;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 
 import java.io.Serializable;
 

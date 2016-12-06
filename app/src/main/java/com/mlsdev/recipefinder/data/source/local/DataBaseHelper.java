@@ -8,10 +8,10 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.mlsdev.recipefinder.data.entity.Ingredient;
-import com.mlsdev.recipefinder.data.entity.Recipe;
-import com.mlsdev.recipefinder.data.entity.stringwrapper.DietLabel;
-import com.mlsdev.recipefinder.data.entity.stringwrapper.HealthLabel;
+import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.stringwrapper.DietLabel;
+import com.mlsdev.recipefinder.data.entity.recipe.stringwrapper.HealthLabel;
 
 import java.sql.SQLException;
 

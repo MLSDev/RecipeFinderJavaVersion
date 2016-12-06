@@ -7,7 +7,7 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.RemoteDataSource;
 import com.mlsdev.recipefinder.idlingutils.BetterIdlingResource;
 import com.mlsdev.recipefinder.view.MainActivity;

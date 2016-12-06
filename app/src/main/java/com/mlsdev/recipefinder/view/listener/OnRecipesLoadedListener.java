@@ -1,6 +1,6 @@
 package com.mlsdev.recipefinder.view.listener;
 
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 
 import java.util.List;
 

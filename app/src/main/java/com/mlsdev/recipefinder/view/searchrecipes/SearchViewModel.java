@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
 import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.utils.ParamsHelper;

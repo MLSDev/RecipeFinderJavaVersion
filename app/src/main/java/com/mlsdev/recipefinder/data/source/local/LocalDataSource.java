@@ -2,8 +2,8 @@ package com.mlsdev.recipefinder.data.source.local;
 
 import android.content.Context;
 
-import com.mlsdev.recipefinder.data.entity.Ingredient;
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.source.DataSource;
 

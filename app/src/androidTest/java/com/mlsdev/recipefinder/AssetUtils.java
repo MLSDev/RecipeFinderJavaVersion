@@ -3,7 +3,7 @@ package com.mlsdev.recipefinder;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 
 import java.io.IOException;
 import java.io.InputStream;

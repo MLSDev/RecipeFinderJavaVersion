@@ -4,7 +4,7 @@ import android.content.Context;
 import android.databinding.ObservableInt;
 import android.view.View;
 
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 

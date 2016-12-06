@@ -3,9 +3,9 @@ package com.mlsdev.recipefinder.data.source.repository;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.mlsdev.recipefinder.data.entity.Hit;
-import com.mlsdev.recipefinder.data.entity.Recipe;
-import com.mlsdev.recipefinder.data.entity.SearchResult;
+import com.mlsdev.recipefinder.data.entity.recipe.Hit;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 import com.mlsdev.recipefinder.data.source.DataSource;
 import com.mlsdev.recipefinder.data.source.local.LocalDataSource;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.source.BaseDataSource;
-import com.mlsdev.recipefinder.data.entity.SearchResult;
+import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 import com.mlsdev.recipefinder.data.source.DataSource;
 
 import java.util.Map;

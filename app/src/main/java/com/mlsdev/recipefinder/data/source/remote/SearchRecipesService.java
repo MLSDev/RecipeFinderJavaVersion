@@ -1,6 +1,6 @@
 package com.mlsdev.recipefinder.data.source.remote;
 
-import com.mlsdev.recipefinder.data.entity.SearchResult;
+import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 
 import java.util.Map;
 

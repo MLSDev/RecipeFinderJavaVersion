@@ -2,7 +2,7 @@ package com.mlsdev.recipefinder.view.searchrecipes;
 
 import android.databinding.ObservableField;
 
-import com.mlsdev.recipefinder.data.entity.Recipe;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 
 public class RecipeListItemViewModel {
     private Recipe recipe;

@@ -1,11 +1,11 @@
-package com.mlsdev.recipefinder.data.entity;
+package com.mlsdev.recipefinder.data.entity.recipe;
 
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
-import com.mlsdev.recipefinder.data.entity.stringwrapper.DietLabel;
-import com.mlsdev.recipefinder.data.entity.stringwrapper.HealthLabel;
-import com.mlsdev.recipefinder.data.entity.stringwrapper.Label;
+import com.mlsdev.recipefinder.data.entity.recipe.stringwrapper.DietLabel;
+import com.mlsdev.recipefinder.data.entity.recipe.stringwrapper.HealthLabel;
+import com.mlsdev.recipefinder.data.entity.recipe.stringwrapper.Label;
 
 import java.io.Serializable;
 import java.util.ArrayList;
