@@ -40,6 +40,13 @@
         <item name="android:orientation">vertical</item>
         <item name="android:padding">@dimen/activity_vertical_margin</item>
     </style>
+
+    <style name="BaseTextViewStyle.EmptyListView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorSearchLabel</item>
+        <item name="android:textSize">18sp</item>
+    </style>
     <!-- END Text Views-->
 
     <style name="AlertDialogAppCompat" parent="Base.Theme.AppCompat.Light.Dialog">

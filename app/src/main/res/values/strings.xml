@@ -20,6 +20,7 @@
     <string name="dialog_title_filter">Filter Nutrition</string>
     <string name="spinner_label_diet_label">Diet label</string>
     <string name="spinner_label_health_label">Health label</string>
+    <string name="label_no_favorites">You have no favorites yet</string>
 
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>

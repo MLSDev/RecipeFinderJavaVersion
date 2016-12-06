@@ -79,11 +79,8 @@
 
             <TextView
                 android:id="@+id/tv_search_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.searchLabelText}"
-                android:textColor="@color/colorSearchLabel"
-                android:textSize="18sp" />
+                style="@style/BaseTextViewStyle.EmptyListView"
+                android:text="@{viewModel.searchLabelText}"/>
         </LinearLayout>
 
         <FrameLayout
