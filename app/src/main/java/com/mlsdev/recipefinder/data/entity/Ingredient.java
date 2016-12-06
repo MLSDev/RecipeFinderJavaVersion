@@ -28,4 +28,8 @@ public class Ingredient implements Serializable {
 
     public Ingredient() {
     }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
 }

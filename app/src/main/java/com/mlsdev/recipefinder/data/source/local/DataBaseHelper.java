@@ -18,6 +18,8 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "local_data.db";
     private static final int DATABASE_VERSION = 1;
     private Dao<Recipe, String> recipeDao;
+    private Dao<Label, Integer> labelDao;
+    private Dao<Ingredient, Integer> ingredientDao;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,6 +52,20 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
             recipeDao = getDao(Recipe.class);
 
         return recipeDao;
+    }
+
+    public Dao<Label, Integer> getLabelDao() throws SQLException {
+        if (labelDao == null)
+            labelDao = getDao(Label.class);
+
+        return labelDao;
+    }
+
+    public Dao<Ingredient, Integer> getIngredientDao() throws SQLException {
+        if (ingredientDao == null)
+            ingredientDao = getDao(Ingredient.class);
+
+        return ingredientDao;
     }
 
     @Override

@@ -54,8 +54,11 @@ public class Recipe implements Serializable {
     @SerializedName("ingredientLines")
     private List<String> ingredientLines = new ArrayList<>();
 
-    @ForeignCollectionField(columnName = "labels", eager = true)
+    @ForeignCollectionField(columnName = "health_labels", eager = true)
     private Collection<Label> healthLabelCollection = new ArrayList<>();
+
+    @ForeignCollectionField(columnName = "diet_labels", eager = true)
+    private Collection<Label> dietLabelCollection = new ArrayList<>();
 
     @ForeignCollectionField(eager = true)
     @SerializedName("ingredients")
@@ -113,6 +116,11 @@ public class Recipe implements Serializable {
     }
 
     public List<String> getDietLabels() {
+        if (dietLabels.isEmpty() && !dietLabelCollection.isEmpty()) {
+            for (Label dietLabel : dietLabelCollection)
+                dietLabels.add(dietLabel.getValue());
+        }
+
         return dietLabels;
     }
 
@@ -120,9 +128,6 @@ public class Recipe implements Serializable {
         if (healthLabels.isEmpty() && !healthLabelCollection.isEmpty()) {
             for (Label label : healthLabelCollection)
                 healthLabels.add(label.getValue());
-        } else if (!healthLabels.isEmpty() && healthLabelCollection.isEmpty()){
-            for (String label : healthLabels)
-                healthLabelCollection.add(new Label(label, this));
         }
 
         return healthLabels;
@@ -146,6 +151,17 @@ public class Recipe implements Serializable {
         }
 
         return healthLabelCollection;
+    }
+
+    public Collection<Label> getDietLabelCollection() {
+        if (!dietLabels.isEmpty()) {
+            dietLabelCollection.clear();
+
+            for (String dietLabel : dietLabels)
+                dietLabelCollection.add(new Label(dietLabel, this));
+        }
+
+        return dietLabelCollection;
     }
 
     public void setHealthLabelCollection(Collection<Label> healthLabelCollection) {

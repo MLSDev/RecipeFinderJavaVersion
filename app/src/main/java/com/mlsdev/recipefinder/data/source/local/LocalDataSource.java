@@ -2,6 +2,7 @@ package com.mlsdev.recipefinder.data.source.local;
 
 import android.content.Context;
 
+import com.mlsdev.recipefinder.data.entity.Ingredient;
 import com.mlsdev.recipefinder.data.entity.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.source.DataSource;
@@ -34,6 +35,12 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     public boolean addToFavorites(Recipe favoriteRecipe) {
         boolean result = false;
         try {
+            for (Ingredient ingredient : favoriteRecipe.getIngredients())
+                ingredient.setRecipe(favoriteRecipe);
+
+            dataBaseHelper.getLabelDao().create(favoriteRecipe.getHealthLabelCollection());
+            dataBaseHelper.getLabelDao().create(favoriteRecipe.getDietLabelCollection());
+            dataBaseHelper.getIngredientDao().create(favoriteRecipe.getIngredients());
             result = dataBaseHelper.getRecipeDao().createIfNotExists(favoriteRecipe) != null;
         } catch (SQLException e) {
             e.printStackTrace();

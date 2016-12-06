@@ -6,9 +6,11 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.view.View;
 
+import com.mlsdev.recipefinder.data.entity.Ingredient;
 import com.mlsdev.recipefinder.data.entity.Recipe;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
+import java.util.Collection;
 import java.util.List;
 
 public class RecipeViewModel extends BaseViewModel {
@@ -38,7 +40,7 @@ public class RecipeViewModel extends BaseViewModel {
 
                 recipeHealthLabels.set(getLabelsAsString(recipe.getHealthLabels()));
                 recipeDietLabels.set(getLabelsAsString(recipe.getDietLabels()));
-                recipeIngredients.set(getIngredientsAsString(recipe.getIngredientLines()));
+                recipeIngredients.set(getIngredientsAsString(recipe.getIngredients()));
             }
         }
     }
@@ -47,14 +49,14 @@ public class RecipeViewModel extends BaseViewModel {
         favoriteImageStateChecked.set(repository.isInFavorites(recipe));
     }
 
-    private String getIngredientsAsString(List<String> ingredients) {
+    private String getIngredientsAsString(Collection<Ingredient> ingredients) {
         String ingredientsAsString = "";
 
-        for (String ingredient : ingredients) {
+        for (Ingredient ingredient : ingredients) {
             if (!ingredientsAsString.isEmpty())
                 ingredientsAsString = ingredientsAsString.concat(",\n");
 
-            ingredientsAsString = ingredientsAsString.concat(ingredient);
+            ingredientsAsString = ingredientsAsString.concat(ingredient.getText() + "; Weight: " + ingredient.getWeight());
         }
 
         return ingredientsAsString;
