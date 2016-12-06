@@ -66,7 +66,6 @@ public class SearchViewModel extends BaseViewModel {
                 .subscribe(new Observer<List<Recipe>>() {
                     @Override
                     public void onCompleted() {
-                        // TODO: 11/25/16 stop progress bar
                         Log.d("RF", "onCompleted()");
                         progressBarVisibility.set(View.INVISIBLE);
                     }
@@ -74,6 +73,7 @@ public class SearchViewModel extends BaseViewModel {
                     @Override
                     public void onError(Throwable e) {
                         // TODO: 11/25/16 show errors
+                        progressBarVisibility.set(View.INVISIBLE);
                         Log.e("RF", e.getMessage());
                     }
 
@@ -103,7 +103,6 @@ public class SearchViewModel extends BaseViewModel {
                 .subscribe(new Observer<List<Recipe>>() {
                     @Override
                     public void onCompleted() {
-                        // TODO: 11/25/16 stop progress bar
                         Log.d("RF", "onCompleted()");
                         progressBarVisibility.set(View.INVISIBLE);
                     }
@@ -111,6 +110,7 @@ public class SearchViewModel extends BaseViewModel {
                     @Override
                     public void onError(Throwable e) {
                         // TODO: 11/25/16 show errors
+                        progressBarVisibility.set(View.INVISIBLE);
                         Log.d("RF", "onError()");
                     }
 
