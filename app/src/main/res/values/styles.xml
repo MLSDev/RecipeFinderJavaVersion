@@ -47,6 +47,11 @@
         <item name="android:textColor">@color/colorSearchLabel</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="BaseTextViewStyle.NutrientTextStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+    </style>
     <!-- END Text Views-->
 
     <style name="AlertDialogAppCompat" parent="Base.Theme.AppCompat.Light.Dialog">

@@ -11,7 +11,7 @@ public class IngredientAnalysisResult {
     @SerializedName("calories")
     private int calories;
     @SerializedName("totalWeight")
-    private int totalWeight;
+    private double totalWeight;
     @SerializedName("dietLabels")
     private List<String> dietLabels = new ArrayList<>();
     @SerializedName("healthLabels")
@@ -29,7 +29,7 @@ public class IngredientAnalysisResult {
         return calories;
     }
 
-    public int getTotalWeight() {
+    public double getTotalWeight() {
         return totalWeight;
     }
 

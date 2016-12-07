@@ -20,7 +20,7 @@ public class MainActivityTest {
     public void testSelectNavigationTab() {
         // Select the Analyse Nutrition tab
         performClickUponTab(R.id.action_analyse_nutrition);
-        assertTabOpened(R.id.rl_analyse_nutrition);
+        assertTabOpened(R.id.ll_analyse_nutrition);
 
         // Select the Favorite Recipes tab
         performClickUponTab(R.id.action_favorites);

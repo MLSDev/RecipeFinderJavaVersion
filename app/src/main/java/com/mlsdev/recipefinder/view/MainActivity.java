@@ -14,6 +14,7 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String LOG_TAG = "RECIPE_FINDER";
     private ActivityMainBinding binding;
     private NavigationManager navigationManager;
 

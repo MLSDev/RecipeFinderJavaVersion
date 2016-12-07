@@ -13,6 +13,7 @@ import android.view.View;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
+import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.utils.ParamsHelper;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
@@ -41,7 +42,7 @@ public class SearchViewModel extends BaseViewModel {
         super(fragment.getActivity());
         this.fragment = fragment;
         this.onRecipesLoadedListener = onRecipesLoadedListener;
-        progressBarVisibility = new ObservableInt(View.INVISIBLE);
+        progressBarVisibility = new ObservableInt(View.GONE);
         searchLabelVisibility = new ObservableInt(View.VISIBLE);
         filterButtonVisibility = new ObservableInt(View.INVISIBLE);
         searchText = new ObservableField<>();
@@ -66,15 +67,15 @@ public class SearchViewModel extends BaseViewModel {
                 .subscribe(new Observer<List<Recipe>>() {
                     @Override
                     public void onCompleted() {
-                        Log.d("RF", "onCompleted()");
-                        progressBarVisibility.set(View.INVISIBLE);
+                        Log.d(MainActivity.LOG_TAG, "onCompleted()");
+                        progressBarVisibility.set(View.GONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         // TODO: 11/25/16 show errors
-                        progressBarVisibility.set(View.INVISIBLE);
-                        Log.e("RF", e.getMessage());
+                        progressBarVisibility.set(View.GONE);
+                        Log.e(MainActivity.LOG_TAG, e.getMessage());
                     }
 
                     @Override
@@ -103,15 +104,15 @@ public class SearchViewModel extends BaseViewModel {
                 .subscribe(new Observer<List<Recipe>>() {
                     @Override
                     public void onCompleted() {
-                        Log.d("RF", "onCompleted()");
-                        progressBarVisibility.set(View.INVISIBLE);
+                        Log.d(MainActivity.LOG_TAG, "onCompleted()");
+                        progressBarVisibility.set(View.GONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         // TODO: 11/25/16 show errors
-                        progressBarVisibility.set(View.INVISIBLE);
-                        Log.d("RF", "onError()");
+                        progressBarVisibility.set(View.GONE);
+                        Log.d(MainActivity.LOG_TAG, "onError()");
                     }
 
                     @Override

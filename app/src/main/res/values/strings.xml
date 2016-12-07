@@ -6,10 +6,15 @@
     <string name="analyse_app_key">b45686d25ac88da90a36f286122ee3de</string>
 
     <!-- Bottom Navigation -->
-    <string name="navigation_title_analyse">Analyse</string>
+    <string name="navigation_title_analyse">Analyze</string>
     <string name="navigation_title_search">Search</string>
     <string name="navigation_title_favorites">Favorites</string>
+
+    <string name="tab_nutrition_analysis">Nutrition</string>
+    <string name="tab_recipe_analysis">Recipe</string>
+
     <string name="hint_search">Search…</string>
+    <string name="hint_ingredient_analysis">Ingredient for analysis</string>
     <string name="label_health_labels">Health labels</string>
     <string name="label_diet_labels">Diet labels</string>
     <string name="label_ingredients">Ingredients</string>
@@ -21,6 +26,7 @@
     <string name="spinner_label_diet_label">Diet label</string>
     <string name="spinner_label_health_label">Health label</string>
     <string name="label_no_favorites">You have no favorites yet</string>
+    <string name="btn_analyze">Analyze</string>
 
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>

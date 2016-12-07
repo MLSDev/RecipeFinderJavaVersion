@@ -21,4 +21,17 @@ public class Nutrient {
     public String getUnit() {
         return unit;
     }
+
+    public String getFormattedFullText() {
+        return label + " " + String.valueOf(quantity) + unit;
+    }
+
+    public Nutrient() {
+    }
+
+    public Nutrient(String label, double quantity, String unit) {
+        this.label = label;
+        this.quantity = quantity;
+        this.unit = unit;
+    }
 }
