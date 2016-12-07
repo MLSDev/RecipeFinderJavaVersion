@@ -2,6 +2,8 @@ package com.mlsdev.recipefinder.data.entity.nutrition;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DecimalFormat;
+
 public class Nutrient {
     @SerializedName("label")
     private String label;
@@ -23,7 +25,7 @@ public class Nutrient {
     }
 
     public String getFormattedFullText() {
-        return label + " " + String.valueOf(quantity) + unit;
+        return label + " " + new DecimalFormat("#0.00").format(quantity) + " " + unit;
     }
 
     public Nutrient() {
