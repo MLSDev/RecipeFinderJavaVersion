@@ -8,4 +8,5 @@ public class ParameterKeys {
     public static final String TO = "to";
     public static final String HEALTH = "health";
     public static final String DIET = "diet";
+    public static final String INGREDIENT = "ingr";
 }

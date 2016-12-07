@@ -3,6 +3,7 @@ package com.mlsdev.recipefinder.data.source.repository;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.recipe.Hit;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
@@ -115,6 +116,10 @@ public class DataRepository {
 
     public boolean isInFavorites(Recipe recipe) {
         return localDataSource.isInFavorites(recipe);
+    }
+
+    public Observable<IngredientAnalysisResult> getIngredientData(Map<String, String> params) {
+        return remoteDataSource.getIngredientData(params);
     }
 
 }

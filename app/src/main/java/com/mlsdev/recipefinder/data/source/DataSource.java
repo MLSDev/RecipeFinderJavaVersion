@@ -1,5 +1,6 @@
 package com.mlsdev.recipefinder.data.source;
 
+import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 
@@ -10,8 +11,14 @@ import rx.Observable;
 
 public interface DataSource {
     Observable<SearchResult> searchRecipes(Map<String, String> params);
+
+    Observable<IngredientAnalysisResult> getIngredientData(Map<String, String> params);
+
     List<Recipe> getFavorites();
+
     boolean addToFavorites(Recipe favoriteRecipe);
+
     boolean removeFromFavorites(Recipe removedRecipe);
+
     boolean isInFavorites(Recipe recipe);
 }
