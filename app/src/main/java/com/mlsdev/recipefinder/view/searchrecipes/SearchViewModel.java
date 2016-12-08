@@ -37,6 +37,7 @@ public class SearchViewModel extends BaseViewModel {
     private OnRecipesLoadedListener onRecipesLoadedListener;
     private Map<String, String> searchParams;
     private DialogFragment filterFragment;
+    private boolean moreRecipes = true;
 
     public SearchViewModel(@NonNull Fragment fragment, @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
         super(fragment.getActivity());
@@ -64,20 +65,7 @@ public class SearchViewModel extends BaseViewModel {
         Subscription subscription = repository.searchRecipes(searchParams)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<List<Recipe>>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d(MainActivity.LOG_TAG, "onCompleted()");
-                        progressBarVisibility.set(View.GONE);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // TODO: 11/25/16 show errors
-                        progressBarVisibility.set(View.GONE);
-                        Log.e(MainActivity.LOG_TAG, e.getMessage());
-                    }
-
+                .subscribe(new SearchRecipesObserver<List<Recipe>>() {
                     @Override
                     public void onNext(List<Recipe> recipes) {
                         String commonSearchLabelText = fragment.getString(R.string.label_search);
@@ -93,6 +81,9 @@ public class SearchViewModel extends BaseViewModel {
     }
 
     public void loadMoreRecipes() {
+        if (!moreRecipes)
+            return;
+
         Map<String, String> params = new ArrayMap<>();
         params.put(ParameterKeys.QUERY, this.searchText.get().toLowerCase());
         subscriptions.clear();
@@ -101,22 +92,10 @@ public class SearchViewModel extends BaseViewModel {
         Subscription subscription = repository.loadMore(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<List<Recipe>>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d(MainActivity.LOG_TAG, "onCompleted()");
-                        progressBarVisibility.set(View.GONE);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // TODO: 11/25/16 show errors
-                        progressBarVisibility.set(View.GONE);
-                        Log.d(MainActivity.LOG_TAG, "onError()");
-                    }
-
+                .subscribe(new SearchRecipesObserver<List<Recipe>>() {
                     @Override
                     public void onNext(List<Recipe> recipes) {
+                        moreRecipes = !recipes.isEmpty();
                         onRecipesLoadedListener.onMoreRecipesLoaded(recipes);
                     }
                 });
@@ -142,6 +121,23 @@ public class SearchViewModel extends BaseViewModel {
 
     public void onTextChanged(CharSequence text, int start, int before, int count) {
         searchText.set(text.toString());
+    }
+
+    public abstract class SearchRecipesObserver<T> implements Observer<T> {
+
+        @Override
+        public void onCompleted() {
+            progressBarVisibility.set(View.GONE);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            progressBarVisibility.set(View.GONE);
+            Log.d(MainActivity.LOG_TAG, e.getMessage());
+        }
+
+        @Override
+        public abstract void onNext(T t);
     }
 
 }

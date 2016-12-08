@@ -102,19 +102,19 @@ public class DataRepository {
                 });
     }
 
-    public List<Recipe> getFavoriteRecipes() {
+    public Observable<List<Recipe>> getFavoriteRecipes() {
         return localDataSource.getFavorites();
     }
 
-    public boolean addToFavorites(Recipe favoriteRecipe) {
+    public Observable<Boolean> addToFavorites(Recipe favoriteRecipe) {
         return localDataSource.addToFavorites(favoriteRecipe);
     }
 
-    public boolean removeFromFavorites(Recipe removedRecipe) {
+    public Observable<Boolean> removeFromFavorites(Recipe removedRecipe) {
         return localDataSource.removeFromFavorites(removedRecipe);
     }
 
-    public boolean isInFavorites(Recipe recipe) {
+    public Observable<Boolean> isInFavorites(Recipe recipe) {
         return localDataSource.isInFavorites(recipe);
     }
 

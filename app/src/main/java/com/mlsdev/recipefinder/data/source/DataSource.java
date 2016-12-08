@@ -14,11 +14,11 @@ public interface DataSource {
 
     Observable<IngredientAnalysisResult> getIngredientData(Map<String, String> params);
 
-    List<Recipe> getFavorites();
+    Observable<List<Recipe>> getFavorites();
 
-    boolean addToFavorites(Recipe favoriteRecipe);
+    Observable<Boolean> addToFavorites(Recipe favoriteRecipe);
 
-    boolean removeFromFavorites(Recipe removedRecipe);
+    Observable<Boolean> removeFromFavorites(Recipe removedRecipe);
 
-    boolean isInFavorites(Recipe recipe);
+    Observable<Boolean> isInFavorites(Recipe recipe);
 }

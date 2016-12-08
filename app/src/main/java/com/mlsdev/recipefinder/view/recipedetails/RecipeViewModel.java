@@ -8,10 +8,15 @@ import android.view.View;
 
 import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
+import com.mlsdev.recipefinder.data.source.BaseObserver;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.Collection;
 import java.util.List;
+
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class RecipeViewModel extends BaseViewModel {
     public static final String RECIPE_DATA_KEY = "recipe_data_key";
@@ -22,6 +27,9 @@ public class RecipeViewModel extends BaseViewModel {
     public ObservableField<String> recipeDietLabels;
     public ObservableField<String> recipeIngredients;
     public ObservableBoolean favoriteImageStateChecked;
+    private Subscription removeFromFavoritesSubscription;
+    private Subscription addFromFavoritesSubscription;
+    private Subscription isInFavoritesSubscription;
 
     public RecipeViewModel(Context context, Bundle recipeData) {
         super(context);
@@ -46,7 +54,7 @@ public class RecipeViewModel extends BaseViewModel {
     }
 
     public void onStart() {
-        favoriteImageStateChecked.set(repository.isInFavorites(recipe));
+        checkIsTheRecipeInFavorites();
     }
 
     private String getIngredientsAsString(Collection<Ingredient> ingredients) {
@@ -76,10 +84,47 @@ public class RecipeViewModel extends BaseViewModel {
     }
 
     public void onFavoriteButtonClick(View view) {
-        if (favoriteImageStateChecked.get())
-            favoriteImageStateChecked.set(!repository.removeFromFavorites(recipe));
-        else
-            favoriteImageStateChecked.set(repository.addToFavorites(recipe));
+
+        if (favoriteImageStateChecked.get()) {
+            subscriptions.remove(removeFromFavoritesSubscription);
+            removeFromFavoritesSubscription = repository.removeFromFavorites(recipe)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new BaseObserver<Boolean>() {
+                        @Override
+                        public void onNext(Boolean removed) {
+                            favoriteImageStateChecked.set(false);
+                        }
+                    });
+            subscriptions.add(removeFromFavoritesSubscription);
+        } else {
+            subscriptions.remove(addFromFavoritesSubscription);
+            addFromFavoritesSubscription = repository.addToFavorites(recipe)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new BaseObserver<Boolean>() {
+                        @Override
+                        public void onNext(Boolean added) {
+                            favoriteImageStateChecked.set(true);
+                        }
+                    });
+            subscriptions.add(addFromFavoritesSubscription);
+        }
     }
 
+    private void checkIsTheRecipeInFavorites() {
+        subscriptions.remove(isInFavoritesSubscription);
+
+        isInFavoritesSubscription = repository.isInFavorites(recipe)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new BaseObserver<Boolean>() {
+                    @Override
+                    public void onNext(Boolean exist) {
+                        favoriteImageStateChecked.set(exist);
+                    }
+                });
+
+        subscriptions.add(isInFavoritesSubscription);
+    }
 }
