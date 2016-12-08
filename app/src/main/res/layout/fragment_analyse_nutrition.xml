@@ -17,7 +17,7 @@
             android:layout_height="@dimen/appbar_height"
             android:background="@color/colorPrimary"
             android:elevation="@dimen/appbar_elevation"
-            app:tabIndicatorColor="@color/colorPrimaryDark"
+            app:tabIndicatorColor="@color/colorAccent"
             app:tabIndicatorHeight="3dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@android:color/white"
