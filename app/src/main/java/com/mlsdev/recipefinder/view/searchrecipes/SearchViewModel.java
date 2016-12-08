@@ -29,7 +29,7 @@ import rx.schedulers.Schedulers;
 public class SearchViewModel extends BaseViewModel {
     public static final int FILTER_REQUEST_CODE = 0;
     private Fragment fragment;
-    public final ObservableInt progressBarVisibility;
+    public final ObservableInt loadMoreProgressBarVisibility;
     public final ObservableInt searchLabelVisibility;
     public final ObservableInt filterButtonVisibility;
     public final ObservableField<String> searchText;
@@ -43,7 +43,7 @@ public class SearchViewModel extends BaseViewModel {
         super(fragment.getActivity());
         this.fragment = fragment;
         this.onRecipesLoadedListener = onRecipesLoadedListener;
-        progressBarVisibility = new ObservableInt(View.GONE);
+        loadMoreProgressBarVisibility = new ObservableInt(View.INVISIBLE);
         searchLabelVisibility = new ObservableInt(View.VISIBLE);
         filterButtonVisibility = new ObservableInt(View.INVISIBLE);
         searchText = new ObservableField<>();
@@ -59,7 +59,7 @@ public class SearchViewModel extends BaseViewModel {
         searchParams.put(ParameterKeys.QUERY, searchText);
         subscriptions.clear();
 
-        progressBarVisibility.set(View.VISIBLE);
+        loadContentProgressBarVisibility.set(View.VISIBLE);
         searchLabelVisibility.set(View.INVISIBLE);
 
         Subscription subscription = repository.searchRecipes(searchParams)
@@ -87,7 +87,7 @@ public class SearchViewModel extends BaseViewModel {
         Map<String, String> params = new ArrayMap<>();
         params.put(ParameterKeys.QUERY, this.searchText.get().toLowerCase());
         subscriptions.clear();
-        progressBarVisibility.set(View.VISIBLE);
+        loadMoreProgressBarVisibility.set(View.VISIBLE);
 
         Subscription subscription = repository.loadMore(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -127,17 +127,18 @@ public class SearchViewModel extends BaseViewModel {
 
         @Override
         public void onCompleted() {
-            progressBarVisibility.set(View.GONE);
+            loadMoreProgressBarVisibility.set(View.INVISIBLE);
+            loadContentProgressBarVisibility.set(View.INVISIBLE);
         }
 
         @Override
         public void onError(Throwable e) {
-            progressBarVisibility.set(View.GONE);
+            loadMoreProgressBarVisibility.set(View.INVISIBLE);
+            loadContentProgressBarVisibility.set(View.INVISIBLE);
             Log.d(MainActivity.LOG_TAG, e.getMessage());
         }
 
         @Override
         public abstract void onNext(T t);
     }
-
 }

@@ -41,6 +41,8 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
     public void onAnalyzeButtonClick(View view) {
         ((MainActivity) activity).hideSoftKeyboard();
 
+        loadContentProgressBarVisibility.set(View.VISIBLE);
+
         Map<String, String> params = new ArrayMap<>();
         params.put(ParameterKeys.INGREDIENT, ingredientText.get());
         Subscription subscription = repository.getIngredientData(params)
@@ -49,10 +51,12 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
                 .subscribe(new Observer<IngredientAnalysisResult>() {
                     @Override
                     public void onCompleted() {
+                        loadContentProgressBarVisibility.set(View.INVISIBLE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        loadContentProgressBarVisibility.set(View.INVISIBLE);
                         Log.e(MainActivity.LOG_TAG, e.getMessage());
                     }
 

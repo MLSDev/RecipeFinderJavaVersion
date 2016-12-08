@@ -63,6 +63,8 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+        <!--Labels-->
+
         <LinearLayout
             android:id="@+id/ll_search_label_wrapper"
             android:layout_width="wrap_content"
@@ -80,23 +82,31 @@
             <TextView
                 android:id="@+id/tv_search_label"
                 style="@style/BaseTextViewStyle.EmptyListView"
-                android:text="@{viewModel.searchLabelText}"/>
+                android:text="@{viewModel.searchLabelText}" />
         </LinearLayout>
+
+        <!--Progress Bars-->
 
         <FrameLayout
             android:id="@+id/fl_progress_bar_wrapper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorProgressBarWrapper"
-            app:visibility="@{viewModel.progressBarVisibility}">
+            android:visibility="@{viewModel.loadContentProgressBarVisibility}">
 
-            <android.support.v4.widget.ContentLoadingProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+            <include layout="@layout/progress_view" />
         </FrameLayout>
+
+        <android.support.v4.widget.ContentLoadingProgressBar
+            android:id="@+id/pb_load_more_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@android:color/white"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            android:visibility="@{viewModel.loadMoreProgressBarVisibility}" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
