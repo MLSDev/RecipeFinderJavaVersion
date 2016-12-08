@@ -1,15 +1,24 @@
 package com.mlsdev.recipefinder.data.entity.nutrition;
 
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public class Nutrient {
+@DatabaseTable(tableName = "analyzed_nutrients")
+public class Nutrient implements Serializable {
+    @DatabaseField(generatedId = true)
+    private long id;
+    @DatabaseField
     @SerializedName("label")
     private String label;
+    @DatabaseField
     @SerializedName("quantity")
     private double quantity;
     @SerializedName("unit")
+    @DatabaseField
     private String unit;
 
     public String getLabel() {

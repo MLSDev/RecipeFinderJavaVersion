@@ -8,6 +8,9 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.Nutrient;
+import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.entity.recipe.stringwrapper.DietLabel;
@@ -22,6 +25,9 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<HealthLabel, Integer> healthLabelDao;
     private Dao<DietLabel, Integer> dietLabelDao;
     private Dao<Ingredient, Integer> ingredientDao;
+    private Dao<IngredientAnalysisResult, Integer> ingredientAnalysisResultDao;
+    private Dao<TotalNutrients, Integer> totalNutrientsDao;
+    private Dao<Nutrient, Integer> nutrientDao;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,6 +40,9 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, HealthLabel.class);
             TableUtils.createTable(connectionSource, DietLabel.class);
             TableUtils.createTable(connectionSource, Ingredient.class);
+            TableUtils.createTable(connectionSource, TotalNutrients.class);
+            TableUtils.createTable(connectionSource, Nutrient.class);
+            TableUtils.createTable(connectionSource, IngredientAnalysisResult.class);
         } catch (SQLException e) {
             Log.e(DataBaseHelper.class.getName(), "Unable to create database", e);
         }
@@ -78,6 +87,27 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
         return ingredientDao;
     }
 
+    public Dao<IngredientAnalysisResult, Integer> getIngredientAnalysisResultDao() throws SQLException {
+        if (ingredientAnalysisResultDao == null)
+            ingredientAnalysisResultDao = getDao(IngredientAnalysisResult.class);
+
+        return ingredientAnalysisResultDao;
+    }
+
+    public Dao<TotalNutrients, Integer> getTotalNutrientsDao() throws SQLException {
+        if (totalNutrientsDao == null)
+            totalNutrientsDao = getDao(TotalNutrients.class);
+
+        return totalNutrientsDao;
+    }
+
+    public Dao<Nutrient, Integer> getNutrientDao() throws SQLException {
+        if (nutrientDao == null)
+            nutrientDao = getDao(Nutrient.class);
+
+        return nutrientDao;
+    }
+
     @Override
     public void close() {
         super.close();
@@ -85,5 +115,8 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
         healthLabelDao = null;
         dietLabelDao = null;
         ingredientDao = null;
+        ingredientAnalysisResultDao = null;
+        totalNutrientsDao = null;
+        nutrientDao = null;
     }
 }

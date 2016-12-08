@@ -18,6 +18,7 @@ import java.util.Map;
 
 import rx.Observable;
 import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Func1;
 
 public class DataRepository {
@@ -118,8 +119,24 @@ public class DataRepository {
         return localDataSource.isInFavorites(recipe);
     }
 
-    public Observable<IngredientAnalysisResult> getIngredientData(Map<String, String> params) {
-        return remoteDataSource.getIngredientData(params);
+    public Observable<IngredientAnalysisResult> getIngredientData(final Map<String, String> params) {
+        return localDataSource.getIngredientData(params)
+                .flatMap(new Func1<IngredientAnalysisResult, Observable<IngredientAnalysisResult>>() {
+                    @Override
+                    public Observable<IngredientAnalysisResult> call(IngredientAnalysisResult analysisResult) {
+                        if (analysisResult == null)
+                            return remoteDataSource.getIngredientData(params)
+                                    .doOnNext(new Action1<IngredientAnalysisResult>() {
+                                        @Override
+                                        public void call(IngredientAnalysisResult analysisResult) {
+                                            localDataSource.addAnalyzingResult(analysisResult, params);
+                                        }
+                                    });
+                        else
+                            return Observable.from(new IngredientAnalysisResult[]{analysisResult});
+
+                    }
+                });
     }
 
 }

@@ -40,4 +40,8 @@ public abstract class BaseDataSource implements DataSource {
     public Observable<Boolean> isInFavorites(Recipe recipe) {
         return Observable.from(new Boolean[]{false});
     }
+
+    @Override
+    public void addAnalyzingResult(IngredientAnalysisResult analysisResult, Map<String, String> params) {
+    }
 }

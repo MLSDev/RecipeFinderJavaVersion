@@ -21,4 +21,6 @@ public interface DataSource {
     Observable<Boolean> removeFromFavorites(Recipe removedRecipe);
 
     Observable<Boolean> isInFavorites(Recipe recipe);
+
+    void addAnalyzingResult(IngredientAnalysisResult analysisResult, Map<String, String> params);
 }
