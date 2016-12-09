@@ -8,16 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
-import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
 
 public class SearchRecipesFragment extends RecipeListFragment implements RecipeListAdapter.OnLastItemShownListener,
@@ -35,7 +31,6 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
             viewModel = new SearchViewModel(this, this);
 
         binding.setViewModel(viewModel);
-        binding.etSearch.setOnEditorActionListener(new OnActionButtonClickListener());
         swipeRefreshLayout = binding.swipeToRefreshView;
         initRecyclerView(binding.rvRecipeList);
         initSwipeRefreshLayout(binding.swipeToRefreshView, this);
@@ -72,21 +67,5 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
     @Override
     public void onRefresh() {
         viewModel.refresh();
-    }
-
-    public class OnActionButtonClickListener implements TextView.OnEditorActionListener {
-
-        @Override
-        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-
-            if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.searchRecipes(binding.etSearch.getText().toString(), false);
-                ((MainActivity) getActivity()).hideSoftKeyboard();
-                return true;
-            }
-
-            return false;
-        }
-
     }
 }

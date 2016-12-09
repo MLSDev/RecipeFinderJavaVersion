@@ -37,8 +37,11 @@
                             android:id="@+id/et_ingredient_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:imeOptions="actionGo"
+                            android:inputType="textCapSentences"
                             android:lines="1"
                             android:maxLines="1"
+                            android:onEditorAction="@{viewModel.onEditorAction}"
                             android:onTextChanged="@{viewModel.onTextChanged}" />
 
                     </android.support.design.widget.TextInputLayout>

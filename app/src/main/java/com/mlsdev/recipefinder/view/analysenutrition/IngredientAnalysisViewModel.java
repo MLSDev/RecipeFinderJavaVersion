@@ -6,7 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -118,6 +121,17 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
 
     public void onTextChanged(CharSequence text, int start, int before, int count) {
         ingredientText.set(text.toString());
+    }
+
+    public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+
+        if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
+            onAnalyzeButtonClick(null);
+            ((MainActivity) activity).hideSoftKeyboard();
+            return true;
+        }
+
+        return false;
     }
 
     private void prepareDiagramData(TotalNutrients nutrients) {

@@ -8,7 +8,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
@@ -133,6 +136,17 @@ public class SearchViewModel extends BaseViewModel {
 
     public void onTextChanged(CharSequence text, int start, int before, int count) {
         searchText.set(text.toString());
+    }
+
+    public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+
+        if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
+            searchRecipes(textView.getText().toString(), false);
+            ((MainActivity) fragment.getActivity()).hideSoftKeyboard();
+            return true;
+        }
+
+        return false;
     }
 
     public abstract class SearchRecipesObserver<T> implements Observer<T> {
