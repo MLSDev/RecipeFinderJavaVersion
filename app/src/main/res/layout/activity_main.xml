@@ -19,12 +19,19 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/bnv_navigation_view" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_bar_elevation"
+            android:layout_above="@+id/bnv_navigation_view"
+            android:background="@drawable/top_shadow" />
+
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bnv_navigation_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/bottom_bar_height"
             android:layout_alignParentBottom="true"
             android:elevation="@dimen/bottom_bar_elevation"
+            android:translationZ="@dimen/bottom_bar_elevation"
             app:elevation="@dimen/bottom_bar_elevation"
             app:itemBackground="@drawable/tab_item_background"
             app:itemIconTint="@color/tab_item_text_color"
