@@ -56,6 +56,11 @@ public class SearchViewModel extends BaseViewModel {
         filterFragment = new FilterDialogFragment();
     }
 
+    /**
+     * @param searchText  The search phrase inputted by a user
+     * @param forceUpdate A force update flag. If it is "true" cache will be cleaned, else a user will
+     *                    see cached data.
+     */
     public void searchRecipes(String searchText, boolean forceUpdate) {
         if (searchText == null || searchText.isEmpty()) {
             onRecipesLoadedListener.onRecipesLoaded(new ArrayList<Recipe>());
@@ -119,6 +124,11 @@ public class SearchViewModel extends BaseViewModel {
         searchRecipes(searchText.get(), true);
     }
 
+    /**
+     * Makes a search with applied searching parameters
+     *
+     * @param filterData The {@link Bundle} object with applied parameters for searching
+     */
     public void onApplyFilterOptions(Bundle filterData) {
         String healthLabel = ParamsHelper.formatLabel(filterData.getString(FilterDialogFragment.HEALTH_LABEL_KEY));
         String dietLabel = ParamsHelper.formatLabel(filterData.getString(FilterDialogFragment.DIET_LABEL_KEY));
@@ -129,15 +139,27 @@ public class SearchViewModel extends BaseViewModel {
         searchRecipes(this.searchText.get().toLowerCase(), true);
     }
 
+    /**
+     * Handles the {@link android.widget.Button} clicking on.
+     * This method is added into the {@link android.widget.Button}'s attribute list in the layout.
+     */
     public void onFilterClick(View view) {
         filterFragment.setTargetFragment(fragment, FILTER_REQUEST_CODE);
         filterFragment.show(fragment.getActivity().getSupportFragmentManager(), "Filter");
     }
 
+    /**
+     * Handles the {@link android.widget.EditText}'s text changing.
+     * This method is added into the {@link android.widget.EditText}'s attribute list in the layout.
+     */
     public void onTextChanged(CharSequence text, int start, int before, int count) {
         searchText.set(text.toString());
     }
 
+    /**
+     * Handles the keyboard action button clicking on.
+     * This method is added into the {@link android.widget.EditText}'s attribute list in the layout.
+     */
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 
         if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {

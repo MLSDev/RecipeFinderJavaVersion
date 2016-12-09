@@ -26,6 +26,9 @@ public abstract class NavigationFragment extends Fragment {
 
     }
 
+    /**
+     * Scrolls the root view of the fragment to top by clicking on a current tab in the navigation view.
+     */
     public void scrollToTop() {
 
     }
