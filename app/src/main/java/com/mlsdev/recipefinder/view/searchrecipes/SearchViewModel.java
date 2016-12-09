@@ -18,6 +18,7 @@ import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.utils.ParamsHelper;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,13 +54,20 @@ public class SearchViewModel extends BaseViewModel {
     }
 
     public void searchRecipes(String searchText, boolean forceUpdate) {
-        if (forceUpdate || !(this.searchText.get().toLowerCase().equals(searchText.toLowerCase())))
+        if (searchText == null || searchText.isEmpty()) {
+            onRecipesLoadedListener.onRecipesLoaded(new ArrayList<Recipe>());
+            return;
+        }
+
+        String prevSearchText = searchParams.containsKey(ParameterKeys.QUERY) ? searchParams.get(ParameterKeys.QUERY) : "";
+
+        if (forceUpdate || !(prevSearchText.equals(searchText.toLowerCase())))
             repository.setCacheIsDirty();
 
         searchParams.put(ParameterKeys.QUERY, searchText);
         subscriptions.clear();
 
-        loadContentProgressBarVisibility.set(View.VISIBLE);
+        loadContentProgressBarVisibility.set(forceUpdate ? View.INVISIBLE : View.VISIBLE);
         searchLabelVisibility.set(View.INVISIBLE);
 
         Subscription subscription = repository.searchRecipes(searchParams)
@@ -102,6 +110,10 @@ public class SearchViewModel extends BaseViewModel {
 
         subscriptions.add(subscription);
 
+    }
+
+    public void refresh() {
+        searchRecipes(searchText.get(), true);
     }
 
     public void onApplyFilterOptions(Bundle filterData) {

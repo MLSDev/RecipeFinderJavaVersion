@@ -2,9 +2,11 @@ package com.mlsdev.recipefinder.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
@@ -12,6 +14,7 @@ import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeViewModel;
 import com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter;
+import com.mlsdev.recipefinder.view.utils.ResourcesUtils;
 
 import java.util.List;
 
@@ -19,6 +22,7 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
         RecipeListAdapter.OnLastItemShownListener, OnRecipesLoadedListener {
     protected RecipeListAdapter recipeListAdapter;
     protected RecyclerView recipeRecyclerView;
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
@@ -44,13 +48,30 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
         recipeRecyclerView.setAdapter(recipeListAdapter);
     }
 
+    protected void initSwipeRefreshLayout(SwipeRefreshLayout refreshLayout, SwipeRefreshLayout.OnRefreshListener listener) {
+        swipeRefreshLayout = refreshLayout;
+        swipeRefreshLayout.setOnRefreshListener(listener);
+        swipeRefreshLayout.setColorSchemeColors(
+                ResourcesUtils.getColor(getActivity(), R.color.colorPrimaryDark),
+                ResourcesUtils.getColor(getActivity(), R.color.colorPrimary),
+                ResourcesUtils.getColor(getActivity(), R.color.colorAccent)
+        );
+    }
+
     @Override
     public void onRecipesLoaded(List<Recipe> recipes) {
         recipeListAdapter.setData(recipes);
+        stopRefreshing();
     }
 
     @Override
     public void onMoreRecipesLoaded(List<Recipe> moreRecipes) {
         recipeListAdapter.setMoreData(moreRecipes);
+        stopRefreshing();
+    }
+
+    protected void stopRefreshing() {
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
     }
 }
