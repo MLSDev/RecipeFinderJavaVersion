@@ -50,7 +50,6 @@
 
     <style name="BaseTextViewStyle.NutrientTextStyle">
         <item name="android:textSize">18sp</item>
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
     </style>
     <!-- END Text Views-->
 
