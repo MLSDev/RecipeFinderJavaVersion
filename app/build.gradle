@@ -87,7 +87,7 @@ dependencies {
     compile "com.j256.ormlite:ormlite-core:$ormLiteVersion"
     compile "com.j256.ormlite:ormlite-android:$ormLiteVersion"
 
-    compile "com.facebook.stetho:stetho:$stethoVersion"
-    compile "com.facebook.stetho:stetho-urlconnection:$stethoVersion"
+    //Charts
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
 
 }
