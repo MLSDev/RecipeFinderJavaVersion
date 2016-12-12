@@ -22,7 +22,6 @@
                 android:layout_height="@dimen/appbar_height"
                 android:background="@color/colorPrimary"
                 app:tabIndicatorColor="@color/colorAccent"
-                app:layout_scrollFlags="scroll|snap|enterAlways"
                 app:tabIndicatorHeight="3dp"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@android:color/white"

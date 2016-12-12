@@ -27,6 +27,7 @@
     <string name="spinner_label_health_label">Health label</string>
     <string name="label_no_favorites">You have no favorites yet</string>
     <string name="btn_analyze">Analyze</string>
+    <string name="btn_add">add</string>
 
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>

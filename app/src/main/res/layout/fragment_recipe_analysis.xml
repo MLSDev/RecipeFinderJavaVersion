@@ -1,23 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisViewModel" />
     </data>
 
-    <android.support.v4.widget.NestedScrollView
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/nsv_results"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
 
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Recipe Analysis" />
+            android:padding="@dimen/activity_vertical_margin">
 
-    </android.support.v4.widget.NestedScrollView>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_title_input_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_recipe_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_preparation_input_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/til_title_input_holder"
+                android:hint="Preparation">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_preparation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_yield_input_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/til_preparation_input_holder"
+                android:hint="Yield">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_yield"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_ingredient_title"
+                style="@style/BaseTextViewStyle.NutrientTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/til_yield_input_holder"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/label_ingredients"
+                android:textSize="25sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_ingredient_title" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_analyze"
+                style="@style/AnalyzeButtonStyle"
+                android:layout_below="@id/rv_ingredients"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:onClick="@{viewModel.onAnalyzeButtonClick}" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
 
 </layout>
