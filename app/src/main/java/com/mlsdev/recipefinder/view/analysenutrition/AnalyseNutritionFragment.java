@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentAnalyseNutritionBinding;
 import com.mlsdev.recipefinder.view.analysenutrition.ingredient.IngredientAnalysisFragment;
+import com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisFragment;
 import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 
 public class AnalyseNutritionFragment extends NavigationFragment {
@@ -46,7 +47,7 @@ public class AnalyseNutritionFragment extends NavigationFragment {
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
             nutritionAnalysisFragment = new IngredientAnalysisFragment();
-            recipeAnalysisFragment = new Fragment();
+            recipeAnalysisFragment = new RecipeAnalysisFragment();
         }
 
         @Override
