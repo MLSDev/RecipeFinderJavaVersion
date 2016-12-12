@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentAnalyseNutritionBinding;
+import com.mlsdev.recipefinder.view.analysenutrition.ingredient.IngredientAnalysisFragment;
 import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 
 public class AnalyseNutritionFragment extends NavigationFragment {

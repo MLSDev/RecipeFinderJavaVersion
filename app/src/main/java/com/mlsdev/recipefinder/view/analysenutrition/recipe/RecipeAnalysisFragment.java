@@ -1,4 +1,4 @@
-package com.mlsdev.recipefinder.view.analysenutrition;
+package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

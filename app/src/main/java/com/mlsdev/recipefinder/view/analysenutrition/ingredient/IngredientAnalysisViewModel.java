@@ -1,4 +1,4 @@
-package com.mlsdev.recipefinder.view.analysenutrition;
+package com.mlsdev.recipefinder.view.analysenutrition.ingredient;
 
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
