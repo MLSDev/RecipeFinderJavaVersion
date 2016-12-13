@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,83 +8,84 @@
             type="com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisViewModel" />
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/nsv_results"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-        <RelativeLayout
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_title_input_holder"
+            style="@style/BaseTextInputLayoutStyle.RecipeAnalysingStyle"
+            android:hint="Title">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_recipe_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:onTextChanged="@{viewModel.onTitleTextChanged}" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_preparation_input_holder"
+            style="@style/BaseTextInputLayoutStyle.RecipeAnalysingStyle"
+            android:layout_below="@id/til_title_input_holder"
+            android:hint="Preparation">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_preparation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:onTextChanged="@{viewModel.onPreparationTextChanged}" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_yield_input_holder"
+            style="@style/BaseTextInputLayoutStyle.RecipeAnalysingStyle"
+            android:layout_below="@id/til_preparation_input_holder"
+            android:hint="Yield">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_yield"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:onTextChanged="@{viewModel.onYieldTextChanged}" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_ingredient_title"
+            style="@style/BaseTextViewStyle.NutrientTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/til_yield_input_holder"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:text="@string/label_ingredients"
+            android:textSize="25sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_ingredients"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/activity_vertical_margin">
+            android:layout_below="@id/tv_ingredient_title" />
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_title_input_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Title">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_analyze"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/tab_item_background"
+            android:onClick="@{viewModel.onAnalyzeButtonClick}"
+            android:src="@drawable/ic_navigation_analyse"
+            android:tint="@android:color/white"
+            app:fabSize="normal" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_recipe_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapSentences" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_preparation_input_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/til_title_input_holder"
-                android:hint="Preparation">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_preparation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapSentences" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_yield_input_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/til_preparation_input_holder"
-                android:hint="Yield">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_yield"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapSentences" />
-            </android.support.design.widget.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tv_ingredient_title"
-                style="@style/BaseTextViewStyle.NutrientTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/til_yield_input_holder"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/label_ingredients"
-                android:textSize="25sp" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_ingredients"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_ingredient_title" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_analyze"
-                style="@style/AnalyzeButtonStyle"
-                android:layout_below="@id/rv_ingredients"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:onClick="@{viewModel.onAnalyzeButtonClick}" />
-
-        </RelativeLayout>
-
-    </FrameLayout>
+    </RelativeLayout>
 
 </layout>

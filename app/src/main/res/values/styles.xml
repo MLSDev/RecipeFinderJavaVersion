@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -67,4 +67,22 @@
         <item name="android:text">@string/btn_analyze</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <!--EditText-->
+    <style name="BaseTextInputLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="BaseTextInputLayoutStyle.RecipeAnalysingStyle">
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">
+            @dimen/activity_horizontal_margin
+        </item>
+        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">
+            @dimen/activity_horizontal_margin
+        </item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+    </style>
+    <!--END EditText-->
 </resources>

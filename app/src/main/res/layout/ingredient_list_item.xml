@@ -11,7 +11,9 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_height"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin">
 
         <TextView
             android:id="@+id/tv_ingredient_number"
@@ -38,10 +40,8 @@
             android:id="@+id/iv_btn_cancel_ingredient"
             android:layout_width="@dimen/appbar_height"
             android:layout_height="match_parent"
-            android:background="@drawable/toolbar_item_selector"
+            android:background="?attr/selectableItemBackground"
             android:onClick="@{viewModel.onCancelButtonClick}"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
             android:src="@drawable/btn_cancel" />
     </LinearLayout>
 
