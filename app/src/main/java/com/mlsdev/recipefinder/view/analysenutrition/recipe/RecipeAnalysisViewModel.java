@@ -1,12 +1,15 @@
 package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.ObservableField;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
+import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
@@ -33,6 +36,14 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
     }
 
     public void onAnalyzeButtonClick(View view) {
+        if (ingredients.isEmpty()){
+            Intent showErrorIntent = new Intent(MainActivity.AppBroadcastReceiver.SHOW_ERROR_ACTION);
+            showErrorIntent.putExtra(Extras.ALERT_DIALOG_TITLE, "No Ingredients");
+            showErrorIntent.putExtra(Extras.ALERT_DIALOG_MESSAGE, "You haven't added any ingredients. At list one ingredient is needed to perform the recipe analysis. Please add one or more and try again.");
+            LocalBroadcastManager.getInstance(context).sendBroadcast(showErrorIntent);
+            return;
+        }
+
         RecipeAnalysisParams recipeAnalysisParams = new RecipeAnalysisParams();
         recipeAnalysisParams.setTitle(title.get());
         recipeAnalysisParams.setYield(yield.get());
