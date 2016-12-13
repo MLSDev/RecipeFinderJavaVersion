@@ -16,7 +16,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
 import com.mlsdev.recipefinder.view.MainActivity;
@@ -76,7 +76,7 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
         Subscription subscription = repository.getIngredientData(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<IngredientAnalysisResult>() {
+                .subscribe(new Observer<NutritionAnalysisResult>() {
                     @Override
                     public void onCompleted() {
                         loadContentProgressBarVisibility.set(View.INVISIBLE);
@@ -89,7 +89,7 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
                     }
 
                     @Override
-                    public void onNext(IngredientAnalysisResult ingredientAnalysisResult) {
+                    public void onNext(NutritionAnalysisResult ingredientAnalysisResult) {
                         TotalNutrients totalNutrients = ingredientAnalysisResult.getTotalNutrients();
                         analysisResultsWrapperVisibility.set(View.VISIBLE);
 

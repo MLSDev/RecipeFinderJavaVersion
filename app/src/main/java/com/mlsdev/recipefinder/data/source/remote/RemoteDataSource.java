@@ -1,9 +1,11 @@
 package com.mlsdev.recipefinder.data.source.remote;
 
 import android.content.Context;
+import android.support.v4.util.ArrayMap;
 
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 import com.mlsdev.recipefinder.data.source.DataSource;
@@ -49,9 +51,16 @@ public class RemoteDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<IngredientAnalysisResult> getIngredientData(Map<String, String> params) {
+    public Observable<NutritionAnalysisResult> getIngredientData(Map<String, String> params) {
         setCredentials(params, false);
-        return nutritionAnalysisService.getIngredientData(params);
+        return nutritionAnalysisService.analyzeIngredient(params);
+    }
+
+    @Override
+    public Observable<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params) {
+        Map<String, String> credentials = new ArrayMap<>();
+        setCredentials(credentials, false);
+        return nutritionAnalysisService.analyzeRecipe(params, credentials);
     }
 
     private void setCredentials(Map<String, String> params, boolean search) {

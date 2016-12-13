@@ -1,6 +1,7 @@
 package com.mlsdev.recipefinder.data.source;
 
-import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 
@@ -12,7 +13,7 @@ import rx.Observable;
 public interface DataSource {
     Observable<SearchResult> searchRecipes(Map<String, String> params);
 
-    Observable<IngredientAnalysisResult> getIngredientData(Map<String, String> params);
+    Observable<NutritionAnalysisResult> getIngredientData(Map<String, String> params);
 
     Observable<List<Recipe>> getFavorites();
 
@@ -22,5 +23,7 @@ public interface DataSource {
 
     Observable<Boolean> isInFavorites(Recipe recipe);
 
-    void addAnalyzingResult(IngredientAnalysisResult analysisResult, Map<String, String> params);
+    Observable<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params);
+
+    void addAnalyzingResult(NutritionAnalysisResult analysisResult, Map<String, String> params);
 }

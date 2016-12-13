@@ -2,7 +2,7 @@ package com.mlsdev.recipefinder.data.source.local;
 
 import android.content.Context;
 
-import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseDataSource;
@@ -102,7 +102,7 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public void addAnalyzingResult(final IngredientAnalysisResult analysisResult, Map<String, String> params) {
+    public void addAnalyzingResult(final NutritionAnalysisResult analysisResult, Map<String, String> params) {
         if (!params.containsKey(ParameterKeys.INGREDIENT))
             return;
 
@@ -122,13 +122,13 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<IngredientAnalysisResult> getIngredientData(final Map<String, String> params) {
+    public Observable<NutritionAnalysisResult> getIngredientData(final Map<String, String> params) {
         if (params.containsKey(ParameterKeys.INGREDIENT)) {
-            return Observable.fromCallable(new Callable<IngredientAnalysisResult>() {
+            return Observable.fromCallable(new Callable<NutritionAnalysisResult>() {
                 @Override
-                public IngredientAnalysisResult call() throws Exception {
+                public NutritionAnalysisResult call() throws Exception {
                     int hash = params.get(ParameterKeys.INGREDIENT).toLowerCase().hashCode();
-                    IngredientAnalysisResult result = null;
+                    NutritionAnalysisResult result = null;
 
                     try {
                         result = dataBaseHelper.getIngredientAnalysisResultDao().queryForId(hash);

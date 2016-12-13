@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientAnalysisResult implements Serializable {
+public class NutritionAnalysisResult implements Serializable {
     @DatabaseField(id = true)
     private int hash;
     @SerializedName("uri")
@@ -58,7 +58,7 @@ public class IngredientAnalysisResult implements Serializable {
         return totalNutrients;
     }
 
-    public IngredientAnalysisResult() {
+    public NutritionAnalysisResult() {
     }
 
     public void setHash(int hash) {

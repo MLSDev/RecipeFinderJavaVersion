@@ -3,7 +3,8 @@ package com.mlsdev.recipefinder.data.source.repository;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.entity.recipe.Hit;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
@@ -119,24 +120,28 @@ public class DataRepository {
         return localDataSource.isInFavorites(recipe);
     }
 
-    public Observable<IngredientAnalysisResult> getIngredientData(final Map<String, String> params) {
+    public Observable<NutritionAnalysisResult> getIngredientData(final Map<String, String> params) {
         return localDataSource.getIngredientData(params)
-                .flatMap(new Func1<IngredientAnalysisResult, Observable<IngredientAnalysisResult>>() {
+                .flatMap(new Func1<NutritionAnalysisResult, Observable<NutritionAnalysisResult>>() {
                     @Override
-                    public Observable<IngredientAnalysisResult> call(IngredientAnalysisResult analysisResult) {
+                    public Observable<NutritionAnalysisResult> call(NutritionAnalysisResult analysisResult) {
                         if (analysisResult == null)
                             return remoteDataSource.getIngredientData(params)
-                                    .doOnNext(new Action1<IngredientAnalysisResult>() {
+                                    .doOnNext(new Action1<NutritionAnalysisResult>() {
                                         @Override
-                                        public void call(IngredientAnalysisResult analysisResult) {
+                                        public void call(NutritionAnalysisResult analysisResult) {
                                             localDataSource.addAnalyzingResult(analysisResult, params);
                                         }
                                     });
                         else
-                            return Observable.from(new IngredientAnalysisResult[]{analysisResult});
+                            return Observable.from(new NutritionAnalysisResult[]{analysisResult});
 
                     }
                 });
+    }
+
+    public Observable<NutritionAnalysisResult> getRecipeAnalysisData(final RecipeAnalysisParams params){
+        return remoteDataSource.getRecipeAnalysingResult(params);
     }
 
 }

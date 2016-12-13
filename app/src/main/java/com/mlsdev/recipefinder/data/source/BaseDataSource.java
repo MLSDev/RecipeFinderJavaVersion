@@ -1,6 +1,7 @@
 package com.mlsdev.recipefinder.data.source;
 
-import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 
@@ -17,7 +18,7 @@ public abstract class BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<IngredientAnalysisResult> getIngredientData(Map<String, String> params) {
+    public Observable<NutritionAnalysisResult> getIngredientData(Map<String, String> params) {
         return null;
     }
 
@@ -42,6 +43,11 @@ public abstract class BaseDataSource implements DataSource {
     }
 
     @Override
-    public void addAnalyzingResult(IngredientAnalysisResult analysisResult, Map<String, String> params) {
+    public Observable<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params) {
+        return null;
+    }
+
+    @Override
+    public void addAnalyzingResult(NutritionAnalysisResult analysisResult, Map<String, String> params) {
     }
 }

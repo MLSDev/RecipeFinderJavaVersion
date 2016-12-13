@@ -8,7 +8,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.mlsdev.recipefinder.data.entity.nutrition.IngredientAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.Nutrient;
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
@@ -25,7 +25,7 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<HealthLabel, Integer> healthLabelDao;
     private Dao<DietLabel, Integer> dietLabelDao;
     private Dao<Ingredient, Integer> ingredientDao;
-    private Dao<IngredientAnalysisResult, Integer> ingredientAnalysisResultDao;
+    private Dao<NutritionAnalysisResult, Integer> ingredientAnalysisResultDao;
     private Dao<TotalNutrients, Integer> totalNutrientsDao;
     private Dao<Nutrient, Integer> nutrientDao;
 
@@ -42,7 +42,7 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Ingredient.class);
             TableUtils.createTable(connectionSource, TotalNutrients.class);
             TableUtils.createTable(connectionSource, Nutrient.class);
-            TableUtils.createTable(connectionSource, IngredientAnalysisResult.class);
+            TableUtils.createTable(connectionSource, NutritionAnalysisResult.class);
         } catch (SQLException e) {
             Log.e(DataBaseHelper.class.getName(), "Unable to create database", e);
         }
@@ -87,9 +87,9 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
         return ingredientDao;
     }
 
-    public Dao<IngredientAnalysisResult, Integer> getIngredientAnalysisResultDao() throws SQLException {
+    public Dao<NutritionAnalysisResult, Integer> getIngredientAnalysisResultDao() throws SQLException {
         if (ingredientAnalysisResultDao == null)
-            ingredientAnalysisResultDao = getDao(IngredientAnalysisResult.class);
+            ingredientAnalysisResultDao = getDao(NutritionAnalysisResult.class);
 
         return ingredientAnalysisResultDao;
     }

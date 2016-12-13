@@ -22,7 +22,7 @@ public class RecipeAnalysisFragment extends Fragment implements OnAddIngredientC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_analysis, container, false);
-        viewModel = new RecipeAnalysisViewModel(this);
+        viewModel = new RecipeAnalysisViewModel(getActivity());
         binding.setViewModel(viewModel);
         initRecyclerView();
         return binding.getRoot();
@@ -42,6 +42,7 @@ public class RecipeAnalysisFragment extends Fragment implements OnAddIngredientC
                 && resultCode == Activity.RESULT_OK && data != null) {
             adapter.addItem(data);
             binding.rvIngredients.smoothScrollToPosition(adapter.getItemCount());
+            viewModel.setIngredients(adapter.getIngredientList());
         }
 
     }

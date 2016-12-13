@@ -79,6 +79,10 @@ public class IngredientsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             addItem(data.getStringExtra(AddIngredientDialogFragment.INGREDIENT_TITLE_KEY));
     }
 
+    public List<String> getIngredientList() {
+        return ingredientList;
+    }
+
     public class ViewHolder extends BaseViewHolder {
         private IngredientListItemBinding binding;
 
