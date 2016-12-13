@@ -16,7 +16,7 @@ public interface NutritionAnalysisService {
     @GET(PathConstants.NUTRITION_DATA)
     Observable<NutritionAnalysisResult> analyzeIngredient(@QueryMap Map<String, String> params);
 
-    @POST(PathConstants.NUTRITION_DATA)
+    @POST(PathConstants.NUTRITION_DETAILS)
     Observable<NutritionAnalysisResult> analyzeRecipe(@Body RecipeAnalysisParams params,
                                                       @QueryMap Map<String, String> credentials);
 
