@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisDetailsActivity.ViewModel" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/appbar_height">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:id="@+id/activity_recipe_analysis_details"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_vertical_margin">
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/BaseTextViewStyle.NutrientTextStyle"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="Details"
+                    android:textSize="25sp" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_analysis_results_wrapper"
+                    style="@style/BaseCardViewStyle"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="1dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:contentPadding="@dimen/activity_horizontal_margin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/tv_title"
+                            style="@style/BaseTextViewStyle.NutrientTextStyle"
+                            android:layout_marginBottom="@dimen/activity_vertical_margin" />
+                        <!--android:text="@{viewModel.title.get.isEmpty ? View.GONE : View.VISIBLE}" />-->
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/tv_preparation"
+                            style="@style/BaseTextViewStyle.NutrientTextStyle"
+                            android:layout_marginBottom="@dimen/activity_vertical_margin" />
+                        <!--android:text="@{viewModel.preparation.get.isEmpty ? View.GONE : View.VISIBLE}" />-->
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/tv_yield"
+                            style="@style/BaseTextViewStyle.NutrientTextStyle" />
+                        <!--android:text="@{viewModel.yield.get.isEmpty ? View.GONE : View.VISIBLE}"-->
+                        <!--android:visibility="@{viewModel.yield}" />-->
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/BaseTextViewStyle.NutrientTextStyle"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="Ingredients"
+                    android:textSize="25sp" />
+
+                <android.support.v7.widget.CardView
+                    style="@style/BaseCardViewStyle"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="1dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:contentPadding="@dimen/activity_horizontal_margin">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv_ingredients"
+                        style="@style/BaseTextViewStyle.NutrientTextStyle" />
+                    <!--android:text="@{viewModel.ingredients.get.isEmpty ? View.GONE : View.VISIBLE}" />-->
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/BaseTextViewStyle.NutrientTextStyle"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="Nutrients balance"
+                    android:textSize="25sp" />
+
+                <android.support.v7.widget.CardView
+                    style="@style/BaseCardViewStyle"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="1dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:contentPadding="@dimen/activity_horizontal_margin">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pie_chart"
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        android:layout_gravity="center" />
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
