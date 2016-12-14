@@ -7,8 +7,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 
+import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
+import com.mlsdev.recipefinder.data.source.BaseObserver;
 import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
@@ -16,7 +18,6 @@ import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,11 +37,9 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
     }
 
     public void onAnalyzeButtonClick(View view) {
-        if (ingredients.isEmpty()){
-            Intent showErrorIntent = new Intent(MainActivity.AppBroadcastReceiver.SHOW_ERROR_ACTION);
-            showErrorIntent.putExtra(Extras.ALERT_DIALOG_TITLE, "No Ingredients");
-            showErrorIntent.putExtra(Extras.ALERT_DIALOG_MESSAGE, "You haven't added any ingredients. At list one ingredient is needed to perform the recipe analysis. Please add one or more and try again.");
-            LocalBroadcastManager.getInstance(context).sendBroadcast(showErrorIntent);
+        if (ingredients.isEmpty()) {
+            showErrorAlertDialog(context.getString(R.string.no_ingredients_error_title),
+                    context.getString(R.string.no_ingredients_error_message));
             return;
         }
 
@@ -55,19 +54,7 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
         Subscription subscription = repository.getRecipeAnalysisData(recipeAnalysisParams)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<NutritionAnalysisResult>() {
-                    @Override
-                    public void onCompleted() {
-                        // TODO: 12/13/16 progress bar handling
-                        Log.d(MainActivity.LOG_TAG, "onCompleted()");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // TODO: 12/13/16 handle errors
-                        Log.e(MainActivity.LOG_TAG, e.getMessage());
-                    }
-
+                .subscribe(new BaseObserver<NutritionAnalysisResult>() {
                     @Override
                     public void onNext(NutritionAnalysisResult nutritionAnalysisResult) {
                         // TODO: 12/13/16 show results
@@ -76,6 +63,13 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
                 });
 
         subscriptions.add(subscription);
+    }
+
+    private void showErrorAlertDialog(String title, String message) {
+        Intent showErrorIntent = new Intent(MainActivity.AppBroadcastReceiver.SHOW_ERROR_ACTION);
+        showErrorIntent.putExtra(Extras.ALERT_DIALOG_TITLE, title);
+        showErrorIntent.putExtra(Extras.ALERT_DIALOG_MESSAGE, message);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(showErrorIntent);
     }
 
     /**

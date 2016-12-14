@@ -28,6 +28,8 @@
     <string name="label_no_favorites">You have no favorites yet</string>
     <string name="btn_analyze">Analyze</string>
     <string name="btn_add">add</string>
+    <string name="no_ingredients_error_title">No Ingredients</string>
+    <string name="no_ingredients_error_message">You haven\'t added any ingredients. At list one ingredient is needed to perform the recipe analysis. Please add one or more and try again.</string>
 
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>
