@@ -14,14 +14,12 @@ import android.widget.TextView;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.listener.OnIngredientAnalyzedListener;
-import com.mlsdev.recipefinder.view.utils.ResourcesUtils;
+import com.mlsdev.recipefinder.view.utils.DiagramUtils;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.ArrayList;
@@ -146,23 +144,9 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
 
         diagramVisibility.set(entries.isEmpty() ? View.GONE : View.VISIBLE);
 
-        PieDataSet pieDataSet = new PieDataSet(entries, "Nutrition");
-        pieDataSet.setSliceSpace(1.5f);
-        pieDataSet.setSelectionShift(2f);
+        PieDataSet pieDataSet = DiagramUtils.createPieDataSet(context, entries, "Nutrients", null);
+        PieData pieData = DiagramUtils.createPieData(context, pieDataSet);
 
-        pieDataSet.setDrawValues(true);
-
-        ArrayList<Integer> colors = new ArrayList<>(3);
-        colors.add(ResourcesUtils.getColor(context, R.color.colorPrimaryDark));
-        colors.add(ResourcesUtils.getColor(context, R.color.colorPrimary));
-        colors.add(ResourcesUtils.getColor(context, R.color.colorAccent));
-
-        pieDataSet.setColors(colors);
-
-        PieData pieData = new PieData(pieDataSet);
-        pieData.setValueFormatter(new PercentFormatter());
-        pieData.setValueTextSize(15f);
-        pieData.setValueTextColor(ResourcesUtils.getColor(context, android.R.color.white));
         onIngredientAnalyzedListener.onIngredientAnalyzed(pieData);
         diagramVisibility.set(View.VISIBLE);
     }
