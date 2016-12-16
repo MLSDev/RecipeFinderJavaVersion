@@ -1,9 +1,10 @@
 package com.mlsdev.recipefinder.view.viewmodel;
 
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.databinding.ObservableInt;
-import android.view.View;
+import android.support.annotation.Nullable;
 
+import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.source.repository.DataRepository;
 
 import rx.subscriptions.CompositeSubscription;
@@ -12,16 +13,28 @@ public class BaseViewModel {
     protected Context context;
     protected DataRepository repository;
     protected CompositeSubscription subscriptions;
-    public final ObservableInt loadContentProgressBarVisibility;
+    private ProgressDialog progressDialog;
 
     public BaseViewModel(Context context) {
         this.context = context;
         repository = DataRepository.getInstance(context);
         subscriptions = new CompositeSubscription();
-        loadContentProgressBarVisibility = new ObservableInt(View.INVISIBLE);
     }
 
-    public void onDestroy(){
+    public void onDestroy() {
         subscriptions.clear();
+    }
+
+    protected void showProgressDialog(boolean isShow, @Nullable String message) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(context, R.style.AlertDialogAppCompat);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage(message);
+        }
+
+        if (isShow)
+            progressDialog.show();
+        else
+            progressDialog.hide();
     }
 }

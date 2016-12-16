@@ -67,7 +67,7 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
     public void onAnalyzeButtonClick(View view) {
         ((MainActivity) activity).hideSoftKeyboard();
 
-        loadContentProgressBarVisibility.set(View.VISIBLE);
+        showProgressDialog(true, "Analysing...");
 
         Map<String, String> params = new ArrayMap<>();
         params.put(ParameterKeys.INGREDIENT, ingredientText.get());
@@ -77,12 +77,12 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
                 .subscribe(new Observer<NutritionAnalysisResult>() {
                     @Override
                     public void onCompleted() {
-                        loadContentProgressBarVisibility.set(View.INVISIBLE);
+                        showProgressDialog(false, null);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        loadContentProgressBarVisibility.set(View.INVISIBLE);
+                        showProgressDialog(false, null);
                         Log.e(MainActivity.LOG_TAG, e.getMessage());
                     }
 

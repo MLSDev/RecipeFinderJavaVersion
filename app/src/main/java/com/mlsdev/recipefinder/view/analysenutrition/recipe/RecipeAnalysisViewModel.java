@@ -43,6 +43,8 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
             return;
         }
 
+        showProgressDialog(true, "Analysing...");
+
         RecipeAnalysisParams recipeAnalysisParams = new RecipeAnalysisParams();
         recipeAnalysisParams.setTitle(title.get());
         recipeAnalysisParams.setYield(yield.get());
@@ -57,6 +59,7 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
                 .subscribe(new BaseObserver<NutritionAnalysisResult>() {
                     @Override
                     public void onNext(NutritionAnalysisResult nutritionAnalysisResult) {
+                        showProgressDialog(false, null);
                         Log.d(MainActivity.LOG_TAG, "onNext()");
                         Intent intent = new Intent(context, RecipeAnalysisDetailsActivity.class);
                         intent.putExtra(RecipeAnalysisDetailsActivity.RECIPE_ANALYSING_RESULT_KEY, nutritionAnalysisResult);

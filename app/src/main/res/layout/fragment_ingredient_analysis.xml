@@ -121,15 +121,6 @@
 
             </ScrollView>
 
-            <FrameLayout
-                android:id="@+id/fl_progress_bar_wrapper"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:visibility="@{viewModel.loadContentProgressBarVisibility}">
-
-                <include layout="@layout/progress_view" />
-            </FrameLayout>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </layout>

@@ -92,18 +92,6 @@
                 android:text="@{viewModel.searchLabelText}" />
         </LinearLayout>
 
-        <!--Progress Bars-->
-
-        <FrameLayout
-            android:id="@+id/fl_progress_bar_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorProgressBarWrapper"
-            android:visibility="@{viewModel.loadContentProgressBarVisibility}">
-
-            <include layout="@layout/progress_view" />
-        </FrameLayout>
-
         <android.support.v4.widget.ContentLoadingProgressBar
             android:id="@+id/pb_load_more_progress"
             style="?android:attr/progressBarStyleHorizontal"

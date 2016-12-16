@@ -75,7 +75,7 @@ public class SearchViewModel extends BaseViewModel {
         searchParams.put(ParameterKeys.QUERY, searchText);
         subscriptions.clear();
 
-        loadContentProgressBarVisibility.set(forceUpdate ? View.INVISIBLE : View.VISIBLE);
+        showProgressDialog(!forceUpdate, "Searching...");
         searchLabelVisibility.set(View.INVISIBLE);
 
         Subscription subscription = repository.searchRecipes(searchParams)
@@ -176,13 +176,13 @@ public class SearchViewModel extends BaseViewModel {
         @Override
         public void onCompleted() {
             loadMoreProgressBarVisibility.set(View.INVISIBLE);
-            loadContentProgressBarVisibility.set(View.INVISIBLE);
+            showProgressDialog(false, null);
         }
 
         @Override
         public void onError(Throwable e) {
             loadMoreProgressBarVisibility.set(View.INVISIBLE);
-            loadContentProgressBarVisibility.set(View.INVISIBLE);
+            showProgressDialog(false, null);
             Log.d(MainActivity.LOG_TAG, e.getMessage());
         }
 
