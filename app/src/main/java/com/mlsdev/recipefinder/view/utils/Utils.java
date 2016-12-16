@@ -4,7 +4,9 @@ import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 
-public class ResourcesUtils {
+import java.text.DecimalFormat;
+
+public class Utils {
 
     public static @ColorInt int getColor(Context context, @ColorRes int colorResId) {
         @ColorInt int color = 0;
@@ -16,4 +18,7 @@ public class ResourcesUtils {
         return color;
     }
 
+    public static String formatDecimalToString(double value) {
+        return new DecimalFormat("#0.00").format(value);
+    }
 }

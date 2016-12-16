@@ -134,16 +134,8 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
 
     private void prepareDiagramData(TotalNutrients nutrients) {
 
-        ArrayList<PieEntry> entries = new ArrayList<>(3);
-        if (nutrients.getProtein() != null)
-            entries.add(new PieEntry((float) nutrients.getProtein().getQuantity(), nutrients.getProtein().getLabel()));
-        if (nutrients.getFat() != null)
-            entries.add(new PieEntry((float) nutrients.getFat().getQuantity(), nutrients.getFat().getLabel()));
-        if (nutrients.getCarbs() != null)
-            entries.add(new PieEntry((float) nutrients.getCarbs().getQuantity(), nutrients.getCarbs().getLabel()));
-
+        ArrayList<PieEntry> entries = DiagramUtils.preparePieEntries(nutrients);
         diagramVisibility.set(entries.isEmpty() ? View.GONE : View.VISIBLE);
-
         PieDataSet pieDataSet = DiagramUtils.createPieDataSet(context, entries, "Nutrients", null);
         PieData pieData = DiagramUtils.createPieData(context, pieDataSet);
 

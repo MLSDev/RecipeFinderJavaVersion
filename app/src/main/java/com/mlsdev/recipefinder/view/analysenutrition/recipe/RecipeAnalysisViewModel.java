@@ -57,8 +57,10 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
                 .subscribe(new BaseObserver<NutritionAnalysisResult>() {
                     @Override
                     public void onNext(NutritionAnalysisResult nutritionAnalysisResult) {
-                        // TODO: 12/13/16 show results
                         Log.d(MainActivity.LOG_TAG, "onNext()");
+                        Intent intent = new Intent(context, RecipeAnalysisDetailsActivity.class);
+                        intent.putExtra(RecipeAnalysisDetailsActivity.RECIPE_ANALYSING_RESULT_KEY, nutritionAnalysisResult);
+                        context.startActivity(intent);
                     }
                 });
 

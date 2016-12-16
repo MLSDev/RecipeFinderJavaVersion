@@ -3,9 +3,9 @@ package com.mlsdev.recipefinder.data.entity.nutrition;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.mlsdev.recipefinder.view.utils.Utils;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 
 @DatabaseTable(tableName = "analyzed_nutrients")
 public class Nutrient implements Serializable {
@@ -34,7 +34,7 @@ public class Nutrient implements Serializable {
     }
 
     public String getFormattedFullText() {
-        return label + " " + new DecimalFormat("#0.00").format(quantity) + " " + unit;
+        return label + " " + Utils.formatDecimalToString(quantity) + " " + unit;
     }
 
     public Nutrient() {

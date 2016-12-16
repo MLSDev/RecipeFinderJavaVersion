@@ -23,7 +23,7 @@ public class IngredientAnalysisFragment extends Fragment implements OnIngredient
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ingredient_analysis, container, false);
         viewModel = new IngredientAnalysisViewModel((AppCompatActivity) getActivity(), this);
         binding.setViewModel(viewModel);
-        DiagramUtils.preparePieChrt(getActivity(), binding.pieChart);
+        DiagramUtils.preparePieChart(getActivity(), binding.pieChart);
         return binding.getRoot();
     }
 

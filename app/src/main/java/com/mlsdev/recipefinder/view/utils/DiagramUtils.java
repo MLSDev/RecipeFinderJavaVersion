@@ -11,13 +11,26 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DiagramUtils {
 
-    public static PieChart preparePieChrt(Context context, PieChart pieChart) {
+    public static ArrayList<PieEntry> preparePieEntries(TotalNutrients nutrients) {
+        ArrayList<PieEntry> entries = new ArrayList<>(3);
+        if (nutrients.getProtein() != null)
+            entries.add(new PieEntry((float) nutrients.getProtein().getQuantity(), nutrients.getProtein().getLabel()));
+        if (nutrients.getFat() != null)
+            entries.add(new PieEntry((float) nutrients.getFat().getQuantity(), nutrients.getFat().getLabel()));
+        if (nutrients.getCarbs() != null)
+            entries.add(new PieEntry((float) nutrients.getCarbs().getQuantity(), nutrients.getCarbs().getLabel()));
+
+        return entries;
+    }
+
+    public static PieChart preparePieChart(Context context, PieChart pieChart) {
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
@@ -26,7 +39,7 @@ public class DiagramUtils {
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(android.R.color.transparent);
 
-        pieChart.setTransparentCircleColor(ResourcesUtils.getColor(context, android.R.color.white));
+        pieChart.setTransparentCircleColor(Utils.getColor(context, android.R.color.white));
         pieChart.setTransparentCircleAlpha(50);
 
         pieChart.setHoleRadius(40f);
@@ -40,7 +53,7 @@ public class DiagramUtils {
         pieChart.setRotationEnabled(false);
         pieChart.setHighlightPerTapEnabled(true);
         pieChart.setDrawEntryLabels(true);
-        pieChart.setEntryLabelColor(ResourcesUtils.getColor(context, android.R.color.white));
+        pieChart.setEntryLabelColor(Utils.getColor(context, android.R.color.white));
         pieChart.setEntryLabelTextSize(15f);
 
         Legend l = pieChart.getLegend();
@@ -64,9 +77,9 @@ public class DiagramUtils {
 
         if (colors == null) {
             colors = new ArrayList<>(3);
-            colors.add(ResourcesUtils.getColor(context, R.color.colorPrimaryDark));
-            colors.add(ResourcesUtils.getColor(context, R.color.colorPrimary));
-            colors.add(ResourcesUtils.getColor(context, R.color.colorAccent));
+            colors.add(Utils.getColor(context, R.color.colorPrimaryDark));
+            colors.add(Utils.getColor(context, R.color.colorPrimary));
+            colors.add(Utils.getColor(context, R.color.colorAccent));
         }
 
         pieDataSet.setColors(colors);
@@ -77,7 +90,7 @@ public class DiagramUtils {
         PieData pieData = new PieData(pieDataSet);
         pieData.setValueFormatter(new PercentFormatter());
         pieData.setValueTextSize(15f);
-        pieData.setValueTextColor(ResourcesUtils.getColor(context, android.R.color.white));
+        pieData.setValueTextColor(Utils.getColor(context, android.R.color.white));
         return pieData;
     }
 

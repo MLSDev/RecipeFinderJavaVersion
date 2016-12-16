@@ -20,6 +20,8 @@ public class NutritionAnalysisResult implements Serializable {
     @SerializedName("totalWeight")
     @DatabaseField
     private double totalWeight;
+    @SerializedName("yield")
+    private double yield;
     @SerializedName("dietLabels")
     private List<String> dietLabels = new ArrayList<>();
     @SerializedName("healthLabels")
@@ -56,6 +58,10 @@ public class NutritionAnalysisResult implements Serializable {
 
     public TotalNutrients getTotalNutrients() {
         return totalNutrients;
+    }
+
+    public double getYield() {
+        return yield;
     }
 
     public NutritionAnalysisResult() {

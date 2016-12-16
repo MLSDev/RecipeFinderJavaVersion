@@ -14,7 +14,7 @@ import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeViewModel;
 import com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter;
-import com.mlsdev.recipefinder.view.utils.ResourcesUtils;
+import com.mlsdev.recipefinder.view.utils.Utils;
 
 import java.util.List;
 
@@ -52,9 +52,9 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
         swipeRefreshLayout = refreshLayout;
         swipeRefreshLayout.setOnRefreshListener(listener);
         swipeRefreshLayout.setColorSchemeColors(
-                ResourcesUtils.getColor(getActivity(), R.color.colorPrimaryDark),
-                ResourcesUtils.getColor(getActivity(), R.color.colorPrimary),
-                ResourcesUtils.getColor(getActivity(), R.color.colorAccent)
+                Utils.getColor(getActivity(), R.color.colorPrimaryDark),
+                Utils.getColor(getActivity(), R.color.colorPrimary),
+                Utils.getColor(getActivity(), R.color.colorAccent)
         );
     }
 

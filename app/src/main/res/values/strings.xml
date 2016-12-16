@@ -10,6 +10,8 @@
     <string name="navigation_title_search">Search</string>
     <string name="navigation_title_favorites">Favorites</string>
 
+    <string name="title_recipe_analysing_details">Recipe analysing details</string>
+
     <string name="tab_nutrition_analysis">Nutrition</string>
     <string name="tab_recipe_analysis">Recipe</string>
 
@@ -30,6 +32,10 @@
     <string name="btn_add">add</string>
     <string name="no_ingredients_error_title">No Ingredients</string>
     <string name="no_ingredients_error_message">You haven\'t added any ingredients. At list one ingredient is needed to perform the recipe analysis. Please add one or more and try again.</string>
+
+    <string name="calories">Calories: %1$d</string>
+    <string name="total_weight">Total weight: %1$s</string>
+    <string name="yields">Yields: %1$s</string>
 
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>
