@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
+import com.mlsdev.recipefinder.databinding.RecipeListItemBinding;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
@@ -26,7 +27,7 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
 
 
     @Override
-    public void onItemClicked(Recipe recipe) {
+    public void onItemClicked(Recipe recipe, RecipeListItemBinding binding) {
         Bundle recipeData = new Bundle();
         recipeData.putSerializable(RecipeViewModel.RECIPE_DATA_KEY, recipe);
         Fragment fragment = new RecipeDetailsFragment();

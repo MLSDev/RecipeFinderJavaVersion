@@ -79,7 +79,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
         @Override
         public void onClick(View view) {
-            onItemClickListener.onItemClicked(binding.getViewModel().getRecipe());
+            onItemClickListener.onItemClicked(binding.getViewModel().getRecipe(), binding);
         }
     }
 
@@ -87,8 +87,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         void onLastItemShown();
     }
 
-    public interface OnItemClickListener{
-        void onItemClicked(Recipe recipe);
+    public interface OnItemClickListener {
+        void onItemClicked(Recipe recipe, RecipeListItemBinding binding);
     }
 
 }

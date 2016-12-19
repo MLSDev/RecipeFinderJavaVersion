@@ -15,6 +15,7 @@ public final class DataBinder {
     public static void setImageUrl(ImageView imageView, String imageUrl) {
         Glide.with(imageView.getContext())
                 .load(imageUrl)
+                .override(600, 400)
                 .error(R.mipmap.ic_launcher)
                 .into(imageView);
     }

@@ -1,6 +1,8 @@
 package com.mlsdev.recipefinder.view.recipedetails;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +27,14 @@ public class RecipeDetailsFragment extends Fragment {
         ((MainActivity) getActivity()).setSupportActionBar(binding.toolbar);
         if (((MainActivity) getActivity()).getSupportActionBar() != null) {
             ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        Bitmap bitmap = getArguments().getParcelable("image");
+        if (bitmap != null)
+            binding.ivRecipeImage.setImageBitmap(bitmap);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            binding.ivRecipeImage.setTransitionName("sharedImage");
         }
 
         return binding.getRoot();
