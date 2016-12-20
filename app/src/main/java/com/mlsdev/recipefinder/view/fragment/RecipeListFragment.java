@@ -1,5 +1,7 @@
 package com.mlsdev.recipefinder.view.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,7 +48,10 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
         }
 
         recipeData.putSerializable(Extras.DATA, recipe);
-        recipeData.putParcelable(Extras.IMAGE_DATA, ((GlideBitmapDrawable) itemBinding.ivRecipeImage.getDrawable()).getBitmap());
+        Bitmap bitmapImage = itemBinding.ivRecipeImage.getDrawable() instanceof GlideBitmapDrawable ?
+                ((GlideBitmapDrawable) itemBinding.ivRecipeImage.getDrawable()).getBitmap() :
+                ((BitmapDrawable) itemBinding.ivRecipeImage.getDrawable()).getBitmap();
+        recipeData.putParcelable(Extras.IMAGE_DATA, bitmapImage);
         recipeData.putString(Extras.IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(itemBinding.ivRecipeImage));
 
         fragment.setArguments(recipeData);
