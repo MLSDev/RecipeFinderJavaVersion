@@ -71,7 +71,7 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             pair1 = Pair.create((View) itemBinding.ivRecipeImage, itemBinding.ivRecipeImage.getTransitionName());
             Pair<View, String> pair2 = Pair.create((View) itemBinding.tvRecipeTitle, itemBinding.tvRecipeTitle.getTransitionName());
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pair1, pair2);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pair1);
             Intent intent = new Intent(getActivity(), RecipeDetailsActivity.class);
             intent.putExtras(recipeData);
             startActivity(intent, options.toBundle());

@@ -35,6 +35,6 @@ public class BaseViewModel {
         if (isShow)
             progressDialog.show();
         else
-            progressDialog.hide();
+            progressDialog.dismiss();
     }
 }
