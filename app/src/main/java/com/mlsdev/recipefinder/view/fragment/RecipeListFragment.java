@@ -1,15 +1,20 @@
 package com.mlsdev.recipefinder.view.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
+import android.transition.TransitionInflater;
 
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.databinding.RecipeListItemBinding;
-import com.mlsdev.recipefinder.view.MainActivity;
+import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
@@ -27,12 +32,32 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
 
 
     @Override
-    public void onItemClicked(Recipe recipe, RecipeListItemBinding binding) {
+    public void onItemClicked(Recipe recipe, RecipeListItemBinding itemBinding) {
         Bundle recipeData = new Bundle();
-        recipeData.putSerializable(RecipeViewModel.RECIPE_DATA_KEY, recipe);
         Fragment fragment = new RecipeDetailsFragment();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setSharedElementReturnTransition(TransitionInflater.from(getActivity())
+                    .inflateTransition(R.transition.change_image_transform));
+            setExitTransition(new Fade());
+
+            fragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity())
+                    .inflateTransition(R.transition.change_image_transform));
+            fragment.setEnterTransition(new Fade());
+        }
+
+        recipeData.putSerializable(RecipeViewModel.RECIPE_DATA_KEY, recipe);
+        recipeData.putParcelable(Extras.IMAGE_DATA, ((GlideBitmapDrawable) itemBinding.ivRecipeImage.getDrawable()).getBitmap());
+        recipeData.putString(Extras.IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(itemBinding.ivRecipeImage));
+
         fragment.setArguments(recipeData);
-        ((MainActivity) getActivity()).addFragmentToBackstack(fragment);
+
+        getFragmentManager()
+                .beginTransaction()
+                .addToBackStack("RecipeDetails")
+                .replace(R.id.fl_content, fragment)
+                .addSharedElement(itemBinding.ivRecipeImage, ViewCompat.getTransitionName(itemBinding.ivRecipeImage))
+                .commit();
     }
 
     @Override

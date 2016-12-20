@@ -37,6 +37,8 @@
     <string name="total_weight">Total weight: %1$s</string>
     <string name="yields">Yields: %1$s</string>
 
+    <string name="shared_image_prefix">sharedImage%1$s</string>
+
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>
         <item>High-Fiber</item>

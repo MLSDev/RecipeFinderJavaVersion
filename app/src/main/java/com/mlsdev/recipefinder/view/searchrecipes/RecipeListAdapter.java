@@ -2,6 +2,7 @@ package com.mlsdev.recipefinder.view.searchrecipes;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 binding.getViewModel().setRecipe(recipe);
 
             binding.getRoot().setOnClickListener(this);
+            ViewCompat.setTransitionName(binding.ivRecipeImage, binding.getRoot().getContext()
+                    .getString(R.string.shared_image_prefix, String.valueOf(getAdapterPosition())));
         }
 
         @Override

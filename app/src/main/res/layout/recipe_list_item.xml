@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="225dp"
             android:scaleType="centerCrop"
-            android:transitionName="sharedImage"
             app:imageUrl="@{viewModel.recipeImageUrl}" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -33,7 +32,6 @@
             android:layout_gravity="bottom"
             android:gravity="bottom|center_horizontal"
             android:paddingBottom="16dp"
-            android:transitionName="sharedText"
             android:text="@{viewModel.recipeTitle}" />
 
     </android.support.v7.widget.CardView>

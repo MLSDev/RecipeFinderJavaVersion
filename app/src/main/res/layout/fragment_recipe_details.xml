@@ -33,9 +33,7 @@
                     android:layout_height="match_parent"
                     android:foreground="@drawable/recipe_item_title_bg"
                     android:scaleType="centerCrop"
-                    android:transitionName="sharedImage"
                     app:layout_collapseMode="parallax" />
-                <!--app:imageUrl="@{viewModel.recipeImageUrl}"-->
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
