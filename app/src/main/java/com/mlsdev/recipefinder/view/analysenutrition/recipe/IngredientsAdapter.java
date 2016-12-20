@@ -116,6 +116,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public class IngredientViewModel extends BaseViewModel {
+        private int position;
         public final ObservableField<String> text;
         public final ObservableField<String> number;
 
@@ -126,12 +127,13 @@ public class IngredientsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
 
         public void onCancelButtonClick(View button) {
-            removeItem(Integer.parseInt(number.get()) - 1);
+            removeItem(position - 1);
         }
 
         public void setIngredient(String text, int position) {
             this.text.set(text);
-            number.set(String.valueOf(position));
+            this.position = position;
+            number.set(context.getString(R.string.ingredient_order_number, position));
         }
     }
 

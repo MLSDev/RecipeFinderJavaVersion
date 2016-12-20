@@ -6,10 +6,12 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.view.View;
 
+import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
 import com.mlsdev.recipefinder.view.Extras;
+import com.mlsdev.recipefinder.view.utils.Utils;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.Collection;
@@ -64,7 +66,12 @@ public class RecipeViewModel extends BaseViewModel {
             if (!ingredientsAsString.isEmpty())
                 ingredientsAsString = ingredientsAsString.concat(",\n");
 
-            ingredientsAsString = ingredientsAsString.concat(ingredient.getText() + "; Weight: " + ingredient.getWeight());
+            ingredientsAsString = ingredientsAsString.concat(
+                    context.getString(
+                            R.string.ingredient_item,
+                            ingredient.getText(),
+                            Utils.formatDecimalToString(ingredient.getWeight()))
+            );
         }
 
         return ingredientsAsString;

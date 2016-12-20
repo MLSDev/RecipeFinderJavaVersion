@@ -38,6 +38,8 @@
     <string name="yields">Yields: %1$s</string>
 
     <string name="shared_image_prefix">sharedImage%1$s</string>
+    <string name="ingredient_item" formatted="true">%1$s; Weight: %2$s</string>
+    <string name="ingredient_order_number" formatted="true">%1$d)</string>
 
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>
