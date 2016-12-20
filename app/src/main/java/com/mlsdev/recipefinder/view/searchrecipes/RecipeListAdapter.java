@@ -23,6 +23,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private OnItemClickListener onItemClickListener;
     private static final int ITEM = 0;
     private static final int PROGRESS_VIEW = 1;
+    private boolean isLoadMoreItems = true;
     private List<Recipe> recipes;
 
     public RecipeListAdapter(@NonNull OnLastItemShownListener onLastItemShownListener,
@@ -68,16 +69,17 @@ public class RecipeListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemCount() {
         int itemCount = recipes.size();
-        itemCount = (itemCount % 10 == 0) && (itemCount > 0) ? itemCount + PROGRESS_VIEW : itemCount;
+        itemCount = (itemCount % 10 == 0) && (itemCount > 0) && isLoadMoreItems ? itemCount + PROGRESS_VIEW : itemCount;
         return itemCount;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return !recipes.isEmpty() && position < recipes.size() ? ITEM : PROGRESS_VIEW;
+        return (!recipes.isEmpty()) && (position < recipes.size()) ? ITEM : PROGRESS_VIEW;
     }
 
     public void setData(List<Recipe> recipes) {
+        isLoadMoreItems = true;
         this.recipes.clear();
         this.recipes.addAll(recipes);
         notifyDataSetChanged();
@@ -85,8 +87,14 @@ public class RecipeListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public void setMoreData(List<Recipe> moreRecipes) {
         int insertPosition = recipes.size();
-        recipes.addAll(moreRecipes);
-        notifyItemRangeInserted(insertPosition, moreRecipes.size());
+        isLoadMoreItems = !moreRecipes.isEmpty();
+
+        if (moreRecipes.isEmpty()) {
+            notifyItemRemoved(getItemCount() - 1);
+        } else {
+            recipes.addAll(moreRecipes);
+            notifyItemRangeInserted(insertPosition, moreRecipes.size());
+        }
     }
 
     public class RecipeViewHolder extends BaseViewHolder implements View.OnClickListener {

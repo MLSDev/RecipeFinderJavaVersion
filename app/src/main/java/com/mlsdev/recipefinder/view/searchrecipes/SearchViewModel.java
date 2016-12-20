@@ -41,7 +41,6 @@ public class SearchViewModel extends BaseViewModel {
     private OnRecipesLoadedListener onRecipesLoadedListener;
     private Map<String, String> searchParams;
     private DialogFragment filterFragment;
-    private boolean moreRecipes = true;
 
     public SearchViewModel(@NonNull Fragment fragment, @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
         super(fragment.getActivity());
@@ -97,9 +96,6 @@ public class SearchViewModel extends BaseViewModel {
     }
 
     public void loadMoreRecipes() {
-        if (!moreRecipes)
-            return;
-
         Map<String, String> params = new ArrayMap<>();
         params.put(ParameterKeys.QUERY, this.searchText.get().toLowerCase());
         subscriptions.clear();
@@ -111,7 +107,6 @@ public class SearchViewModel extends BaseViewModel {
                 .subscribe(new SearchRecipesObserver<List<Recipe>>() {
                     @Override
                     public void onNext(List<Recipe> recipes) {
-                        moreRecipes = !recipes.isEmpty();
                         onRecipesLoadedListener.onMoreRecipesLoaded(recipes);
                     }
                 });

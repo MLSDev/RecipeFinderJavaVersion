@@ -57,6 +57,7 @@ public class DataRepository {
             return Observable.from(cachedRecipes).toList();
         }
 
+        more = true;
         cachedRecipes.clear();
 
         params.put(ParameterKeys.FROM, String.valueOf(0));
