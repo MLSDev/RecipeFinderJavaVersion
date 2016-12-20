@@ -92,16 +92,5 @@
                 android:text="@{viewModel.searchLabelText}" />
         </LinearLayout>
 
-        <android.support.v4.widget.ContentLoadingProgressBar
-            android:id="@+id/pb_load_more_progress"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@android:color/white"
-            android:indeterminate="true"
-            android:indeterminateBehavior="repeat"
-            android:visibility="@{viewModel.loadMoreProgressBarVisibility}" />
-
     </android.support.design.widget.CoordinatorLayout>
 </layout>

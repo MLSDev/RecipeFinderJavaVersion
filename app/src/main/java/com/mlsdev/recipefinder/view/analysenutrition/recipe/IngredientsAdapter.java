@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.AddIngredientButtonBinding;
 import com.mlsdev.recipefinder.databinding.IngredientListItemBinding;
+import com.mlsdev.recipefinder.view.analysenutrition.adapter.BaseViewHolder;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.ArrayList;

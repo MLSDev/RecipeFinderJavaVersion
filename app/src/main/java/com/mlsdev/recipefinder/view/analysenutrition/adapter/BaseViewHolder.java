@@ -1,4 +1,4 @@
-package com.mlsdev.recipefinder.view.analysenutrition.recipe;
+package com.mlsdev.recipefinder.view.analysenutrition.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -10,14 +10,19 @@ import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
+import com.mlsdev.recipefinder.databinding.ProgressViewBinding;
 import com.mlsdev.recipefinder.databinding.RecipeListItemBinding;
+import com.mlsdev.recipefinder.view.analysenutrition.adapter.BaseViewHolder;
+import com.mlsdev.recipefinder.view.analysenutrition.adapter.ProgressViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeViewHolder> {
+public class RecipeListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private OnLastItemShownListener onLastItemShownListener;
     private OnItemClickListener onItemClickListener;
+    private static final int ITEM = 0;
+    private static final int PROGRESS_VIEW = 1;
     private List<Recipe> recipes;
 
     public RecipeListAdapter(@NonNull OnLastItemShownListener onLastItemShownListener,
@@ -28,26 +33,48 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     @Override
-    public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecipeListItemBinding binding = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.getContext()),
-                R.layout.recipe_list_item,
-                parent,
-                false
-        );
-        return new RecipeViewHolder(binding);
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        if (viewType == ITEM) {
+            RecipeListItemBinding binding = DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.getContext()),
+                    R.layout.recipe_list_item,
+                    parent,
+                    false
+            );
+
+            return new RecipeViewHolder(binding);
+        } else {
+            ProgressViewBinding binding = DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.getContext()),
+                    R.layout.progress_view,
+                    parent,
+                    false
+            );
+
+            return new ProgressViewHolder(binding);
+        }
     }
 
     @Override
-    public void onBindViewHolder(RecipeViewHolder holder, int position) {
-        holder.bindRecipe(recipes.get(position));
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        holder.bindViewModel();
+
+        // if 1 item before the end of the list
         if (position == getItemCount() - 1)
             onLastItemShownListener.onLastItemShown();
     }
 
     @Override
     public int getItemCount() {
-        return recipes.size();
+        int itemCount = recipes.size();
+        itemCount = (itemCount % 10 == 0) && (itemCount > 0) ? itemCount + PROGRESS_VIEW : itemCount;
+        return itemCount;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return !recipes.isEmpty() && position < recipes.size() ? ITEM : PROGRESS_VIEW;
     }
 
     public void setData(List<Recipe> recipes) {
@@ -57,11 +84,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     public void setMoreData(List<Recipe> moreRecipes) {
+        int insertPosition = recipes.size();
         recipes.addAll(moreRecipes);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(insertPosition, moreRecipes.size());
     }
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class RecipeViewHolder extends BaseViewHolder implements View.OnClickListener {
         final RecipeListItemBinding binding;
 
         public RecipeViewHolder(RecipeListItemBinding binding) {
@@ -69,7 +97,15 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             this.binding = binding;
         }
 
-        void bindRecipe(Recipe recipe) {
+        @Override
+        public void onClick(View view) {
+            onItemClickListener.onItemClicked(binding.getViewModel().getRecipe(), binding);
+        }
+
+        @Override
+        public void bindViewModel() {
+            Recipe recipe = recipes.get(getAdapterPosition());
+
             if (binding.getViewModel() == null)
                 binding.setViewModel(new RecipeListItemViewModel(recipe));
             else
@@ -78,11 +114,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             binding.getRoot().setOnClickListener(this);
             ViewCompat.setTransitionName(binding.ivRecipeImage, binding.getRoot().getContext()
                     .getString(R.string.shared_image_prefix, String.valueOf(getAdapterPosition())));
-        }
-
-        @Override
-        public void onClick(View view) {
-            onItemClickListener.onItemClicked(binding.getViewModel().getRecipe(), binding);
         }
     }
 
