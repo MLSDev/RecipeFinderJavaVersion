@@ -20,7 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.analysenutrition.recipe.RecipeAnalysisDetailsActivity" />
-        <activity android:name=".view.recipedetails.RecipeDetailsActivity"></activity>
     </application>
 
 </manifest>
