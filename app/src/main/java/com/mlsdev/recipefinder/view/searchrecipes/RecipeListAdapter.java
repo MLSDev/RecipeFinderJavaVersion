@@ -62,7 +62,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         holder.bindViewModel();
 
         // if 1 item before the end of the list
-        if (position == getItemCount() - 1)
+        if ((position == getItemCount() - 1) && isLoadMoreItems)
             onLastItemShownListener.onLastItemShown();
     }
 

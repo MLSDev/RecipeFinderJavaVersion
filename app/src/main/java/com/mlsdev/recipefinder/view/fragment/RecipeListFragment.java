@@ -85,6 +85,7 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
 
     @Override
     public void onRecipesLoaded(List<Recipe> recipes) {
+        recipeRecyclerView.smoothScrollToPosition(0);
         recipeListAdapter.setData(recipes);
         stopRefreshing();
     }
