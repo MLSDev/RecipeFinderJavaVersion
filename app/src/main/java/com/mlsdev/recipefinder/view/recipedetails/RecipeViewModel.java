@@ -9,6 +9,7 @@ import android.view.View;
 import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
+import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.Collection;
@@ -19,7 +20,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class RecipeViewModel extends BaseViewModel {
-    public static final String RECIPE_DATA_KEY = "recipe_data_key";
     private Recipe recipe;
     public ObservableField<String> recipeTitle;
     public ObservableField<String> recipeImageUrl;
@@ -40,8 +40,8 @@ public class RecipeViewModel extends BaseViewModel {
         recipeIngredients = new ObservableField<>();
         favoriteImageStateChecked = new ObservableBoolean(false);
 
-        if (recipeData != null && recipeData.containsKey(RECIPE_DATA_KEY)) {
-            recipe = (Recipe) recipeData.getSerializable(RECIPE_DATA_KEY);
+        if (recipeData != null && recipeData.containsKey(Extras.DATA)) {
+            recipe = (Recipe) recipeData.getSerializable(Extras.DATA);
             if (recipe != null) {
                 recipeTitle.set(recipe.getLabel());
                 recipeImageUrl.set(recipe.getImage());

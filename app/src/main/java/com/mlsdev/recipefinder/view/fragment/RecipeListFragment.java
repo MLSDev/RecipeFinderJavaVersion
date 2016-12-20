@@ -18,7 +18,6 @@ import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
 import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
-import com.mlsdev.recipefinder.view.recipedetails.RecipeViewModel;
 import com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter;
 import com.mlsdev.recipefinder.view.utils.Utils;
 
@@ -46,7 +45,7 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
             fragment.setEnterTransition(new Fade());
         }
 
-        recipeData.putSerializable(RecipeViewModel.RECIPE_DATA_KEY, recipe);
+        recipeData.putSerializable(Extras.DATA, recipe);
         recipeData.putParcelable(Extras.IMAGE_DATA, ((GlideBitmapDrawable) itemBinding.ivRecipeImage.getDrawable()).getBitmap());
         recipeData.putString(Extras.IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(itemBinding.ivRecipeImage));
 
