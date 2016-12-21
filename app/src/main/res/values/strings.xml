@@ -40,6 +40,10 @@
     <string name="shared_image_prefix">sharedImage%1$s</string>
     <string name="ingredient_item" formatted="true">%1$s; Weight: %2$s</string>
     <string name="ingredient_order_number" formatted="true">%1$d)</string>
+    <string name="label_balance">Balance</string>
+    <string name="protein_label">protein</string>
+    <string name="label_carbs">carbs</string>
+    <string name="fat_label">fat</string>
 
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>

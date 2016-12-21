@@ -60,6 +60,78 @@
 
                 <android.support.v7.widget.CardView style="@style/RecipeDetailsBlockStyle">
 
+                    <RelativeLayout style="@style/RecipeDetailsBlockTextWrapperStyle">
+
+                        <TextView
+                            android:id="@+id/tv_balance_label"
+                            style="@style/BaseTextViewStyle.RecipeLabelStyle"
+                            android:text="@string/label_balance" />
+
+                        <TextView
+                            android:id="@+id/tv_protein_label"
+                            style="@style/BaseTextViewStyle.BalanceLabelStyle"
+                            android:layout_below="@id/tv_balance_label"
+                            android:text="@string/protein_label" />
+
+                        <TextView
+                            android:id="@+id/tv_carbs_label"
+                            style="@style/BaseTextViewStyle.BalanceLabelStyle"
+                            android:layout_below="@id/tv_protein_label"
+                            android:text="@string/label_carbs" />
+
+                        <TextView
+                            android:id="@+id/tv_fat_label"
+                            style="@style/BaseTextViewStyle.BalanceLabelStyle"
+                            android:layout_below="@id/tv_carbs_label"
+                            android:text="@string/fat_label" />
+
+                        <android.support.v4.widget.ContentLoadingProgressBar
+                            android:id="@+id/pb_protein_progress"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:progressDrawable="@drawable/progress_drawable"
+                            android:layout_alignTop="@id/tv_protein_label"
+                            android:layout_marginTop="6dp"
+                            android:layout_toLeftOf="@id/tv_protein_label"
+                            android:layout_toStartOf="@id/tv_protein_label"
+                            android:indeterminate="false"
+                            android:max="100"
+                            app:progressValue="@{viewModel.proteinProgressValue}" />
+
+                        <android.support.v4.widget.ContentLoadingProgressBar
+                            android:id="@+id/pb_carbs_progress"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:progressDrawable="@drawable/progress_drawable"
+                            android:layout_alignTop="@id/tv_carbs_label"
+                            android:layout_marginTop="6dp"
+                            android:layout_toLeftOf="@id/tv_carbs_label"
+                            android:layout_toStartOf="@id/tv_carbs_label"
+                            android:indeterminate="false"
+                            android:max="100"
+                            app:progressValue="@{viewModel.carbsProgressValue}" />
+
+                        <android.support.v4.widget.ContentLoadingProgressBar
+                            android:id="@+id/pb_fat_progress"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:progressDrawable="@drawable/progress_drawable"
+                            android:layout_alignTop="@id/tv_fat_label"
+                            android:layout_marginTop="6dp"
+                            android:layout_toLeftOf="@id/tv_fat_label"
+                            android:layout_toStartOf="@id/tv_fat_label"
+                            android:indeterminate="false"
+                            android:max="100"
+                            app:progressValue="@{viewModel.fatProgressValue}" />
+
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView style="@style/RecipeDetailsBlockStyle">
+
                     <LinearLayout style="@style/RecipeDetailsBlockTextWrapperStyle">
 
                         <TextView
