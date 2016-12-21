@@ -1,8 +1,10 @@
 package com.mlsdev.recipefinder.data.entity.recipe;
 
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.entity.recipe.stringwrapper.DietLabel;
 import com.mlsdev.recipefinder.data.entity.recipe.stringwrapper.HealthLabel;
 import com.mlsdev.recipefinder.data.entity.recipe.stringwrapper.Label;
@@ -44,6 +46,7 @@ public class Recipe implements Serializable {
     @SerializedName("totalWeight")
     private double totalWeight;
     @SerializedName("totalNutrients")
+    @DatabaseField(columnName = "total_nutrients", dataType = DataType.SERIALIZABLE)
     private TotalNutrients totalNutrients;
     @SerializedName("totalDaily")
     private TotalDaily totalDaily;

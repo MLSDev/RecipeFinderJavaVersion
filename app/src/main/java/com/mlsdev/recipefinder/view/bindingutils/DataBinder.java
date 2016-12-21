@@ -3,7 +3,6 @@ package com.mlsdev.recipefinder.view.bindingutils;
 import android.animation.ObjectAnimator;
 import android.databinding.BindingAdapter;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -26,9 +25,8 @@ public final class DataBinder {
     @BindingAdapter("progressValue")
     public static void setProgressValue(ContentLoadingProgressBar progressBar, int progressValue) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofInt(progressBar, "progress", 0, progressValue);
-        objectAnimator.setDuration(1000);
+        objectAnimator.setDuration(350);
         objectAnimator.setStartDelay(250);
-        objectAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         objectAnimator.start();
     }
 

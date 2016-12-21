@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
 
-@DatabaseTable(tableName = "analyzed_total_nutrients")
+@DatabaseTable(tableName = "total_nutrients")
 public class TotalNutrients implements Serializable {
     @DatabaseField(generatedId = true)
     private long id;

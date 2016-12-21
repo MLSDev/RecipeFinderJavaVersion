@@ -3,6 +3,7 @@ package com.mlsdev.recipefinder.view.recipedetails;
 import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.os.Bundle;
 import android.view.View;
 
@@ -29,18 +30,26 @@ public class RecipeViewModel extends BaseViewModel {
     public ObservableField<String> recipeDietLabels;
     public ObservableField<String> recipeIngredients;
     public ObservableBoolean favoriteImageStateChecked;
+    public final ObservableInt proteinProgressValue;
+    public final ObservableInt carbsProgressValue;
+    public final ObservableInt fatProgressValue;
     private Subscription removeFromFavoritesSubscription;
     private Subscription addFromFavoritesSubscription;
     private Subscription isInFavoritesSubscription;
+    public ObservableField<String> imageTransitionName;
 
     public RecipeViewModel(Context context, Bundle recipeData) {
         super(context);
+        proteinProgressValue = new ObservableInt(80);
+        carbsProgressValue = new ObservableInt(15);
+        fatProgressValue = new ObservableInt(43);
         recipeTitle = new ObservableField<>();
         recipeImageUrl = new ObservableField<>();
         recipeHealthLabels = new ObservableField<>();
         recipeDietLabels = new ObservableField<>();
         recipeIngredients = new ObservableField<>();
         favoriteImageStateChecked = new ObservableBoolean(false);
+        imageTransitionName = new ObservableField<>();
 
         if (recipeData != null && recipeData.containsKey(Extras.DATA)) {
             recipe = (Recipe) recipeData.getSerializable(Extras.DATA);
@@ -51,6 +60,11 @@ public class RecipeViewModel extends BaseViewModel {
                 recipeHealthLabels.set(getLabelsAsString(recipe.getHealthLabels()));
                 recipeDietLabels.set(getLabelsAsString(recipe.getDietLabels()));
                 recipeIngredients.set(getIngredientsAsString(recipe.getIngredients()));
+
+                double totalWeight = recipe.getTotalWeight();
+                proteinProgressValue.set(Utils.getPersents(totalWeight, recipe.getTotalNutrients().getProtein().getQuantity()));
+                carbsProgressValue.set(Utils.getPersents(totalWeight, recipe.getTotalNutrients().getCarbs().getQuantity()));
+                fatProgressValue.set(Utils.getPersents(totalWeight, recipe.getTotalNutrients().getFat().getQuantity()));
             }
         }
     }

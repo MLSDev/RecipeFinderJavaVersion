@@ -21,4 +21,8 @@ public class Utils {
     public static String formatDecimalToString(double value) {
         return new DecimalFormat("#0.00").format(value);
     }
+
+    public static int getPersents(double fullValue, double partValue) {
+        return (int) ((partValue / fullValue) * 100);
+    }
 }
