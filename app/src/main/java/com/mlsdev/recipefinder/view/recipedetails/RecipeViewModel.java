@@ -61,12 +61,26 @@ public class RecipeViewModel extends BaseViewModel {
                 recipeDietLabels.set(getLabelsAsString(recipe.getDietLabels()));
                 recipeIngredients.set(getIngredientsAsString(recipe.getIngredients()));
 
-                double totalWeight = recipe.getTotalWeight();
-                proteinProgressValue.set(Utils.getPersents(totalWeight, recipe.getTotalNutrients().getProtein().getQuantity()));
-                carbsProgressValue.set(Utils.getPersents(totalWeight, recipe.getTotalNutrients().getCarbs().getQuantity()));
-                fatProgressValue.set(Utils.getPersents(totalWeight, recipe.getTotalNutrients().getFat().getQuantity()));
+                setUpNutrients();
             }
         }
+    }
+
+    private void setUpNutrients() {
+        double totalWeight = recipe.getTotalWeight();
+
+        double proteinValue = recipe.getTotalNutrients().getProtein() != null
+                ? recipe.getTotalNutrients().getProtein().getQuantity() : 0d;
+
+        double carbsValue = recipe.getTotalNutrients().getCarbs() != null
+                ? recipe.getTotalNutrients().getCarbs().getQuantity() : 0d;
+
+        double fatValue = recipe.getTotalNutrients().getFat() != null
+                ? recipe.getTotalNutrients().getFat().getQuantity() : 0d;
+
+        proteinProgressValue.set(Utils.getPersents(totalWeight, proteinValue));
+        carbsProgressValue.set(Utils.getPersents(totalWeight, carbsValue));
+        fatProgressValue.set(Utils.getPersents(totalWeight, fatValue));
     }
 
     public void onStart() {
