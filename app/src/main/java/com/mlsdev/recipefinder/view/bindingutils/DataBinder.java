@@ -15,6 +15,9 @@ public final class DataBinder {
 
     @BindingAdapter("imageUrl")
     public static void setImageUrl(ImageView imageView, String imageUrl) {
+        if (imageUrl.isEmpty())
+            return;
+
         Glide.with(imageView.getContext())
                 .load(imageUrl)
                 .override(600, 400)

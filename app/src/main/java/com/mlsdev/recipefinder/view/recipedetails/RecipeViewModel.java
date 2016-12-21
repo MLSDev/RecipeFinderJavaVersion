@@ -55,8 +55,7 @@ public class RecipeViewModel extends BaseViewModel {
             recipe = (Recipe) recipeData.getSerializable(Extras.DATA);
             if (recipe != null) {
                 recipeTitle.set(recipe.getLabel());
-                recipeImageUrl.set(recipe.getImage());
-
+                recipeImageUrl.set(!recipeData.containsKey(Extras.IMAGE_DATA) ? recipe.getImage() : "");
                 recipeHealthLabels.set(getLabelsAsString(recipe.getHealthLabels()));
                 recipeDietLabels.set(getLabelsAsString(recipe.getDietLabels()));
                 recipeIngredients.set(getIngredientsAsString(recipe.getIngredients()));

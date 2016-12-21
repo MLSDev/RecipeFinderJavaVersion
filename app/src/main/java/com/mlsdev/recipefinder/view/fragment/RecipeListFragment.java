@@ -48,10 +48,14 @@ public class RecipeListFragment extends NavigationFragment implements RecipeList
         }
 
         recipeData.putSerializable(Extras.DATA, recipe);
-        Bitmap bitmapImage = itemBinding.ivRecipeImage.getDrawable() instanceof GlideBitmapDrawable ?
-                ((GlideBitmapDrawable) itemBinding.ivRecipeImage.getDrawable()).getBitmap() :
-                ((BitmapDrawable) itemBinding.ivRecipeImage.getDrawable()).getBitmap();
-        recipeData.putParcelable(Extras.IMAGE_DATA, bitmapImage);
+
+        if (itemBinding.ivRecipeImage.getDrawable() != null) {
+            Bitmap bitmapImage = itemBinding.ivRecipeImage.getDrawable() instanceof GlideBitmapDrawable ?
+                    ((GlideBitmapDrawable) itemBinding.ivRecipeImage.getDrawable()).getBitmap() :
+                    ((BitmapDrawable) itemBinding.ivRecipeImage.getDrawable()).getBitmap();
+            recipeData.putParcelable(Extras.IMAGE_DATA, bitmapImage);
+        }
+
         recipeData.putString(Extras.IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(itemBinding.ivRecipeImage));
 
         fragment.setArguments(recipeData);
