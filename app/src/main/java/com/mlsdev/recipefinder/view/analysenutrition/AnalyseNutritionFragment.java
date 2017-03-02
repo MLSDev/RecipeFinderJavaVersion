@@ -14,9 +14,9 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentAnalyseNutritionBinding;
 import com.mlsdev.recipefinder.view.analysenutrition.ingredient.IngredientAnalysisFragment;
 import com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisFragment;
-import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
+import com.mlsdev.recipefinder.view.fragments.TabFragment;
 
-public class AnalyseNutritionFragment extends NavigationFragment {
+public class AnalyseNutritionFragment extends TabFragment {
     public static final int INGREDIENT_ANALYSIS_FRAGMENT = 0;
     public static final int RECIPE_ANALYSIS_FRAGMENT = 1;
     public static final int PAGES_NUMBER = 2;

@@ -17,7 +17,7 @@ import com.mlsdev.recipefinder.databinding.ActivityMainBinding;
 public class MainActivity extends BaseActivity {
     public static final String LOG_TAG = "RECIPE_FINDER";
     private ActivityMainBinding binding;
-    private NavigationManager navigationManager;
+    private BottonNavigationItemSelectedListener bottonNavigationItemSelectedListener;
     private AppBroadcastReceiver broadcastReceiver;
 
 
@@ -44,9 +44,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initNavigation() {
-        navigationManager = new NavigationManager(getSupportFragmentManager());
-        binding.bnvNavigationView.setOnNavigationItemSelectedListener(navigationManager);
-        navigationManager.onNavigationItemSelected(binding.bnvNavigationView.getMenu().getItem(0));
+        bottonNavigationItemSelectedListener = new BottonNavigationItemSelectedListener(getSupportFragmentManager());
+        binding.bnvNavigationView.setOnNavigationItemSelectedListener(bottonNavigationItemSelectedListener);
+        bottonNavigationItemSelectedListener.onNavigationItemSelected(binding.bnvNavigationView.getMenu().getItem(0));
     }
 
     public void addFragmentToBackstack(Fragment fragment) {

@@ -1,5 +1,5 @@
 package com.mlsdev.recipefinder.view.enums;
 
-public enum NavigationItem {
+public enum TabItemType {
     ANALYSE, SEARCH, FAVORITES
 }

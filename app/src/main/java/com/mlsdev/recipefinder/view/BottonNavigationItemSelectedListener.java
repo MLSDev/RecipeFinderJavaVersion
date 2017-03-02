@@ -7,25 +7,25 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.view.fragments.NavigationFragment;
+import com.mlsdev.recipefinder.view.fragments.TabFragment;
 
-import static com.mlsdev.recipefinder.view.enums.NavigationItem.ANALYSE;
-import static com.mlsdev.recipefinder.view.enums.NavigationItem.FAVORITES;
-import static com.mlsdev.recipefinder.view.enums.NavigationItem.SEARCH;
+import static com.mlsdev.recipefinder.view.enums.TabItemType.ANALYSE;
+import static com.mlsdev.recipefinder.view.enums.TabItemType.FAVORITES;
+import static com.mlsdev.recipefinder.view.enums.TabItemType.SEARCH;
 
-public class NavigationManager implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class BottonNavigationItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
     private FragmentManager fragmentManager;
-    private NavigationFragment analyseNutritionFragment;
-    private NavigationFragment searchRecipesFragment;
-    private NavigationFragment favoriteRecipesFragment;
-    private NavigationFragment currentFragment;
+    private TabFragment analyseNutritionFragment;
+    private TabFragment searchRecipesFragment;
+    private TabFragment favoriteRecipesFragment;
+    private TabFragment currentFragment;
     private int checkedItemId = -1;
 
-    public NavigationManager(FragmentManager fragmentManager) {
+    public BottonNavigationItemSelectedListener(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
-        analyseNutritionFragment = NavigationFragment.getNewInstance(ANALYSE);
-        searchRecipesFragment = NavigationFragment.getNewInstance(SEARCH);
-        favoriteRecipesFragment = NavigationFragment.getNewInstance(FAVORITES);
+        analyseNutritionFragment = TabFragment.getNewInstance(ANALYSE);
+        searchRecipesFragment = TabFragment.getNewInstance(SEARCH);
+        favoriteRecipesFragment = TabFragment.getNewInstance(FAVORITES);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class NavigationManager implements BottomNavigationView.OnNavigationItemS
 
     }
 
-    private void replaceFragment(NavigationFragment fragment) {
+    private void replaceFragment(TabFragment fragment) {
         currentFragment = fragment;
 
         clearBackStack();

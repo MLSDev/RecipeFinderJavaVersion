@@ -4,16 +4,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.mlsdev.recipefinder.view.analysenutrition.AnalyseNutritionFragment;
-import com.mlsdev.recipefinder.view.enums.NavigationItem;
+import com.mlsdev.recipefinder.view.enums.TabItemType;
 import com.mlsdev.recipefinder.view.favoriterecipes.FavoriteRecipesFragment;
 import com.mlsdev.recipefinder.view.searchrecipes.SearchRecipesFragment;
 
-public abstract class NavigationFragment extends Fragment {
+public abstract class TabFragment extends Fragment {
 
     @Nullable
-    public static NavigationFragment getNewInstance(NavigationItem navigationItem) {
+    public static TabFragment getNewInstance(TabItemType tabItemType) {
 
-        switch (navigationItem) {
+        switch (tabItemType) {
             case ANALYSE:
                 return new AnalyseNutritionFragment();
             case SEARCH:
