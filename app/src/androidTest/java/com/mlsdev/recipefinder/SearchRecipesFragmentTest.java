@@ -1,5 +1,7 @@
 package com.mlsdev.recipefinder;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
@@ -9,7 +11,7 @@ import android.support.test.rule.ActivityTestRule;
 
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.RemoteDataSource;
-import com.mlsdev.recipefinder.idlingutils.BetterIdlingResource;
+import com.mlsdev.recipefinder.idlingutils.RxIdlingResource;
 import com.mlsdev.recipefinder.view.MainActivity;
 
 import org.junit.After;
@@ -22,6 +24,8 @@ import java.io.IOException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
+import static android.support.test.espresso.Espresso.registerIdlingResources;
+
 public class SearchRecipesFragmentTest {
     private String searchText = "chicken";
     private String firstRecipeTitle = "Grilled Deviled Chickens Under a Brick";
@@ -29,30 +33,31 @@ public class SearchRecipesFragmentTest {
     private String firstLoadMoreTitle = "Sour-Orange Yucatán Chickens";
     private int offset = 10;
     public MockWebServer mockWebServer;
-    private BetterIdlingResource idlingResource = new BetterIdlingResource();
+    private RxIdlingResource rxIdlingResource;
 
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() throws IOException {
-        Espresso.registerIdlingResources(idlingResource);
+        rxIdlingResource = new RxIdlingResource();
+        registerIdlingResources(rxIdlingResource);
         mockWebServer = new MockWebServer();
         mockWebServer.start();
         RemoteDataSource.setBaseUrl(mockWebServer.url("/").url().toString());
+        Context context = InstrumentationRegistry.getContext();
+        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getSearchResultJsonData(context)));
+        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getMoreRecipesJsonData(context)));
     }
 
     @After
     public void tearDown() throws IOException {
-        Espresso.unregisterIdlingResources(idlingResource);
+        Espresso.unregisterIdlingResources(rxIdlingResource);
         mockWebServer.shutdown();
     }
 
     @Test
     public void testStartSearching() {
-        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getSearchResultJsonData(rule.getActivity())));
-        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getMoreRecipesJsonData(rule.getActivity())));
-
         Espresso.onView(ViewMatchers.withId(R.id.et_search))
                 .perform(ViewActions.typeText(searchText))
                 .perform(ViewActions.pressImeActionButton())
@@ -68,7 +73,7 @@ public class SearchRecipesFragmentTest {
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
 
         // Scroll to top and click upon the first item
-        Recipe recipe = AssetUtils.getRecipeEntity(rule.getActivity());
+        Recipe recipe = AssetUtils.getRecipeEntity(InstrumentationRegistry.getContext());
         Espresso.onView(ViewMatchers.withId(R.id.rv_recipe_list))
                 .perform(RecyclerViewActions.scrollToPosition(0));
 
@@ -76,9 +81,6 @@ public class SearchRecipesFragmentTest {
                 .perform(ViewActions.click());
 
         Espresso.onView(ViewMatchers.withId(R.id.tv_health_labels))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-
-        Espresso.onView(ViewMatchers.withId(R.id.tv_diet_labels))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
 
         Espresso.onView(ViewMatchers.withId(R.id.iv_recipe_image))
