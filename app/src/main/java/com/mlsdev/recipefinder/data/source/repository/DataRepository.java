@@ -29,14 +29,12 @@ public class DataRepository {
     private boolean more = true;
 
     private static DataRepository instance;
-    private DataSource remoteDataSource;
     private DataSource localDataSource;
 
     private List<Recipe> cachedRecipes;
     private boolean cacheIsDirty = false;
 
     private DataRepository(Context context) {
-        remoteDataSource = new RemoteDataSource(context);
         localDataSource = new LocalDataSource(context);
         cachedRecipes = new ArrayList<>();
     }
@@ -80,7 +78,7 @@ public class DataRepository {
 
     @NonNull
     private Observable<List<Recipe>> getRecipes(Map<String, String> params) {
-        return remoteDataSource.searchRecipes(params)
+        return RemoteDataSource.getInstance().searchRecipes(params)
                 .map(new Func1<SearchResult, List<Recipe>>() {
                     @Override
                     public List<Recipe> call(SearchResult searchResult) {
@@ -127,7 +125,7 @@ public class DataRepository {
                     @Override
                     public Observable<NutritionAnalysisResult> call(NutritionAnalysisResult analysisResult) {
                         if (analysisResult == null)
-                            return remoteDataSource.getIngredientData(params)
+                            return RemoteDataSource.getInstance().getIngredientData(params)
                                     .doOnNext(new Action1<NutritionAnalysisResult>() {
                                         @Override
                                         public void call(NutritionAnalysisResult analysisResult) {
@@ -142,7 +140,7 @@ public class DataRepository {
     }
 
     public Observable<NutritionAnalysisResult> getRecipeAnalysisData(final RecipeAnalysisParams params){
-        return remoteDataSource.getRecipeAnalysingResult(params);
+        return RemoteDataSource.getInstance().getRecipeAnalysingResult(params);
     }
 
 }

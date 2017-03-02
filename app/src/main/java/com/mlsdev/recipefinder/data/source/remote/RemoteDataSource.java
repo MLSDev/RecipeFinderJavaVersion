@@ -1,9 +1,8 @@
 package com.mlsdev.recipefinder.data.source.remote;
 
-import android.content.Context;
 import android.support.v4.util.ArrayMap;
 
-import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.BuildConfig;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
@@ -18,19 +17,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
 public class RemoteDataSource extends BaseDataSource implements DataSource {
-    private Context context;
-    private static String baseUrl;
+    private static String baseUrl = PathConstants.BASE_URL;
     private SearchRecipesService searchRecipesService;
     private NutritionAnalysisService nutritionAnalysisService;
+    private static RemoteDataSource instance;
 
-    public RemoteDataSource(Context context) {
-        this.context = context;
-        baseUrl = PathConstants.BASE_URL;
+    private RemoteDataSource() {
         initApiServices();
+    }
+
+    public static RemoteDataSource getInstance() {
+        if (instance == null)
+            instance = new RemoteDataSource();
+
+        return instance;
     }
 
     public static void setBaseUrl(String url) {
         baseUrl = url;
+        instance = null;
     }
 
     private void initApiServices() {
@@ -64,10 +69,7 @@ public class RemoteDataSource extends BaseDataSource implements DataSource {
     }
 
     private void setCredentials(Map<String, String> params, boolean search) {
-        String appId = context.getString(search ? R.string.search_app_id : R.string.analyse_app_id);
-        String appKey = context.getString(search ? R.string.search_app_key : R.string.analyse_app_key);
-
-        params.put(ParameterKeys.APP_ID, appId);
-        params.put(ParameterKeys.APP_KEY, appKey);
+        params.put(ParameterKeys.APP_ID, search ? BuildConfig.SEARCH_APP_ID : BuildConfig.ANALYSE_APP_ID);
+        params.put(ParameterKeys.APP_KEY, search ? BuildConfig.SEARCH_APP_KEY : BuildConfig.ANALYSE_APP_KEY);
     }
 }

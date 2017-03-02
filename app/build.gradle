@@ -12,7 +12,21 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+
+        debug {
+            buildConfigField "String", "SEARCH_APP_ID", "\"75347af5\""
+            buildConfigField "String", "ANALYSE_APP_ID", "\"d07b5508\""
+            buildConfigField "String", "SEARCH_APP_KEY", "\"c12154e41f974c51a56fad5a256c27f2\""
+            buildConfigField "String", "ANALYSE_APP_KEY", "\"b45686d25ac88da90a36f286122ee3de\""
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
         release {
+            buildConfigField "String", "SEARCH_APP_ID", "\"75347af5\""
+            buildConfigField "String", "ANALYSE_APP_ID", "\"d07b5508\""
+            buildConfigField "String", "SEARCH_APP_KEY", "\"c12154e41f974c51a56fad5a256c27f2\""
+            buildConfigField "String", "ANALYSE_APP_KEY", "\"b45686d25ac88da90a36f286122ee3de\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
