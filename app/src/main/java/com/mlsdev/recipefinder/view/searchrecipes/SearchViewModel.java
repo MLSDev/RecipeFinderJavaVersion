@@ -1,11 +1,10 @@
 package com.mlsdev.recipefinder.view.searchrecipes;
 
+import android.content.Context;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,28 +30,22 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class SearchViewModel extends BaseViewModel {
-    public static final int FILTER_REQUEST_CODE = 0;
-    private Fragment fragment;
-    public final ObservableInt loadMoreProgressBarVisibility;
-    public final ObservableInt searchLabelVisibility;
-    public final ObservableInt filterButtonVisibility;
-    public final ObservableField<String> searchText;
+    public final ObservableInt loadMoreProgressBarVisibility = new ObservableInt(View.INVISIBLE);
+    public final ObservableInt searchLabelVisibility = new ObservableInt(View.VISIBLE);
+    public final ObservableInt filterButtonVisibility = new ObservableInt(View.INVISIBLE);
+    public final ObservableField<String> searchText = new ObservableField<>();
     public final ObservableField<String> searchLabelText;
     private OnRecipesLoadedListener onRecipesLoadedListener;
     private Map<String, String> searchParams;
-    private DialogFragment filterFragment;
+    private ActionListener actionListener;
 
-    public SearchViewModel(@NonNull Fragment fragment, @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
-        super(fragment.getActivity());
-        this.fragment = fragment;
+    public SearchViewModel(@NonNull Context context, @NonNull ActionListener actionListener,
+                           @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
+        super(context);
         this.onRecipesLoadedListener = onRecipesLoadedListener;
-        loadMoreProgressBarVisibility = new ObservableInt(View.INVISIBLE);
-        searchLabelVisibility = new ObservableInt(View.VISIBLE);
-        filterButtonVisibility = new ObservableInt(View.INVISIBLE);
-        searchText = new ObservableField<>();
-        searchLabelText = new ObservableField<>(fragment.getString(R.string.label_search));
+        this.actionListener = actionListener;
+        searchLabelText = new ObservableField<>(context.getString(R.string.label_search));
         searchParams = new ArrayMap<>();
-        filterFragment = new FilterDialogFragment();
     }
 
     /**
@@ -83,8 +76,8 @@ public class SearchViewModel extends BaseViewModel {
                 .subscribe(new SearchRecipesObserver<List<Recipe>>() {
                     @Override
                     public void onNext(List<Recipe> recipes) {
-                        String commonSearchLabelText = fragment.getString(R.string.label_search);
-                        String nothingFoundText = fragment.getString(R.string.label_search_nothing_found);
+                        String commonSearchLabelText = context.getString(R.string.label_search);
+                        String nothingFoundText = context.getString(R.string.label_search_nothing_found);
                         searchLabelText.set(recipes.isEmpty() ? nothingFoundText : commonSearchLabelText);
                         searchLabelVisibility.set(recipes.isEmpty() ? View.VISIBLE : View.INVISIBLE);
                         filterButtonVisibility.set(recipes.isEmpty() ? View.INVISIBLE : View.VISIBLE);
@@ -139,8 +132,7 @@ public class SearchViewModel extends BaseViewModel {
      * This method is added into the {@link android.widget.Button}'s attribute list in the layout.
      */
     public void onFilterClick(View view) {
-        filterFragment.setTargetFragment(fragment, FILTER_REQUEST_CODE);
-        filterFragment.show(fragment.getActivity().getSupportFragmentManager(), "Filter");
+        actionListener.onStartFilter();
     }
 
     /**
@@ -159,11 +151,15 @@ public class SearchViewModel extends BaseViewModel {
 
         if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
             searchRecipes(textView.getText().toString(), false);
-            ((MainActivity) fragment.getActivity()).hideSoftKeyboard();
+            keyboardListener.onHideKeyboard();
             return true;
         }
 
         return false;
+    }
+
+    public interface ActionListener extends KeyboardListener {
+        void onStartFilter();
     }
 
     public abstract class SearchRecipesObserver<T> implements Observer<T> {

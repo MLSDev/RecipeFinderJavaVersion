@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,12 @@ import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
+import com.mlsdev.recipefinder.view.BaseActivity;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
 
 public class SearchRecipesFragment extends RecipeListFragment implements RecipeListAdapter.OnLastItemShownListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, SearchViewModel.ActionListener {
+    public static final int FILTER_REQUEST_CODE = 0;
     private FragmentSearchRecipesBinding binding;
     private SearchViewModel viewModel;
 
@@ -28,7 +31,7 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
 
         if (viewModel == null)
-            viewModel = new SearchViewModel(this, this);
+            viewModel = new SearchViewModel(getActivity(), this, this);
 
         binding.setViewModel(viewModel);
         swipeRefreshLayout = binding.swipeToRefreshView;
@@ -60,12 +63,24 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SearchViewModel.FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK)
+        if (requestCode == FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK)
             viewModel.onApplyFilterOptions(data.getExtras());
     }
 
     @Override
     public void onRefresh() {
         viewModel.refresh();
+    }
+
+    @Override
+    public void onStartFilter() {
+        DialogFragment filterDialogFragment = new FilterDialogFragment();
+        filterDialogFragment.setTargetFragment(this, FILTER_REQUEST_CODE);
+        filterDialogFragment.show(getFragmentManager(), "Filter");
+    }
+
+    @Override
+    public void onHideKeyboard() {
+        ((BaseActivity)getActivity()).hideSoftKeyboard();
     }
 }

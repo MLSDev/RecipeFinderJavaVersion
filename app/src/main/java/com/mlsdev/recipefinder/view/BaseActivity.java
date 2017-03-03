@@ -1,12 +1,14 @@
 package com.mlsdev.recipefinder.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements NavigationController {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -24,4 +26,29 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void launchActivity(Intent intent) {
+        startActivity(intent);
+    }
+
+    @Override
+    public void launchActivityForResult(Intent intent, int requestCode) {
+        startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public void finishCurrentActivity() {
+        finish();
+    }
+
+    @Override
+    public void finishWithResult(Intent data) {
+        setActivityResult(data);
+        finish();
+    }
+
+    @Override
+    public void setActivityResult(Intent data) {
+        setResult(Activity.RESULT_OK, data);
+    }
 }

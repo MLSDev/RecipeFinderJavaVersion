@@ -14,6 +14,7 @@ public class BaseViewModel {
     protected DataRepository repository;
     protected CompositeSubscription subscriptions;
     private ProgressDialog progressDialog;
+    protected KeyboardListener keyboardListener;
 
     public BaseViewModel(Context context) {
         this.context = context;
@@ -36,5 +37,9 @@ public class BaseViewModel {
             progressDialog.show();
         else
             progressDialog.dismiss();
+    }
+
+    public interface KeyboardListener{
+        void onHideKeyboard();
     }
 }

@@ -47,7 +47,7 @@ public class FilterDialogFragment extends DialogFragment {
                         data.putExtra(DIET_LABEL_KEY, (String) binding.spDietLabels.getSelectedItem());
 
                         if (getTargetFragment() != null) {
-                            getTargetFragment().onActivityResult(SearchViewModel.FILTER_REQUEST_CODE,
+                            getTargetFragment().onActivityResult(SearchRecipesFragment.FILTER_REQUEST_CODE,
                                     Activity.RESULT_OK, data);
                         }
 
