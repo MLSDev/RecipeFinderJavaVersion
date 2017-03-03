@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentRecipeAnalysisBinding;
+import com.mlsdev.recipefinder.view.BaseActivity;
+import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
-public class RecipeAnalysisFragment extends Fragment implements OnAddIngredientClickListener {
+public class RecipeAnalysisFragment extends Fragment implements OnAddIngredientClickListener, BaseViewModel.KeyboardListener {
     private FragmentRecipeAnalysisBinding binding;
     private RecipeAnalysisViewModel viewModel;
     private IngredientsAdapter adapter;
@@ -22,7 +24,7 @@ public class RecipeAnalysisFragment extends Fragment implements OnAddIngredientC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_analysis, container, false);
-        viewModel = new RecipeAnalysisViewModel(getActivity());
+        viewModel = new RecipeAnalysisViewModel(getActivity(), this);
         binding.setViewModel(viewModel);
         initRecyclerView();
         return binding.getRoot();
@@ -52,5 +54,10 @@ public class RecipeAnalysisFragment extends Fragment implements OnAddIngredientC
         AddIngredientDialogFragment dialogFragment = new AddIngredientDialogFragment();
         dialogFragment.setTargetFragment(this, RecipeAnalysisViewModel.ADD_INGREDIENT_REQUEST_CODE);
         dialogFragment.show(getFragmentManager(), "add_ingredient");
+    }
+
+    @Override
+    public void onHideKeyboard() {
+        ((BaseActivity) getActivity()).hideSoftKeyboard();
     }
 }

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.DialogFragmentAddIngredientBinding;
+import com.mlsdev.recipefinder.view.BaseActivity;
 
 public class AddIngredientDialogFragment extends DialogFragment {
     public static final String INGREDIENT_TITLE_KEY = "ingredient_label_key";
@@ -28,6 +29,7 @@ public class AddIngredientDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.btn_add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        ((BaseActivity)getActivity()).hideSoftKeyboard();
                         Intent data = new Intent();
                         data.putExtra(INGREDIENT_TITLE_KEY, binding.etIngredientInput.getText().toString());
 

@@ -3,6 +3,7 @@ package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
@@ -29,8 +30,9 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
     public final ObservableField<String> yield;
     private List<String> ingredients = new ArrayList<>();
 
-    public RecipeAnalysisViewModel(Context context) {
+    public RecipeAnalysisViewModel(@NonNull Context context, @NonNull KeyboardListener keyboardListener) {
         super(context);
+        this.keyboardListener = keyboardListener;
         title = new ObservableField<>();
         preparation = new ObservableField<>();
         yield = new ObservableField<>();
@@ -99,6 +101,7 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
      */
     public void onYieldTextChanged(CharSequence text, int start, int before, int count) {
         yield.set(text.toString());
+        keyboardListener.onHideKeyboard();
     }
 
     public void setIngredients(List<String> ingredients) {
