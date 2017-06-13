@@ -13,7 +13,7 @@ This is a sample app with **MVVM**, **RxJava** and **Data Binding**
 * [Retrofit](http://square.github.io/retrofit/): for the network requests
 * [RxJava 1](https://github.com/ReactiveX/RxJava)
 * [RxAndroid 1](https://github.com/ReactiveX/RxAndroid)
-* [Glide] https://github.com/bumptech/glide): for image loading
+* [Glide](https://github.com/bumptech/glide): for image loading
 * [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart): charts and diagrams
 * [ORMLite](http://ormlite.com/): local data storage
 
