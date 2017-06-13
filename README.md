@@ -5,11 +5,7 @@
 ## Authors
 * [Sergey Petrosyuk](mailto:petrosyuk@mlsdev.com), MLSDev 
 
-<img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/1.png" width="350"><img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/2.png" width="350">
-<img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/3.png">
-<img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/4.png">
-<img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/5.png">
-<img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/6.png">
+<img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/1.png" width="240"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/2.png" width="240"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/3.png" width="240"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/4.png" width="240"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/5.png" width="240"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/6.png">
 <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/7.png">
 <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/8.png">
 <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/9.png">
