@@ -1,11 +1,18 @@
 # RecipeFinder
 
-This is a sample app with the **MVVM** pattern.
+This is a sample app with **MVVM**, **RxJava** and **Data Binding**
 
 ## Authors
 * [Sergey Petrosyuk](mailto:petrosyuk@mlsdev.com), MLSDev 
 
 <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/1.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/2.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/3.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/4.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/5.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/6.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/7.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/8.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/9.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/10.png" width="285"> <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/11.png" width="285">
+
+## Used libraries
+### Network response mocks
+* [MockWebServer]: https://github.com/square/okhttp/tree/master/mockwebserver
+
+## Authors
+* [Sergey Petrosyuk](mailto:petrosyuk@mlsdev.com), MLSDev 
 
 ## About MLSDev
 
