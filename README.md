@@ -5,8 +5,7 @@
 ## Authors
 * [Sergey Petrosyuk](mailto:petrosyuk@mlsdev.com), MLSDev 
 
-<img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/1.png" width="350">
-<img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/2.png" width="350">
+<img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/1.png" width="350"><img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/2.png" width="350">
 <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/3.png">
 <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/4.png">
 <img src="https://github.com/MLSDev/RecipeFinder/blob/recipefinder-mvvm-rxjava/app/src/main/assets/5.png">
