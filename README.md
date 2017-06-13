@@ -3,7 +3,7 @@
 
 
 ## Authors
-* [Sergey Petrosyuk](mailto:petrosyuk@mlsdev.com) ([SerhiyPetrosyuk][github-SerhiyPetrosyuk]), MLSDev 
+* [Sergey Petrosyuk](mailto:petrosyuk@mlsdev.com), MLSDev 
 
 ## About MLSDev
 
