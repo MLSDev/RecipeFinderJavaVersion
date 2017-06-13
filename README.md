@@ -1,6 +1,6 @@
 # RecipeFinder
 
-
+This is a smaple app with the **MVVM** pattern.
 
 ## Authors
 * [Sergey Petrosyuk](mailto:petrosyuk@mlsdev.com), MLSDev 
