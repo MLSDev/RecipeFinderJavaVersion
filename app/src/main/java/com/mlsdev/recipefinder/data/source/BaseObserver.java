@@ -4,11 +4,20 @@ import android.util.Log;
 
 import com.mlsdev.recipefinder.view.MainActivity;
 
-import rx.Observer;
+import io.reactivex.SingleObserver;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 
-public abstract class BaseObserver<T> implements Observer<T> {
+public abstract class BaseObserver<T> implements SingleObserver<T> {
+
     @Override
-    public void onCompleted() {
+    public void onSubscribe(@NonNull Disposable d) {
+
+    }
+
+    @Override
+    public void onSuccess(@NonNull T t) {
+
     }
 
     @Override
@@ -16,7 +25,4 @@ public abstract class BaseObserver<T> implements Observer<T> {
         Log.e(MainActivity.LOG_TAG, e.getMessage());
     }
 
-    @Override
-    public void onNext(T data) {
-    }
 }

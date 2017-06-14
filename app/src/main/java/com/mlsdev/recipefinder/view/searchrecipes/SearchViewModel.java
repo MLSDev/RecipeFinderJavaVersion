@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class SearchViewModel extends BaseViewModel {
     public final ObservableInt loadMoreProgressBarVisibility = new ObservableInt(View.INVISIBLE);
@@ -46,6 +46,7 @@ public class SearchViewModel extends BaseViewModel {
         this.actionListener = actionListener;
         searchLabelText = new ObservableField<>(context.getString(R.string.label_search));
         searchParams = new ArrayMap<>();
+        keyboardListener = actionListener;
     }
 
     /**
@@ -70,12 +71,12 @@ public class SearchViewModel extends BaseViewModel {
         showProgressDialog(!forceUpdate, "Searching...");
         searchLabelVisibility.set(View.INVISIBLE);
 
-        Subscription subscription = repository.searchRecipes(searchParams)
+        repository.searchRecipes(searchParams)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new SearchRecipesObserver<List<Recipe>>() {
                     @Override
-                    public void onNext(List<Recipe> recipes) {
+                    public void onSuccess(List<Recipe> recipes) {
                         String commonSearchLabelText = context.getString(R.string.label_search);
                         String nothingFoundText = context.getString(R.string.label_search_nothing_found);
                         searchLabelText.set(recipes.isEmpty() ? nothingFoundText : commonSearchLabelText);
@@ -84,8 +85,6 @@ public class SearchViewModel extends BaseViewModel {
                         onRecipesLoadedListener.onRecipesLoaded(recipes);
                     }
                 });
-
-        subscriptions.add(subscription);
     }
 
     public void loadMoreRecipes() {
@@ -94,17 +93,15 @@ public class SearchViewModel extends BaseViewModel {
         subscriptions.clear();
         loadMoreProgressBarVisibility.set(View.VISIBLE);
 
-        Subscription subscription = repository.loadMore(params)
+        repository.loadMore(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new SearchRecipesObserver<List<Recipe>>() {
                     @Override
-                    public void onNext(List<Recipe> recipes) {
+                    public void onSuccess(@io.reactivex.annotations.NonNull List<Recipe> recipes) {
                         onRecipesLoadedListener.onMoreRecipesLoaded(recipes);
                     }
                 });
-
-        subscriptions.add(subscription);
 
     }
 
@@ -162,13 +159,17 @@ public class SearchViewModel extends BaseViewModel {
         void onStartFilter();
     }
 
-    public abstract class SearchRecipesObserver<T> implements Observer<T> {
+    public abstract class SearchRecipesObserver<T> implements SingleObserver<T> {
 
         @Override
-        public void onCompleted() {
+        public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
             loadMoreProgressBarVisibility.set(View.INVISIBLE);
             showProgressDialog(false, null);
+            subscriptions.add(d);
         }
+
+        @Override
+        public abstract void onSuccess(@io.reactivex.annotations.NonNull T t);
 
         @Override
         public void onError(Throwable e) {
@@ -176,8 +177,5 @@ public class SearchViewModel extends BaseViewModel {
             showProgressDialog(false, null);
             Log.d(MainActivity.LOG_TAG, e.getMessage());
         }
-
-        @Override
-        public abstract void onNext(T t);
     }
 }

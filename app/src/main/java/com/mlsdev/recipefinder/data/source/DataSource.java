@@ -8,22 +8,22 @@ import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 public interface DataSource {
-    Observable<SearchResult> searchRecipes(Map<String, String> params);
+    Single<SearchResult> searchRecipes(Map<String, String> params);
 
-    Observable<NutritionAnalysisResult> getIngredientData(Map<String, String> params);
+    Single<NutritionAnalysisResult> getIngredientData(Map<String, String> params);
 
-    Observable<List<Recipe>> getFavorites();
+    Single<List<Recipe>> getFavorites();
 
-    Observable<Boolean> addToFavorites(Recipe favoriteRecipe);
+    Single<Boolean> addToFavorites(Recipe favoriteRecipe);
 
-    Observable<Boolean> removeFromFavorites(Recipe removedRecipe);
+    Single<Boolean> removeFromFavorites(Recipe removedRecipe);
 
-    Observable<Boolean> isInFavorites(Recipe recipe);
+    Single<Boolean> isInFavorites(Recipe recipe);
 
-    Observable<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params);
+    Single<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params);
 
     void addAnalyzingResult(NutritionAnalysisResult analysisResult, Map<String, String> params);
 }

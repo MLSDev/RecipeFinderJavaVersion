@@ -25,10 +25,10 @@ import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 import java.util.ArrayList;
 import java.util.Map;
 
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class IngredientAnalysisViewModel extends BaseViewModel {
     private OnIngredientAnalyzedListener onIngredientAnalyzedListener;
@@ -68,16 +68,45 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
         ((MainActivity) activity).hideSoftKeyboard();
 
         showProgressDialog(true, "Analysing...");
+        subscriptions.clear();
 
         Map<String, String> params = new ArrayMap<>();
         params.put(ParameterKeys.INGREDIENT, ingredientText.get());
-        Subscription subscription = repository.getIngredientData(params)
+        repository.getIngredientData(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<NutritionAnalysisResult>() {
+                .subscribe(new SingleObserver<NutritionAnalysisResult>() {
+
                     @Override
-                    public void onCompleted() {
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
                         showProgressDialog(false, null);
+                        subscriptions.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.annotations.NonNull NutritionAnalysisResult result) {
+                        TotalNutrients totalNutrients = result.getTotalNutrients();
+                        analysisResultsWrapperVisibility.set(View.VISIBLE);
+
+                        nutrientText.set(ingredientText.get());
+                        fatText.set(totalNutrients.getFat() != null
+                                ? result.getTotalNutrients().getFat().getFormattedFullText() : "");
+
+                        proteinText.set(totalNutrients.getProtein() != null
+                                ? result.getTotalNutrients().getProtein().getFormattedFullText() : "");
+
+                        carbsText.set(totalNutrients.getCarbs() != null
+                                ? result.getTotalNutrients().getCarbs().getFormattedFullText() : "");
+
+                        energyText.set(totalNutrients.getEnergy() != null
+                                ? result.getTotalNutrients().getEnergy().getFormattedFullText() : "");
+
+                        carbsLabelVisibility.set(carbsText.get().isEmpty() ? View.GONE : View.VISIBLE);
+                        proteinLabelVisibility.set(proteinText.get().isEmpty() ? View.GONE : View.VISIBLE);
+                        fatLabelVisibility.set(fatText.get().isEmpty() ? View.GONE : View.VISIBLE);
+                        energyLabelVisibility.set(energyText.get().isEmpty() ? View.GONE : View.VISIBLE);
+
+                        prepareDiagramData(totalNutrients);
                     }
 
                     @Override
@@ -86,35 +115,8 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
                         Log.e(MainActivity.LOG_TAG, e.getMessage());
                     }
 
-                    @Override
-                    public void onNext(NutritionAnalysisResult ingredientAnalysisResult) {
-                        TotalNutrients totalNutrients = ingredientAnalysisResult.getTotalNutrients();
-                        analysisResultsWrapperVisibility.set(View.VISIBLE);
-
-                        nutrientText.set(ingredientText.get());
-                        fatText.set(totalNutrients.getFat() != null
-                                ? ingredientAnalysisResult.getTotalNutrients().getFat().getFormattedFullText() : "");
-
-                        proteinText.set(totalNutrients.getProtein() != null
-                                ? ingredientAnalysisResult.getTotalNutrients().getProtein().getFormattedFullText() : "");
-
-                        carbsText.set(totalNutrients.getCarbs() != null
-                                ? ingredientAnalysisResult.getTotalNutrients().getCarbs().getFormattedFullText() : "");
-
-                        energyText.set(totalNutrients.getEnergy() != null
-                                ? ingredientAnalysisResult.getTotalNutrients().getEnergy().getFormattedFullText() : "");
-
-                        carbsLabelVisibility.set(carbsText.get().isEmpty() ? View.GONE : View.VISIBLE);
-                        proteinLabelVisibility.set(proteinText.get().isEmpty() ? View.GONE : View.VISIBLE);
-                        fatLabelVisibility.set(fatText.get().isEmpty() ? View.GONE : View.VISIBLE);
-                        energyLabelVisibility.set(energyText.get().isEmpty() ? View.GONE : View.VISIBLE);
-
-
-                        prepareDiagramData(totalNutrients);
-                    }
                 });
 
-        subscriptions.add(subscription);
     }
 
     public void onTextChanged(CharSequence text, int start, int before, int count) {

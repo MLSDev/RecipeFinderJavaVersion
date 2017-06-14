@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 public class DataRepository {
     private final int offset = 10;
@@ -50,9 +50,9 @@ public class DataRepository {
         cacheIsDirty = true;
     }
 
-    public Observable<List<Recipe>> searchRecipes(Map<String, String> params) {
+    public Single<List<Recipe>> searchRecipes(Map<String, String> params) {
         if (!cacheIsDirty) {
-            return Observable.from(cachedRecipes).toList();
+            return Single.just(cachedRecipes);
         }
 
         more = true;
@@ -64,11 +64,10 @@ public class DataRepository {
         return getRecipes(params);
     }
 
-    public Observable<List<Recipe>> loadMore(Map<String, String> params) {
+    public Single<List<Recipe>> loadMore(Map<String, String> params) {
 
-        if (!more) {
-            return Observable.from(new ArrayList<Recipe>()).toList();
-        }
+        if (!more)
+            return Single.amb(new ArrayList<SingleSource<? extends List<Recipe>>>());
 
         params.put(ParameterKeys.FROM, String.valueOf(from));
         params.put(ParameterKeys.TO, String.valueOf(to));
@@ -77,11 +76,11 @@ public class DataRepository {
     }
 
     @NonNull
-    private Observable<List<Recipe>> getRecipes(Map<String, String> params) {
+    private Single<List<Recipe>> getRecipes(Map<String, String> params) {
         return RemoteDataSource.getInstance().searchRecipes(params)
-                .map(new Func1<SearchResult, List<Recipe>>() {
+                .map(new Function<SearchResult, List<Recipe>>() {
                     @Override
-                    public List<Recipe> call(SearchResult searchResult) {
+                    public List<Recipe> apply(@io.reactivex.annotations.NonNull SearchResult searchResult) throws Exception {
                         from = searchResult.getTo();
                         to = from + offset;
                         more = searchResult.isMore();
@@ -95,51 +94,51 @@ public class DataRepository {
                         return recipes;
                     }
                 })
-                .doOnCompleted(new Action0() {
+                .doOnSuccess(new Consumer<List<Recipe>>() {
                     @Override
-                    public void call() {
+                    public void accept(@io.reactivex.annotations.NonNull List<Recipe> recipes) throws Exception {
                         cacheIsDirty = false;
                     }
                 });
     }
 
-    public Observable<List<Recipe>> getFavoriteRecipes() {
+    public Single<List<Recipe>> getFavoriteRecipes() {
         return localDataSource.getFavorites();
     }
 
-    public Observable<Boolean> addToFavorites(Recipe favoriteRecipe) {
+    public Single<Boolean> addToFavorites(Recipe favoriteRecipe) {
         return localDataSource.addToFavorites(favoriteRecipe);
     }
 
-    public Observable<Boolean> removeFromFavorites(Recipe removedRecipe) {
+    public Single<Boolean> removeFromFavorites(Recipe removedRecipe) {
         return localDataSource.removeFromFavorites(removedRecipe);
     }
 
-    public Observable<Boolean> isInFavorites(Recipe recipe) {
+    public Single<Boolean> isInFavorites(Recipe recipe) {
         return localDataSource.isInFavorites(recipe);
     }
 
-    public Observable<NutritionAnalysisResult> getIngredientData(final Map<String, String> params) {
-        return localDataSource.getIngredientData(params)
-                .flatMap(new Func1<NutritionAnalysisResult, Observable<NutritionAnalysisResult>>() {
+    public Single<NutritionAnalysisResult> getIngredientData(final Map<String, String> params) {
+        return RemoteDataSource.getInstance().getIngredientData(params)
+                .flatMap(new Function<NutritionAnalysisResult, SingleSource<? extends NutritionAnalysisResult>>() {
                     @Override
-                    public Observable<NutritionAnalysisResult> call(NutritionAnalysisResult analysisResult) {
-                        if (analysisResult == null)
+                    public SingleSource<? extends NutritionAnalysisResult> apply(@io.reactivex.annotations.NonNull NutritionAnalysisResult analysisResult) throws Exception {
+                        if (analysisResult == null) {
                             return RemoteDataSource.getInstance().getIngredientData(params)
-                                    .doOnNext(new Action1<NutritionAnalysisResult>() {
+                                    .doOnSuccess(new Consumer<NutritionAnalysisResult>() {
                                         @Override
-                                        public void call(NutritionAnalysisResult analysisResult) {
+                                        public void accept(@io.reactivex.annotations.NonNull NutritionAnalysisResult analysisResult) throws Exception {
                                             localDataSource.addAnalyzingResult(analysisResult, params);
                                         }
                                     });
-                        else
-                            return Observable.from(new NutritionAnalysisResult[]{analysisResult});
-
+                        } else {
+                            return Single.just(analysisResult);
+                        }
                     }
                 });
     }
 
-    public Observable<NutritionAnalysisResult> getRecipeAnalysisData(final RecipeAnalysisParams params){
+    public Single<NutritionAnalysisResult> getRecipeAnalysisData(final RecipeAnalysisParams params) {
         return RemoteDataSource.getInstance().getRecipeAnalysingResult(params);
     }
 

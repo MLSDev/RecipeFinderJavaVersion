@@ -19,9 +19,9 @@ import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class RecipeAnalysisViewModel extends BaseViewModel {
     public static final int ADD_INGREDIENT_REQUEST_CODE = 0;
@@ -55,21 +55,26 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
 
         subscriptions.clear();
 
-        Subscription subscription = repository.getRecipeAnalysisData(recipeAnalysisParams)
+        repository.getRecipeAnalysisData(recipeAnalysisParams)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new BaseObserver<NutritionAnalysisResult>() {
                     @Override
-                    public void onNext(NutritionAnalysisResult nutritionAnalysisResult) {
+                    public void onSuccess(@io.reactivex.annotations.NonNull NutritionAnalysisResult nutritionAnalysisResult) {
                         showProgressDialog(false, null);
                         Log.d(MainActivity.LOG_TAG, "onNext()");
                         Intent intent = new Intent(context, RecipeAnalysisDetailsActivity.class);
                         intent.putExtra(RecipeAnalysisDetailsActivity.RECIPE_ANALYSING_RESULT_KEY, nutritionAnalysisResult);
                         context.startActivity(intent);
                     }
+
+                    @Override
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                        subscriptions.add(d);
+                        showProgressDialog(false, null);
+                    }
                 });
 
-        subscriptions.add(subscription);
     }
 
     private void showErrorAlertDialog(String title, String message) {

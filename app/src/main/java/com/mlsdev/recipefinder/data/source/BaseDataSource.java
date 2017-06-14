@@ -5,45 +5,44 @@ import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 public abstract class BaseDataSource implements DataSource {
     @Override
-    public Observable<SearchResult> searchRecipes(Map<String, String> params) {
-        return Observable.from(new SearchResult[]{});
-    }
-
-    @Override
-    public Observable<NutritionAnalysisResult> getIngredientData(Map<String, String> params) {
+    public Single<SearchResult> searchRecipes(Map<String, String> params) {
         return null;
     }
 
     @Override
-    public Observable<List<Recipe>> getFavorites() {
-        return Observable.from(new ArrayList<List<Recipe>>());
+    public Single<NutritionAnalysisResult> getIngredientData(Map<String, String> params) {
+        return null;
     }
 
     @Override
-    public Observable<Boolean> addToFavorites(Recipe favoriteRecipe) {
-        return Observable.from(new Boolean[]{false});
+    public Single<List<Recipe>> getFavorites() {
+        return null;
     }
 
     @Override
-    public Observable<Boolean> removeFromFavorites(Recipe removedRecipe) {
-        return Observable.from(new Boolean[]{false});
+    public Single<Boolean> addToFavorites(Recipe favoriteRecipe) {
+        return null;
     }
 
     @Override
-    public Observable<Boolean> isInFavorites(Recipe recipe) {
-        return Observable.from(new Boolean[]{false});
+    public Single<Boolean> removeFromFavorites(Recipe removedRecipe) {
+        return null;
     }
 
     @Override
-    public Observable<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params) {
+    public Single<Boolean> isInFavorites(Recipe recipe) {
+        return null;
+    }
+
+    @Override
+    public Single<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params) {
         return null;
     }
 

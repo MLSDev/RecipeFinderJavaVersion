@@ -8,13 +8,13 @@ import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.source.DataSource;
-import com.mlsdev.recipefinder.data.source.remote.retrofitadapter.RxErrorHandlingCallAdapterFactory;
 
 import java.util.Map;
 
+import io.reactivex.Single;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
 
 public class RemoteDataSource extends BaseDataSource implements DataSource {
     private static String baseUrl = PathConstants.BASE_URL;
@@ -42,7 +42,7 @@ public class RemoteDataSource extends BaseDataSource implements DataSource {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
         searchRecipesService = retrofit.create(SearchRecipesService.class);
@@ -50,19 +50,19 @@ public class RemoteDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<SearchResult> searchRecipes(Map<String, String> params) {
+    public Single<SearchResult> searchRecipes(Map<String, String> params) {
         setCredentials(params, true);
         return searchRecipesService.searchRecipes(params);
     }
 
     @Override
-    public Observable<NutritionAnalysisResult> getIngredientData(Map<String, String> params) {
+    public Single<NutritionAnalysisResult> getIngredientData(Map<String, String> params) {
         setCredentials(params, false);
         return nutritionAnalysisService.analyzeIngredient(params);
     }
 
     @Override
-    public Observable<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params) {
+    public Single<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params) {
         Map<String, String> credentials = new ArrayMap<>();
         setCredentials(credentials, false);
         return nutritionAnalysisService.analyzeRecipe(params, credentials);

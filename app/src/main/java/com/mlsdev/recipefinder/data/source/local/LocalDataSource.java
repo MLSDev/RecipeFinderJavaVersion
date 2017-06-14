@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 public class LocalDataSource extends BaseDataSource implements DataSource {
     private DataBaseHelper dataBaseHelper;
@@ -25,8 +25,8 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<List<Recipe>> getFavorites() {
-        return Observable.fromCallable(new Callable<List<Recipe>>() {
+    public Single<List<Recipe>> getFavorites() {
+        return Single.fromCallable(new Callable<List<Recipe>>() {
             @Override
             public List<Recipe> call() throws Exception {
                 List<Recipe> favoriteRecipes = new ArrayList<>();
@@ -43,8 +43,8 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<Boolean> addToFavorites(final Recipe favoriteRecipe) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> addToFavorites(final Recipe favoriteRecipe) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 boolean result = false;
@@ -66,8 +66,8 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<Boolean> removeFromFavorites(final Recipe removedRecipe) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> removeFromFavorites(final Recipe removedRecipe) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 boolean result = false;
@@ -82,8 +82,8 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<Boolean> isInFavorites(final Recipe recipe) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> isInFavorites(final Recipe recipe) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 if (recipe == null)
@@ -122,9 +122,9 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Observable<NutritionAnalysisResult> getIngredientData(final Map<String, String> params) {
+    public Single<NutritionAnalysisResult> getIngredientData(final Map<String, String> params) {
         if (params.containsKey(ParameterKeys.INGREDIENT)) {
-            return Observable.fromCallable(new Callable<NutritionAnalysisResult>() {
+            return Single.fromCallable(new Callable<NutritionAnalysisResult>() {
                 @Override
                 public NutritionAnalysisResult call() throws Exception {
                     int hash = params.get(ParameterKeys.INGREDIENT).toLowerCase().hashCode();

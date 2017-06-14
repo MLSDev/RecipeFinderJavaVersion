@@ -18,9 +18,10 @@ import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 import java.util.Collection;
 import java.util.List;
 
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class RecipeViewModel extends BaseViewModel {
     private Recipe recipe;
@@ -33,9 +34,9 @@ public class RecipeViewModel extends BaseViewModel {
     public final ObservableInt proteinProgressValue;
     public final ObservableInt carbsProgressValue;
     public final ObservableInt fatProgressValue;
-    private Subscription removeFromFavoritesSubscription;
-    private Subscription addFromFavoritesSubscription;
-    private Subscription isInFavoritesSubscription;
+    private Disposable removeFromFavoritesSubscription;
+    private Disposable addFromFavoritesSubscription;
+    private Disposable isInFavoritesSubscription;
     public ObservableField<String> imageTransitionName;
 
     public RecipeViewModel(Context context, Bundle recipeData) {
@@ -121,44 +122,58 @@ public class RecipeViewModel extends BaseViewModel {
 
         if (favoriteImageStateChecked.get()) {
             subscriptions.remove(removeFromFavoritesSubscription);
-            removeFromFavoritesSubscription = repository.removeFromFavorites(recipe)
+            repository.removeFromFavorites(recipe)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(new BaseObserver<Boolean>() {
                         @Override
-                        public void onNext(Boolean removed) {
+                        public void onSuccess(Boolean removed) {
                             favoriteImageStateChecked.set(false);
                         }
+
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+                            removeFromFavoritesSubscription = d;
+                        }
                     });
-            subscriptions.add(removeFromFavoritesSubscription);
         } else {
-            subscriptions.remove(addFromFavoritesSubscription);
-            addFromFavoritesSubscription = repository.addToFavorites(recipe)
+            if (addFromFavoritesSubscription != null)
+                subscriptions.remove(addFromFavoritesSubscription);
+
+            repository.addToFavorites(recipe)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(new BaseObserver<Boolean>() {
                         @Override
-                        public void onNext(Boolean added) {
+                        public void onSuccess(Boolean added) {
                             favoriteImageStateChecked.set(true);
                         }
+
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+                            addFromFavoritesSubscription = d;
+                        }
                     });
-            subscriptions.add(addFromFavoritesSubscription);
         }
     }
 
     private void checkIsTheRecipeInFavorites() {
-        subscriptions.remove(isInFavoritesSubscription);
+        if (isInFavoritesSubscription != null)
+            subscriptions.remove(isInFavoritesSubscription);
 
-        isInFavoritesSubscription = repository.isInFavorites(recipe)
+        repository.isInFavorites(recipe)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new BaseObserver<Boolean>() {
                     @Override
-                    public void onNext(Boolean exist) {
+                    public void onSuccess(Boolean exist) {
                         favoriteImageStateChecked.set(exist);
                     }
-                });
 
-        subscriptions.add(isInFavoritesSubscription);
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        isInFavoritesSubscription = d;
+                    }
+                });
     }
 }

@@ -7,19 +7,19 @@ import android.support.annotation.Nullable;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.source.repository.DataRepository;
 
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class BaseViewModel {
     protected Context context;
     protected DataRepository repository;
-    protected CompositeSubscription subscriptions;
+    protected CompositeDisposable subscriptions;
     private ProgressDialog progressDialog;
     protected KeyboardListener keyboardListener;
 
     public BaseViewModel(Context context) {
         this.context = context;
         repository = DataRepository.getInstance(context);
-        subscriptions = new CompositeSubscription();
+        subscriptions = new CompositeDisposable();
     }
 
     public void onDestroy() {
