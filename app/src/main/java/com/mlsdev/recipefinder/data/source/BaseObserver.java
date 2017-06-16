@@ -9,6 +9,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 
 public abstract class BaseObserver<T> implements SingleObserver<T> {
+    public static final int SERVER_ERROR = 500;
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {

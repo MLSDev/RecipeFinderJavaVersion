@@ -167,6 +167,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
             loadMoreProgressBarVisibility.set(View.INVISIBLE);
             showProgressDialog(false, null);
             Log.d(MainActivity.LOG_TAG, e.getMessage());
+            showError(e);
         }
     }
 }

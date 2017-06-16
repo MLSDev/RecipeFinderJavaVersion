@@ -14,6 +14,10 @@ public class AssetUtils {
         return getJsonStringFromAssets(context, "search_result.json");
     }
 
+    public static String getEmptySearchResultJsonData(Context context) {
+        return getJsonStringFromAssets(context, "search_result_empty.json");
+    }
+
     public static String getMoreRecipesJsonData(Context context) {
         return getJsonStringFromAssets(context, "more_items_search_result.json");
     }

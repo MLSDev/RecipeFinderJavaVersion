@@ -1,11 +1,10 @@
 package com.mlsdev.recipefinder.idlingutils;
 
 import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.core.deps.guava.base.Function;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class RxIdlingResource implements IdlingResource, Function<Runnable, Runnable> {
+public class RxIdlingResource implements IdlingResource, io.reactivex.functions.Function<Runnable, Runnable> {
 
     private static final String RESOURCE_NAME = RxIdlingResource.class.getSimpleName();
 
@@ -41,7 +40,7 @@ public class RxIdlingResource implements IdlingResource, Function<Runnable, Runn
     }
 
     @Override
-    public Runnable apply(final Runnable runnable) {
+    public Runnable apply(final Runnable runnable) throws Exception {
         return new Runnable() {
             @Override
             public void run() {
