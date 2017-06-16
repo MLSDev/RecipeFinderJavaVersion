@@ -1,17 +1,16 @@
 package com.mlsdev.recipefinder.view.searchrecipes;
 
 import android.content.Context;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
+import com.claudiodegio.msv.OnSearchViewListener;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
@@ -29,15 +28,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class SearchViewModel extends BaseViewModel {
+public class SearchViewModel extends BaseViewModel implements OnSearchViewListener {
     public final ObservableInt loadMoreProgressBarVisibility = new ObservableInt(View.INVISIBLE);
     public final ObservableInt searchLabelVisibility = new ObservableInt(View.VISIBLE);
-    public final ObservableInt filterButtonVisibility = new ObservableInt(View.INVISIBLE);
     public final ObservableField<String> searchText = new ObservableField<>();
     public final ObservableField<String> searchLabelText;
     private OnRecipesLoadedListener onRecipesLoadedListener;
     private Map<String, String> searchParams;
     private ActionListener actionListener;
+    public final ObservableBoolean isSearchOpened = new ObservableBoolean(false);
 
     public SearchViewModel(@NonNull Context context, @NonNull ActionListener actionListener,
                            @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
@@ -67,21 +66,18 @@ public class SearchViewModel extends BaseViewModel {
 
         searchParams.put(ParameterKeys.QUERY, searchText);
         subscriptions.clear();
-
-        showProgressDialog(!forceUpdate, "Searching...");
         searchLabelVisibility.set(View.INVISIBLE);
-
         repository.searchRecipes(searchParams)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new SearchRecipesObserver<List<Recipe>>() {
                     @Override
                     public void onSuccess(List<Recipe> recipes) {
+                        showProgressDialog(false, null);
                         String commonSearchLabelText = context.getString(R.string.label_search);
                         String nothingFoundText = context.getString(R.string.label_search_nothing_found);
                         searchLabelText.set(recipes.isEmpty() ? nothingFoundText : commonSearchLabelText);
                         searchLabelVisibility.set(recipes.isEmpty() ? View.VISIBLE : View.INVISIBLE);
-                        filterButtonVisibility.set(recipes.isEmpty() ? View.INVISIBLE : View.VISIBLE);
                         onRecipesLoadedListener.onRecipesLoaded(recipes);
                     }
                 });
@@ -124,35 +120,31 @@ public class SearchViewModel extends BaseViewModel {
         searchRecipes(this.searchText.get().toLowerCase(), true);
     }
 
-    /**
-     * Handles the {@link android.widget.Button} clicking on.
-     * This method is added into the {@link android.widget.Button}'s attribute list in the layout.
-     */
     public void onFilterClick(View view) {
         actionListener.onStartFilter();
     }
 
-    /**
-     * Handles the {@link android.widget.EditText}'s text changing.
-     * This method is added into the {@link android.widget.EditText}'s attribute list in the layout.
-     */
-    public void onTextChanged(CharSequence text, int start, int before, int count) {
-        searchText.set(text.toString());
+
+    @Override
+    public void onSearchViewShown() {
+        isSearchOpened.set(true);
     }
 
-    /**
-     * Handles the keyboard action button clicking on.
-     * This method is added into the {@link android.widget.EditText}'s attribute list in the layout.
-     */
-    public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+    @Override
+    public void onSearchViewClosed() {
+        isSearchOpened.set(false);
+    }
 
-        if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
-            searchRecipes(textView.getText().toString(), false);
-            keyboardListener.onHideKeyboard();
-            return true;
-        }
-
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        showProgressDialog(true, "Searching recipes for " + s);
+        searchRecipes(s, true);
         return false;
+    }
+
+    @Override
+    public void onQueryTextChange(String s) {
+        searchText.set(s);
     }
 
     public interface ActionListener extends KeyboardListener {
@@ -164,7 +156,6 @@ public class SearchViewModel extends BaseViewModel {
         @Override
         public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
             loadMoreProgressBarVisibility.set(View.INVISIBLE);
-            showProgressDialog(false, null);
             subscriptions.add(d);
         }
 

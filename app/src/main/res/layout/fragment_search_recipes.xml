@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.mlsdev.recipefinder.view.searchrecipes.SearchViewModel" />
@@ -19,44 +21,21 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/appbar_height">
 
-            <RelativeLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways">
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/et_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_toLeftOf="@+id/btn_filter"
-                    android:layout_toStartOf="@+id/btn_filter"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/hint_search"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:onEditorAction="@{viewModel.onEditorAction}"
-                    android:onTextChanged="@{viewModel.onTextChanged}"
-                    android:text="@{viewModel.searchText}"
-                    android:textColor="@android:color/white"
-                    android:textColorHint="@android:color/white" />
-
-                <ImageButton
-                    android:id="@+id/btn_filter"
-                    android:layout_width="@dimen/appbar_height"
-                    android:layout_height="@dimen/appbar_height"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/toolbar_item_selector"
-                    android:onClick="@{viewModel.onFilterClick}"
-                    android:src="@drawable/ic_filter"
-                    app:visibility="@{viewModel.filterButtonVisibility}" />
-
-            </RelativeLayout>
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:title="Recipe Finder"
+                app:titleTextColor="@android:color/white" />
 
         </android.support.design.widget.AppBarLayout>
+
+        <com.claudiodegio.msv.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5dip" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_to_refresh_view"
@@ -72,6 +51,14 @@
         </android.support.v4.widget.SwipeRefreshLayout>
         <!--Labels-->
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#32000000"
+            android:clickable="true"
+            android:visibility="@{viewModel.isSearchOpened ? View.VISIBLE : View.GONE}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
         <LinearLayout
             android:id="@+id/ll_search_label_wrapper"
             android:layout_width="wrap_content"
@@ -84,7 +71,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_nothing_found" />
+                android:src="@drawable/ic_empty_view" />
 
             <TextView
                 android:id="@+id/tv_search_label"

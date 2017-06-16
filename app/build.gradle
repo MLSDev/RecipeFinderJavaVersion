@@ -105,4 +105,6 @@ dependencies {
     //Charts
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
 
+    compile 'com.github.claudiodegio:MsvSearch:1.0.0'
+
 }

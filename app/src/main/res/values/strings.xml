@@ -20,7 +20,7 @@
     <string name="label_health_labels">Health labels</string>
     <string name="label_diet_labels">Diet labels</string>
     <string name="label_ingredients">Ingredients</string>
-    <string name="label_search">Find something tasty</string>
+    <string name="label_search">Find your recipe!</string>
     <string name="label_search_nothing_found">Nothing. Try again.</string>
 
     <string name="btn_apply_filter">apply</string>

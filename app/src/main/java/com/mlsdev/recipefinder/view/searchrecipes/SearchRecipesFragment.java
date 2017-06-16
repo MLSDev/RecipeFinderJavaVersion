@@ -9,34 +9,54 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
 import com.mlsdev.recipefinder.view.BaseActivity;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
+
+import java.util.List;
 
 public class SearchRecipesFragment extends RecipeListFragment implements RecipeListAdapter.OnLastItemShownListener,
         SwipeRefreshLayout.OnRefreshListener, SearchViewModel.ActionListener {
     public static final int FILTER_REQUEST_CODE = 0;
     private FragmentSearchRecipesBinding binding;
     private SearchViewModel viewModel;
+    private MenuItem filterMenuItem;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
 
-        if (viewModel == null)
+        if (binding == null || viewModel == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
+            ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
+
             viewModel = new SearchViewModel(getActivity(), this, this);
 
-        binding.setViewModel(viewModel);
-        swipeRefreshLayout = binding.swipeToRefreshView;
-        initRecyclerView(binding.rvRecipeList);
-        initSwipeRefreshLayout(binding.swipeToRefreshView, this);
+            binding.setViewModel(viewModel);
+            swipeRefreshLayout = binding.swipeToRefreshView;
+            initRecyclerView(binding.rvRecipeList);
+            initSwipeRefreshLayout(binding.swipeToRefreshView, this);
+
+            binding.searchView.setOnSearchViewListener(viewModel);
+        }
+
         return binding.getRoot();
     }
 
@@ -81,6 +101,34 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
 
     @Override
     public void onHideKeyboard() {
-        ((BaseActivity)getActivity()).hideSoftKeyboard();
+        ((BaseActivity) getActivity()).hideSoftKeyboard();
+    }
+
+    @Override
+    public void onRecipesLoaded(List<Recipe> recipes) {
+        super.onRecipesLoaded(recipes);
+        filterMenuItem.setVisible(!recipes.isEmpty());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.options_menu, menu);
+        filterMenuItem = menu.findItem(R.id.action_filter);
+        filterMenuItem.setVisible(recipeListAdapter.getItemCount() > 0);
+        MenuItem item = menu.findItem(R.id.action_search);
+        binding.searchView.setMenuItem(item);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_filter:
+                viewModel.onFilterClick(item.getActionView());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }
