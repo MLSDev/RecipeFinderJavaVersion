@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'spoon'
 
 android {
     compileSdkVersion 25
@@ -106,5 +107,7 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
 
     compile 'com.github.claudiodegio:MsvSearch:1.0.0'
+
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.6.4'
 
 }
