@@ -95,7 +95,6 @@ public class SearchRecipesFragmentTest extends BaseTest {
         mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getEmptySearchResultJsonData(context)));
         performSearch();
         onView(withText(R.string.label_search_nothing_found)).check(matches(isDisplayed()));
-        Spoon.screenshot(rule.getActivity(), "Search_Nothing_found");
     }
 
     @Test
