@@ -14,7 +14,8 @@
         android:id="@+id/cl_search_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:tag="@string/content_tag">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"

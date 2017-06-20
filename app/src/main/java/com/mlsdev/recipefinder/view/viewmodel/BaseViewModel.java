@@ -3,6 +3,7 @@ package com.mlsdev.recipefinder.view.viewmodel;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -55,16 +56,43 @@ public class BaseViewModel {
 
         if (throwable instanceof HttpException) {
             HttpException httpException = (HttpException) throwable;
+
             if (httpException.code() >= BaseObserver.SERVER_ERROR)
                 errorMessage = context.getString(R.string.error_message_technical);
         } else if (throwable instanceof IOException) {
             errorMessage = context.getString(R.string.error_message_connection);
         }
 
+        showSnackbar(errorMessage);
+    }
+
+    protected void showSnackbar(@StringRes int message) {
+        if (context != null)
+            showSnackbar(context.getString(message));
+    }
+
+    protected void showSnackbar(String message) {
+        showSnackbar(message, null, null);
+    }
+
+    protected void showSnackbar(@StringRes int message, @StringRes int action, View.OnClickListener listener) {
+        if (context != null)
+            showSnackbar(context.getString(message), context.getString(action), listener);
+    }
+
+    protected void showSnackbar(String message, String action, View.OnClickListener listener) {
         if (context != null) {
-            View view = ((AppCompatActivity) context).getCurrentFocus();
-            if (view != null)
-                Snackbar.make(view, errorMessage, Snackbar.LENGTH_LONG).show();
+            String tag = context.getString(R.string.content_tag);
+            View view = ((AppCompatActivity) context).getWindow().getDecorView().findViewWithTag(tag);
+            if (view != null) {
+                Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+
+                if (action != null && listener != null)
+                    snackbar.setAction(action, listener);
+
+                snackbar.show();
+            }
+
         }
     }
 }

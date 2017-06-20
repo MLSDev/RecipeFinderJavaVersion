@@ -32,7 +32,7 @@
     <string name="btn_add">add</string>
     <string name="btn_add_ingredient">add ingredient</string>
     <string name="no_ingredients_error_title">No Ingredients</string>
-    <string name="no_ingredients_error_message">You haven\'t added any ingredients. At list one ingredient is needed to perform the recipe analysis. Please add one or more and try again.</string>
+    <string name="no_ingredients_error_message">Add at least one ingredient</string>
 
     <string name="calories">Calories: %1$d</string>
     <string name="total_weight">Total weight: %1$s</string>
@@ -50,6 +50,7 @@
     <string name="error_message_common">Something went wrong.</string>
     <string name="error_message_connection">Seems to be a problem with your internet connection.</string>
     <string name="error_title_common">Error</string>
+    <string name="content_tag">content</string>
 
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>

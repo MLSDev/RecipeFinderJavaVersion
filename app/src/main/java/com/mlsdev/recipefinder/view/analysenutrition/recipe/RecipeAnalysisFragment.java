@@ -24,7 +24,7 @@ public class RecipeAnalysisFragment extends Fragment implements OnAddIngredientC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_analysis, container, false);
-        viewModel = new RecipeAnalysisViewModel(getActivity(), this);
+        viewModel = new RecipeAnalysisViewModel(getActivity(), this, this);
         binding.setViewModel(viewModel);
         initRecyclerView();
         return binding.getRoot();

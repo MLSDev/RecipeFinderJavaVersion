@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 
@@ -12,7 +11,6 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
-import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
@@ -25,23 +23,29 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RecipeAnalysisViewModel extends BaseViewModel {
     public static final int ADD_INGREDIENT_REQUEST_CODE = 0;
-    public final ObservableField<String> title;
-    public final ObservableField<String> preparation;
-    public final ObservableField<String> yield;
+    public final ObservableField<String> title = new ObservableField<>();
+    public final ObservableField<String> preparation = new ObservableField<>();
+    public final ObservableField<String> yield = new ObservableField<>();
     private List<String> ingredients = new ArrayList<>();
+    OnAddIngredientClickListener addIngredientListener;
 
-    public RecipeAnalysisViewModel(@NonNull Context context, @NonNull KeyboardListener keyboardListener) {
+    public RecipeAnalysisViewModel(@NonNull Context context, @NonNull KeyboardListener keyboardListener,
+                                   OnAddIngredientClickListener addIngredientListener) {
         super(context);
         this.keyboardListener = keyboardListener;
-        title = new ObservableField<>();
-        preparation = new ObservableField<>();
-        yield = new ObservableField<>();
+        this.addIngredientListener = addIngredientListener;
     }
 
     public void onAnalyzeButtonClick(View view) {
         if (ingredients.isEmpty()) {
-            showErrorAlertDialog(context.getString(R.string.no_ingredients_error_title),
-                    context.getString(R.string.no_ingredients_error_message));
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addIngredientListener.onAddIngredientButtonClick();
+                }
+            };
+
+            showSnackbar(R.string.no_ingredients_error_message, R.string.btn_add, listener);
             return;
         }
 
@@ -73,15 +77,14 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
                         subscriptions.add(d);
                         showProgressDialog(false, null);
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        showError(e);
+                    }
                 });
 
-    }
-
-    private void showErrorAlertDialog(String title, String message) {
-        Intent showErrorIntent = new Intent(MainActivity.AppBroadcastReceiver.SHOW_ERROR_ACTION);
-        showErrorIntent.putExtra(Extras.ALERT_DIALOG_TITLE, title);
-        showErrorIntent.putExtra(Extras.ALERT_DIALOG_MESSAGE, message);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(showErrorIntent);
     }
 
     public void setIngredients(List<String> ingredients) {

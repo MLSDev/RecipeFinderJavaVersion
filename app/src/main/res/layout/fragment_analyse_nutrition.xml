@@ -9,7 +9,8 @@
         android:id="@+id/ll_analyse_nutrition"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:tag="@string/content_tag">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -32,7 +33,7 @@
             android:id="@+id/vp_analysis_pages"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
