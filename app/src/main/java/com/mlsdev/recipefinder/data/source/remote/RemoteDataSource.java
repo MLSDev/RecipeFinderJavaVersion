@@ -46,6 +46,15 @@ public class RemoteDataSource extends BaseDataSource implements DataSource {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+//                .addInterceptor(new Interceptor() {
+//                    @Override
+//                    public Response intercept(Chain chain) throws IOException {
+//                        Response response = chain.proceed(chain.request());
+//                        if (response != null && response.body() != null)
+//                            Log.d("TEST", response.body().string());
+//                        return response;
+//                    }
+//                })
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

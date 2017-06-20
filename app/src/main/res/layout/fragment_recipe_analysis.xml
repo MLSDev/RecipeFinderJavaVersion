@@ -55,7 +55,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <TextView
-            android:id="@+id/tv_ingredient_title"
+            android:id="@+id/tv_ingredients_title"
             style="@style/BaseTextViewStyle.NutrientTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             android:id="@+id/rv_ingredients"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/tv_ingredient_title" />
+            android:layout_below="@id/tv_ingredients_title" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_analyze"

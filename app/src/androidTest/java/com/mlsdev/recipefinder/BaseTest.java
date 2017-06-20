@@ -1,5 +1,8 @@
 package com.mlsdev.recipefinder;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+
 import com.mlsdev.recipefinder.data.source.remote.RemoteDataSource;
 import com.mlsdev.recipefinder.idlingutils.RxIdlingResource;
 
@@ -11,11 +14,13 @@ import okhttp3.mockwebserver.MockWebServer;
 import static android.support.test.espresso.Espresso.registerIdlingResources;
 import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 
-class BaseTest {
-    MockWebServer mockWebServer;
+public class BaseTest {
+    protected MockWebServer mockWebServer;
     private RxIdlingResource rxIdlingResource;
+    protected Context context;
 
     public void setUp() throws IOException {
+        context = InstrumentationRegistry.getContext();
         rxIdlingResource = new RxIdlingResource();
         registerIdlingResources(rxIdlingResource);
         RxJavaPlugins.setScheduleHandler(rxIdlingResource);

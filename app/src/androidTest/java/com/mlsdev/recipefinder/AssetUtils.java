@@ -26,6 +26,10 @@ public class AssetUtils {
         return new Gson().fromJson(getJsonStringFromAssets(context, "recipe.json"), Recipe.class);
     }
 
+    public static String getIngredientAnalysisJsonData(Context context) {
+        return getJsonStringFromAssets(context, "ingredient_analysis.json");
+    }
+
     private static String getJsonStringFromAssets(Context context, String fileName) {
         String json = null;
         try {

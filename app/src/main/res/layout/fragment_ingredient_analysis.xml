@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -54,7 +54,7 @@
                         </android.support.design.widget.TextInputLayout>
 
                         <android.support.v7.widget.AppCompatButton
-                            android:id="@+id/btn_analyze"
+                            android:id="@+id/btn_analyze_ingredient"
                             style="@style/AnalyzeButtonStyle"
                             android:layout_below="@id/til_ingredient_input_holder"
                             android:layout_marginTop="@dimen/activity_vertical_margin"

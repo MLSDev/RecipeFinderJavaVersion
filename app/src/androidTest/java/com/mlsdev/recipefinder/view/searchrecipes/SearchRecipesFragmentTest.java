@@ -1,11 +1,14 @@
-package com.mlsdev.recipefinder;
+package com.mlsdev.recipefinder.view.searchrecipes;
 
-import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
+import com.mlsdev.recipefinder.AssetUtils;
+import com.mlsdev.recipefinder.BaseTest;
+import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.squareup.spoon.Spoon;
@@ -47,15 +50,15 @@ public class SearchRecipesFragmentTest extends BaseTest {
 
     @Test
     public void testStartSearching() {
-        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getSearchResultJsonData(getContext())));
-        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getMoreRecipesJsonData(getContext())));
+        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getSearchResultJsonData(context)));
+        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getMoreRecipesJsonData(context)));
 
         Spoon.screenshot(rule.getActivity(), "Search");
 
         performSearch();
 
         onView(withText(firstRecipeTitle)).check(matches(isDisplayed()));
-        onView(withId(R.id.rv_recipe_list)).perform(RecyclerViewActions.scrollToPosition(9));
+        onView(ViewMatchers.withId(R.id.rv_recipe_list)).perform(RecyclerViewActions.scrollToPosition(9));
         onView(withText(lastRecipeTitle)).check(matches(isDisplayed()));
 
         Spoon.screenshot(rule.getActivity(), "Search");
@@ -75,10 +78,6 @@ public class SearchRecipesFragmentTest extends BaseTest {
         onView(withId(R.id.toolbar)).check(matches(isDisplayed()));
     }
 
-    private Context getContext() {
-        return InstrumentationRegistry.getContext();
-    }
-
     private void performSearch() {
         onView(withId(R.id.action_search)).perform(ViewActions.click());
         Spoon.screenshot(rule.getActivity(), "Search_Open_search_field");
@@ -93,7 +92,7 @@ public class SearchRecipesFragmentTest extends BaseTest {
 
     @Test
     public void testNothingFound() {
-        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getEmptySearchResultJsonData(getContext())));
+        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getEmptySearchResultJsonData(context)));
         performSearch();
         onView(withText(R.string.label_search_nothing_found)).check(matches(isDisplayed()));
         Spoon.screenshot(rule.getActivity(), "Search_Nothing_found");
