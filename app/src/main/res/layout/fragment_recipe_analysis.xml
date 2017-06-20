@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
-                android:onTextChanged="@{viewModel.onTitleTextChanged}" />
+                android:text="@={viewModel.title}" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
-                android:onTextChanged="@{viewModel.onPreparationTextChanged}" />
+                android:text="@={viewModel.preparation}" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
-                android:onTextChanged="@{viewModel.onYieldTextChanged}" />
+                android:text="@={viewModel.yield}"/>
         </android.support.design.widget.TextInputLayout>
 
         <TextView

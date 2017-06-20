@@ -84,31 +84,6 @@ public class RecipeAnalysisViewModel extends BaseViewModel {
         LocalBroadcastManager.getInstance(context).sendBroadcast(showErrorIntent);
     }
 
-    /**
-     * Handles the {@link android.widget.EditText}'s text changing.
-     * This method is added into the {@link android.widget.EditText}'s attribute list in the layout.
-     */
-    public void onTitleTextChanged(CharSequence text, int start, int before, int count) {
-        title.set(text.toString());
-    }
-
-    /**
-     * Handles the {@link android.widget.EditText}'s text changing.
-     * This method is added into the {@link android.widget.EditText}'s attribute list in the layout.
-     */
-    public void onPreparationTextChanged(CharSequence text, int start, int before, int count) {
-        preparation.set(text.toString());
-    }
-
-    /**
-     * Handles the {@link android.widget.EditText}'s text changing.
-     * This method is added into the {@link android.widget.EditText}'s attribute list in the layout.
-     */
-    public void onYieldTextChanged(CharSequence text, int start, int before, int count) {
-        yield.set(text.toString());
-        keyboardListener.onHideKeyboard();
-    }
-
     public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;
     }

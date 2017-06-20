@@ -15,7 +15,7 @@
         android:layout_margin="@dimen/activity_vertical_margin"
         android:background="@drawable/tab_item_background"
         android:onClick="@{viewModel.onAddIngredientButtonClick}"
-        android:text="@string/btn_add"
+        android:text="@string/btn_add_ingredient"
         android:textColor="@android:color/white" />
 
 </layout>

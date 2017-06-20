@@ -30,6 +30,10 @@ public class AssetUtils {
         return getJsonStringFromAssets(context, "ingredient_analysis.json");
     }
 
+    public static String getRecipeAnalysisJsonData(Context context) {
+        return getJsonStringFromAssets(context, "recipe_analysis.json");
+    }
+
     private static String getJsonStringFromAssets(Context context, String fileName) {
         String json = null;
         try {
