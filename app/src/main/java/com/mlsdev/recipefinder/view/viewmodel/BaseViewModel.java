@@ -3,11 +3,15 @@ package com.mlsdev.recipefinder.view.viewmodel;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
 import com.mlsdev.recipefinder.data.source.repository.DataRepository;
+
+import java.io.IOException;
 
 import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.HttpException;
@@ -47,20 +51,20 @@ public class BaseViewModel {
     }
 
     protected void showError(Throwable throwable) {
-        String errorTitle = context.getString(R.string.error_title_common);
         String errorMessage = context.getString(R.string.error_message_common);
+
         if (throwable instanceof HttpException) {
             HttpException httpException = (HttpException) throwable;
-            if (httpException.code() >= BaseObserver.SERVER_ERROR) {
-                errorTitle = context.getString(R.string.error_title_technical);
+            if (httpException.code() >= BaseObserver.SERVER_ERROR)
                 errorMessage = context.getString(R.string.error_message_technical);
-            }
+        } else if (throwable instanceof IOException) {
+            errorMessage = context.getString(R.string.error_message_connection);
         }
 
-        AlertDialog alert = new AlertDialog.Builder(context, R.style.AlertDialogAppCompat)
-                .setTitle(errorTitle)
-                .setMessage(errorMessage)
-                .create();
-        alert.show();
+        if (context != null) {
+            View view = ((AppCompatActivity) context).getCurrentFocus();
+            if (view != null)
+                Snackbar.make(view, errorMessage, Snackbar.LENGTH_LONG).show();
+        }
     }
 }

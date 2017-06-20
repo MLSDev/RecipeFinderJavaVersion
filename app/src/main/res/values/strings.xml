@@ -47,6 +47,7 @@
     <string name="error_title_technical">Technical error</string>
     <string name="error_message_technical">Server error. Try again later.</string>
     <string name="error_message_common">Something went wrong.</string>
+    <string name="error_message_connection">Seems to be a problem with your internet connection.</string>
     <string name="error_title_common">Error</string>
 
     <string-array name="diet_labels_prompt">
