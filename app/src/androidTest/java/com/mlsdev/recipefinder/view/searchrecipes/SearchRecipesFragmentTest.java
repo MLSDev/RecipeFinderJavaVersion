@@ -102,14 +102,12 @@ public class SearchRecipesFragmentTest extends BaseTest {
         mockWebServer.enqueue(new MockResponse().setResponseCode(500));
         performSearch();
         onView(withText(R.string.error_message_technical)).check(matches(isDisplayed()));
-        Spoon.screenshot(rule.getActivity(), "Search_Technical_error");
     }
 
     @Test
     public void testNetworkError() {
         mockWebServer.enqueue(new MockResponse().throttleBody(1024, 1, TimeUnit.SECONDS));
         performSearch();
-        onView(withText(R.string.error_message_common)).check(matches(isDisplayed()));
-        Spoon.screenshot(rule.getActivity(), "Search_Common_error");
+        onView(withText(R.string.error_message_connection)).check(matches(isDisplayed()));
     }
 }
