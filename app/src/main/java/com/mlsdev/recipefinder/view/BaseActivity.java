@@ -26,6 +26,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationControl
         }
     }
 
+    public void showSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+    }
+
     @Override
     public void launchActivity(Intent intent) {
         startActivity(intent);

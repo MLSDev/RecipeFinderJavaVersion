@@ -2,6 +2,7 @@ package com.mlsdev.recipefinder.view.bindingutils;
 
 import android.animation.ObjectAnimator;
 import android.databinding.BindingAdapter;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.widget.ImageView;
 
@@ -31,6 +32,12 @@ public final class DataBinder {
         objectAnimator.setDuration(350);
         objectAnimator.setStartDelay(250);
         objectAnimator.start();
+    }
+
+    @BindingAdapter("focused")
+    public static void setFocused(TextInputEditText editText, boolean requestFocus) {
+        if (requestFocus)
+            editText.requestFocus();
     }
 
 }

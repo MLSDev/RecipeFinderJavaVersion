@@ -50,7 +50,9 @@
     <string name="error_message_common">Something went wrong.</string>
     <string name="error_message_connection">Seems to be a problem with your internet connection.</string>
     <string name="error_title_common">Error</string>
+    <string name="error_empty_ingredient_field">Fill in the ingredient field</string>
     <string name="content_tag">content</string>
+    <string name="btn_fill_in">Fill in</string>
 
     <string-array name="diet_labels_prompt">
         <item>Balanced</item>

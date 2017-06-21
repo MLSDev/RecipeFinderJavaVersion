@@ -1,11 +1,11 @@
 package com.mlsdev.recipefinder.view.analysenutrition.ingredient;
 
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
@@ -32,40 +33,42 @@ import io.reactivex.schedulers.Schedulers;
 
 public class IngredientAnalysisViewModel extends BaseViewModel {
     private OnIngredientAnalyzedListener onIngredientAnalyzedListener;
-    public final ObservableField<String> ingredientText;
-    public final ObservableField<String> nutrientText;
-    public final ObservableField<String> fatText;
-    public final ObservableField<String> proteinText;
-    public final ObservableField<String> carbsText;
-    public final ObservableField<String> energyText;
-    public final ObservableInt diagramVisibility;
-    public final ObservableInt energyLabelVisibility;
-    public final ObservableInt fatLabelVisibility;
-    public final ObservableInt carbsLabelVisibility;
-    public final ObservableInt proteinLabelVisibility;
-    public final ObservableInt analysisResultsWrapperVisibility;
+    public final ObservableField<String> ingredientText = new ObservableField<>("");
+    public final ObservableField<String> nutrientText = new ObservableField<>("");
+    public final ObservableField<String> fatText = new ObservableField<>("");
+    public final ObservableField<String> proteinText = new ObservableField<>("");
+    public final ObservableField<String> carbsText = new ObservableField<>("");
+    public final ObservableField<String> energyText = new ObservableField<>("");
+    public final ObservableInt diagramVisibility = new ObservableInt(View.GONE);
+    public final ObservableInt energyLabelVisibility = new ObservableInt(View.GONE);
+    public final ObservableInt fatLabelVisibility = new ObservableInt(View.GONE);
+    public final ObservableInt carbsLabelVisibility = new ObservableInt(View.GONE);
+    public final ObservableInt proteinLabelVisibility = new ObservableInt(View.GONE);
+    public final ObservableInt analysisResultsWrapperVisibility = new ObservableInt(View.INVISIBLE);
+    public final ObservableBoolean ingredientTextFocused = new ObservableBoolean(false);
     private AppCompatActivity activity;
 
     public IngredientAnalysisViewModel(@NonNull AppCompatActivity activity, @NonNull OnIngredientAnalyzedListener listener) {
         super(activity);
         this.activity = activity;
         onIngredientAnalyzedListener = listener;
-        ingredientText = new ObservableField<>();
-        nutrientText = new ObservableField<>();
-        fatText = new ObservableField<>();
-        proteinText = new ObservableField<>();
-        carbsText = new ObservableField<>();
-        energyText = new ObservableField<>();
-        diagramVisibility = new ObservableInt(View.GONE);
-        energyLabelVisibility = new ObservableInt(View.GONE);
-        fatLabelVisibility = new ObservableInt(View.GONE);
-        carbsLabelVisibility = new ObservableInt(View.GONE);
-        proteinLabelVisibility = new ObservableInt(View.GONE);
-        analysisResultsWrapperVisibility = new ObservableInt(View.INVISIBLE);
     }
 
     public void onAnalyzeButtonClick(View view) {
         ((MainActivity) activity).hideSoftKeyboard();
+
+        if (ingredientText.get().isEmpty()) {
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ingredientTextFocused.set(true);
+                    ((MainActivity) activity).showSoftKeyboard();
+                }
+            };
+
+            showSnackbar(R.string.error_empty_ingredient_field, R.string.btn_fill_in, listener);
+            return;
+        }
 
         showProgressDialog(true, "Analysing...");
         subscriptions.clear();
@@ -112,15 +115,11 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
                     @Override
                     public void onError(Throwable e) {
                         showProgressDialog(false, null);
-                        Log.e(MainActivity.LOG_TAG, e.getMessage());
+                        showError(e);
                     }
 
                 });
 
-    }
-
-    public void onTextChanged(CharSequence text, int start, int before, int count) {
-        ingredientText.set(text.toString());
     }
 
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -135,7 +134,6 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
     }
 
     private void prepareDiagramData(TotalNutrients nutrients) {
-
         ArrayList<PieEntry> entries = DiagramUtils.preparePieEntries(nutrients);
         diagramVisibility.set(entries.isEmpty() ? View.GONE : View.VISIBLE);
         PieDataSet pieDataSet = DiagramUtils.createPieDataSet(context, entries, "Nutrients", null);

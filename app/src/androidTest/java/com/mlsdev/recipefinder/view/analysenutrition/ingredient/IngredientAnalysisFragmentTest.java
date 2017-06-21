@@ -14,6 +14,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.mockwebserver.MockResponse;
 
@@ -27,6 +28,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class IngredientAnalysisFragmentTest extends BaseTest {
+    private final String spoonTag = "Ingredient_Analysis";
 
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
@@ -43,18 +45,14 @@ public class IngredientAnalysisFragmentTest extends BaseTest {
 
     @Test
     public void testIngredientAnalysis() {
-        String spoonTag = "Ingredient_Analysis";
-        String ingredient = "1 small mango";
         String energy = "Energy 151.20 kcal";
         String fat = "Fat 0.96 g";
         String protein = "Protein 2.07 g";
         String carbs = "Carbs 37.75 g";
         mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getIngredientAnalysisJsonData(context)));
 
-        onView(withId(R.id.action_analyse_nutrition)).perform(click());
-
-        onView(withId(R.id.et_ingredient_input)).perform(typeText(ingredient));
-        closeSoftKeyboard();
+        selectTab();
+        inputFields();
 
         Spoon.screenshot(rule.getActivity(), spoonTag);
 
@@ -67,6 +65,45 @@ public class IngredientAnalysisFragmentTest extends BaseTest {
         onView(withText(carbs)).check(matches(isDisplayed()));
 
         Spoon.screenshot(rule.getActivity(), spoonTag);
+    }
+
+    @Test
+    public void testServerError() {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(500));
+        selectTab();
+        inputFields();
+        onView(withId(R.id.btn_analyze_ingredient)).perform(click());
+        onView(withText(R.string.error_message_technical)).check(matches(isDisplayed()));
+        Spoon.screenshot(rule.getActivity(), spoonTag);
+    }
+
+    @Test
+    public void testNetworkError() {
+        mockWebServer.enqueue(new MockResponse().throttleBody(1024, 1, TimeUnit.SECONDS));
+        selectTab();
+        inputFields();
+        onView(withId(R.id.btn_analyze_ingredient)).perform(click());
+        onView(withText(R.string.error_message_connection)).check(matches(isDisplayed()));
+        Spoon.screenshot(rule.getActivity(), spoonTag);
+    }
+
+    @Test
+    public void testIngredientAnalysis_EmptyField() {
+        selectTab();
+        onView(withId(R.id.btn_analyze_ingredient)).perform(click());
+        onView(withText(R.string.error_empty_ingredient_field)).check(matches(isDisplayed()));
+        Spoon.screenshot(rule.getActivity(), spoonTag);
+        onView(withText(R.string.btn_fill_in)).perform(click());
+    }
+
+    private void selectTab() {
+        onView(withId(R.id.action_analyse_nutrition)).perform(click());
+    }
+
+    private void inputFields() {
+        String ingredient = "1 small mango";
+        onView(withId(R.id.et_ingredient_input)).perform(typeText(ingredient));
+        closeSoftKeyboard();
     }
 
 }
