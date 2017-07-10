@@ -37,6 +37,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
     private Map<String, String> searchParams;
     private ActionListener actionListener;
     public final ObservableBoolean isSearchOpened = new ObservableBoolean(false);
+    private String query = "";
 
     public SearchViewModel(@NonNull Context context, @NonNull ActionListener actionListener,
                            @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
@@ -59,12 +60,14 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
             return;
         }
 
+        query = searchText;
+
         String prevSearchText = searchParams.containsKey(ParameterKeys.QUERY) ? searchParams.get(ParameterKeys.QUERY) : "";
 
         if (forceUpdate || !(prevSearchText.equals(searchText.toLowerCase())))
             repository.setCacheIsDirty();
 
-        searchParams.put(ParameterKeys.QUERY, searchText);
+        searchParams.put(ParameterKeys.QUERY, query.toLowerCase());
         subscriptions.clear();
         searchLabelVisibility.set(View.INVISIBLE);
         repository.searchRecipes(searchParams)
@@ -85,7 +88,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
 
     public void loadMoreRecipes() {
         Map<String, String> params = new ArrayMap<>();
-        params.put(ParameterKeys.QUERY, this.searchText.get().toLowerCase());
+        params.put(ParameterKeys.QUERY, query.toLowerCase());
         subscriptions.clear();
         loadMoreProgressBarVisibility.set(View.VISIBLE);
 
@@ -102,7 +105,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
     }
 
     public void refresh() {
-        searchRecipes(searchText.get(), true);
+        searchRecipes(query, true);
     }
 
     /**
@@ -117,7 +120,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
         searchParams.put(ParameterKeys.HEALTH, healthLabel);
         searchParams.put(ParameterKeys.DIET, dietLabel);
 
-        searchRecipes(this.searchText.get().toLowerCase(), true);
+        searchRecipes(query, true);
     }
 
     public void onFilterClick(View view) {
