@@ -1,3 +1,5 @@
+![Travis-ci](https://api.travis-ci.org/MLSDev/RecipeFinder.svg)
+
 # RecipeFinder
 
 This is a sample app with **MVVM**, **RxJava** and **Data Binding**
