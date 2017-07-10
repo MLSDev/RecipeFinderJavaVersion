@@ -16,3 +16,6 @@ script:
         - ./gradlew build
 before_install:
         - chmod +x gradlew
+branches:
+        only:
+                 - master
