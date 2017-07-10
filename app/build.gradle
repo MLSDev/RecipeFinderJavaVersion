@@ -36,6 +36,11 @@ android {
     dataBinding {
         enabled = true
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 ext {
