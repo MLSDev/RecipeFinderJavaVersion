@@ -94,7 +94,6 @@ public class RecipeListFragment extends TabFragment implements RecipeListAdapter
 
     @Override
     public void onRecipesLoaded(List<Recipe> recipes) {
-        recipeRecyclerView.smoothScrollToPosition(0);
         recipeListAdapter.setData(recipes);
         stopRefreshing();
     }

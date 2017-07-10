@@ -18,13 +18,18 @@ public class FavoriteRecipesFragment extends RecipeListFragment implements OnLas
     private FavoritesViewModel viewModel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite_recipes, container, false);
-        viewModel = new FavoritesViewModel(getActivity(), this);
-        binding.setViewModel(viewModel);
+        if (binding == null || viewModel == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite_recipes, container, false);
+            viewModel = new FavoritesViewModel(getActivity(), this);
+            binding.setViewModel(viewModel);
+        }
+
         initRecyclerView(binding.rvRecipeList);
+        scrollToTop();
 
         return binding.getRoot();
     }

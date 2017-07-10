@@ -51,11 +51,13 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
 
             binding.setViewModel(viewModel);
             swipeRefreshLayout = binding.swipeToRefreshView;
-            initRecyclerView(binding.rvRecipeList);
-            initSwipeRefreshLayout(binding.swipeToRefreshView, this);
 
             binding.searchView.setOnSearchViewListener(viewModel);
         }
+
+        initRecyclerView(binding.rvRecipeList);
+        initSwipeRefreshLayout(binding.swipeToRefreshView, this);
+        scrollToTop();
 
         return binding.getRoot();
     }
