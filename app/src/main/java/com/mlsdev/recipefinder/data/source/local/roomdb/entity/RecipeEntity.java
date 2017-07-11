@@ -11,12 +11,13 @@ import com.mlsdev.recipefinder.data.source.local.roomdb.converter.Converter;
 
 import java.util.List;
 
-@Entity(foreignKeys = {
-        @ForeignKey(
-                entity = TotalNutrientsEntity.class,
-                parentColumns = "id",
-                childColumns = "total_nutrients_id")
-})
+@Entity(tableName = "recipes",
+        foreignKeys = {
+                @ForeignKey(
+                        entity = TotalNutrientsEntity.class,
+                        parentColumns = "id",
+                        childColumns = "total_nutrients_id")
+        })
 @TypeConverters(Converter.class)
 public class RecipeEntity {
     @PrimaryKey

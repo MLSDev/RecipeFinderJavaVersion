@@ -7,10 +7,10 @@ import com.mlsdev.recipefinder.data.entity.nutrition.Nutrient;
 
 import java.io.Serializable;
 
-@Entity
+@Entity(tableName = "nutrients")
 public class NutrientEntity implements Serializable {
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private int id;
     public final String label;
     public final double quantity;
     public final String unit;
@@ -21,11 +21,11 @@ public class NutrientEntity implements Serializable {
         unit = nutrient.getUnit();
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

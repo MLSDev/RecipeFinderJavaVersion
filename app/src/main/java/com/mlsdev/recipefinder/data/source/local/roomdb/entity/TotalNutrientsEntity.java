@@ -5,27 +5,28 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(foreignKeys = {
-        @ForeignKey(
-                entity = NutrientEntity.class,
-                parentColumns = "id",
-                childColumns = "energy_id"),
-        @ForeignKey(
-                entity = NutrientEntity.class,
-                parentColumns = "id",
-                childColumns = "fat_id"),
-        @ForeignKey(
-                entity = NutrientEntity.class,
-                parentColumns = "id",
-                childColumns = "carbs_id"),
-        @ForeignKey(
-                entity = NutrientEntity.class,
-                parentColumns = "id",
-                childColumns = "protein_id")
-})
+@Entity(tableName = "total_nutrients",
+        foreignKeys = {
+                @ForeignKey(
+                        entity = NutrientEntity.class,
+                        parentColumns = "id",
+                        childColumns = "energy_id"),
+                @ForeignKey(
+                        entity = NutrientEntity.class,
+                        parentColumns = "id",
+                        childColumns = "fat_id"),
+                @ForeignKey(
+                        entity = NutrientEntity.class,
+                        parentColumns = "id",
+                        childColumns = "carbs_id"),
+                @ForeignKey(
+                        entity = NutrientEntity.class,
+                        parentColumns = "id",
+                        childColumns = "protein_id")
+        })
 public class TotalNutrientsEntity {
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private int id;
 
     @ColumnInfo(name = "energy_id")
     public final long energyLabelId;
@@ -47,11 +48,11 @@ public class TotalNutrientsEntity {
         this.proteinLabelId = proteinLabelId;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 }
