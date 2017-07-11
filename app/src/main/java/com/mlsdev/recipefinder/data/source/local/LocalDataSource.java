@@ -3,7 +3,6 @@ package com.mlsdev.recipefinder.data.source.local;
 import android.content.Context;
 
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
-import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.source.DataSource;
@@ -48,17 +47,17 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
             @Override
             public Boolean call() throws Exception {
                 boolean result = false;
-                try {
-                    for (Ingredient ingredient : favoriteRecipe.getIngredients())
-                        ingredient.setRecipe(favoriteRecipe);
-
-                    dataBaseHelper.getHealthLabelDao().create(favoriteRecipe.getHealthLabelCollection());
-                    dataBaseHelper.getDietLabelDao().create(favoriteRecipe.getDietLabelCollection());
-                    dataBaseHelper.getIngredientDao().create(favoriteRecipe.getIngredients());
-                    result = dataBaseHelper.getRecipeDao().createIfNotExists(favoriteRecipe) != null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    for (Ingredient ingredient : favoriteRecipe.getIngredients())
+//                        ingredient.setRecipe(favoriteRecipe);
+//
+//                    dataBaseHelper.getHealthLabelDao().create(favoriteRecipe.getHealthLabelCollection());
+//                    dataBaseHelper.getDietLabelDao().create(favoriteRecipe.getDietLabelCollection());
+//                    dataBaseHelper.getIngredientDao().create(favoriteRecipe.getIngredients());
+//                    result = dataBaseHelper.getRecipeDao().createIfNotExists(favoriteRecipe) != null;
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
 
                 return result;
             }
