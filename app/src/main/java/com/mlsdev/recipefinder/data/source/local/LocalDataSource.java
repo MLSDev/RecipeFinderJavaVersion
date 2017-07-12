@@ -3,13 +3,14 @@ package com.mlsdev.recipefinder.data.source.local;
 import android.content.Context;
 
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.source.DataSource;
+import com.mlsdev.recipefinder.data.source.local.roomdb.AppDatabase;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -18,9 +19,11 @@ import io.reactivex.Single;
 
 public class LocalDataSource extends BaseDataSource implements DataSource {
     private DataBaseHelper dataBaseHelper;
+    private AppDatabase db;
 
     public LocalDataSource(Context context) {
         dataBaseHelper = new DataBaseHelper(context);
+        db = AppDatabase.getDb();
     }
 
     @Override
@@ -28,12 +31,16 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
         return Single.fromCallable(new Callable<List<Recipe>>() {
             @Override
             public List<Recipe> call() throws Exception {
-                List<Recipe> favoriteRecipes = new ArrayList<>();
+                List<Recipe> favoriteRecipes = db.recipeDao().loadAll();
 
-                try {
-                    favoriteRecipes = dataBaseHelper.getRecipeDao().queryForAll();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                for (Recipe recipe : favoriteRecipes) {
+                    TotalNutrients totalNutrients = db.totalNutrientsDao().loadById(recipe.getTotalNutrientsId());
+                    totalNutrients.setEnergy(db.nutrientDao().loadById(totalNutrients.getEnergyNutrientId()));
+                    totalNutrients.setFat(db.nutrientDao().loadById(totalNutrients.getFatNutrientId()));
+                    totalNutrients.setCarbs(db.nutrientDao().loadById(totalNutrients.getCarbsNutrientId()));
+                    totalNutrients.setProtein(db.nutrientDao().loadById(totalNutrients.getProteinNutrientId()));
+
+                    recipe.setTotalNutrients(totalNutrients);
                 }
 
                 return favoriteRecipes;
@@ -46,20 +53,20 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
         return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                boolean result = false;
-//                try {
-//                    for (Ingredient ingredient : favoriteRecipe.getIngredients())
-//                        ingredient.setRecipe(favoriteRecipe);
-//
-//                    dataBaseHelper.getHealthLabelDao().create(favoriteRecipe.getHealthLabelCollection());
-//                    dataBaseHelper.getDietLabelDao().create(favoriteRecipe.getDietLabelCollection());
-//                    dataBaseHelper.getIngredientDao().create(favoriteRecipe.getIngredients());
-//                    result = dataBaseHelper.getRecipeDao().createIfNotExists(favoriteRecipe) != null;
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
+                long energyNutrientId = db.nutrientDao().createIfNotExist(favoriteRecipe.getTotalNutrients().getEnergy());
+                long fatNutrientId = db.nutrientDao().createIfNotExist(favoriteRecipe.getTotalNutrients().getFat());
+                long carbsNutrientId = db.nutrientDao().createIfNotExist(favoriteRecipe.getTotalNutrients().getCarbs());
+                long proteinNutrientId = db.nutrientDao().createIfNotExist(favoriteRecipe.getTotalNutrients().getProtein());
 
-                return result;
+                favoriteRecipe.getTotalNutrients().setEnergyNutrientId(energyNutrientId);
+                favoriteRecipe.getTotalNutrients().setFatNutrientId(fatNutrientId);
+                favoriteRecipe.getTotalNutrients().setCarbsNutrientId(carbsNutrientId);
+                favoriteRecipe.getTotalNutrients().setProteinNutrientId(proteinNutrientId);
+
+                long totalNutrientsId = db.totalNutrientsDao().createIfNotExist(favoriteRecipe.getTotalNutrients());
+
+                favoriteRecipe.setTotalNutrientsId(totalNutrientsId);
+                return db.recipeDao().insert(favoriteRecipe) > -1;
             }
         });
     }
@@ -69,13 +76,13 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
         return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                boolean result = false;
-                try {
-                    result = dataBaseHelper.getRecipeDao().delete(removedRecipe) == 1;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return result;
+                db.recipeDao().delete(removedRecipe);
+                db.totalNutrientsDao().delete(removedRecipe.getTotalNutrients());
+                db.nutrientDao().delete(removedRecipe.getTotalNutrients().getEnergy());
+                db.nutrientDao().delete(removedRecipe.getTotalNutrients().getFat());
+                db.nutrientDao().delete(removedRecipe.getTotalNutrients().getCarbs());
+                db.nutrientDao().delete(removedRecipe.getTotalNutrients().getProtein());
+                return true;
             }
         });
     }
@@ -85,17 +92,7 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
         return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                if (recipe == null)
-                    return false;
-
-                boolean result = false;
-
-                try {
-                    result = dataBaseHelper.getRecipeDao().idExists(recipe.getUri());
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return result;
+                return recipe != null && db.recipeDao().loadByUri(recipe.getUri()) != null;
             }
         });
     }

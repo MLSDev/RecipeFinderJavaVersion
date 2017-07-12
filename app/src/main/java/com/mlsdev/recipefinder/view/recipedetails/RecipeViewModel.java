@@ -121,7 +121,10 @@ public class RecipeViewModel extends BaseViewModel {
     public void onFavoriteButtonClick(View view) {
 
         if (favoriteImageStateChecked.get()) {
-            subscriptions.remove(removeFromFavoritesSubscription);
+
+            if (removeFromFavoritesSubscription != null)
+                subscriptions.remove(removeFromFavoritesSubscription);
+
             repository.removeFromFavorites(recipe)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())

@@ -1,8 +1,10 @@
 package com.mlsdev.recipefinder.data.source.local.roomdb.converter;
 
 import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.util.StringUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Converter {
@@ -21,6 +23,22 @@ public class Converter {
         if (string == null) return null;
 
         return Arrays.asList(string.split(","));
+    }
+
+    @TypeConverter
+    public static String integersListToString(List<Integer> longs) {
+
+        if (longs == null) return null;
+
+        return StringUtil.joinIntoString(longs);
+    }
+
+    @TypeConverter
+    public static List<Integer> stringToIntegerList(String string) {
+
+        if (string == null) return Collections.emptyList();
+
+        return StringUtil.splitToIntList(string);
     }
 
 }

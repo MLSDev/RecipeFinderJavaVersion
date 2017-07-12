@@ -1,25 +1,33 @@
 package com.mlsdev.recipefinder.data.entity.nutrition;
 
-import com.google.gson.annotations.SerializedName;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.mlsdev.recipefinder.view.utils.Utils;
 
-import java.io.Serializable;
-
-@DatabaseTable(tableName = "analyzed_nutrients")
-public class Nutrient implements Serializable {
-    @DatabaseField(generatedId = true)
+@Entity(tableName = "nutrients")
+public class Nutrient {
+    @PrimaryKey(autoGenerate = true)
     private long id;
-    @DatabaseField
-    @SerializedName("label")
     private String label;
-    @DatabaseField
-    @SerializedName("quantity")
     private double quantity;
-    @SerializedName("unit")
-    @DatabaseField
     private String unit;
+
+    public Nutrient() {
+    }
+
+    @Ignore
+    public Nutrient(String label, double quantity, String unit) {
+        this.label = label;
+        this.quantity = quantity;
+        this.unit = unit;
+    }
+
+    // region Getters
+    public long getId() {
+        return id;
+    }
 
     public String getLabel() {
         return label;
@@ -32,17 +40,28 @@ public class Nutrient implements Serializable {
     public String getUnit() {
         return unit;
     }
+    //endregion
+
+    // region Setters
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+    // endregion
 
     public String getFormattedFullText() {
         return label + " " + Utils.formatDecimalToString(quantity) + " " + unit;
     }
 
-    public Nutrient() {
-    }
-
-    public Nutrient(String label, double quantity, String unit) {
-        this.label = label;
-        this.quantity = quantity;
-        this.unit = unit;
-    }
 }
