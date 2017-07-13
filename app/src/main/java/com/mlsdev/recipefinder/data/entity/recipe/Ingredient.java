@@ -1,22 +1,49 @@
 package com.mlsdev.recipefinder.data.entity.recipe;
 
 
-import com.google.gson.annotations.SerializedName;
-import com.j256.ormlite.field.DatabaseField;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 
+@Entity(tableName = "ingredients")
 public class Ingredient implements Serializable {
-    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
-    private Recipe recipe;
-    @DatabaseField(generatedId = true)
+    @PrimaryKey(autoGenerate = true)
     private long id;
-    @DatabaseField
-    @SerializedName("text")
+
+    @ColumnInfo(name = "recipe_uri", index = true)
+    private String recipeUri;
+
     private String text;
-    @DatabaseField
-    @SerializedName("weight")
     private double weight;
+
+    public Ingredient() {
+    }
+
+    public void setRecipeUri(String recipeUri) {
+        this.recipeUri = recipeUri;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getRecipeUri() {
+        return recipeUri;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public String getText() {
         return text;
@@ -24,12 +51,5 @@ public class Ingredient implements Serializable {
 
     public double getWeight() {
         return weight;
-    }
-
-    public Ingredient() {
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
     }
 }

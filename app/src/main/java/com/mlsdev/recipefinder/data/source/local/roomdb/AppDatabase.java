@@ -7,7 +7,9 @@ import android.content.Context;
 
 import com.mlsdev.recipefinder.data.entity.nutrition.Nutrient;
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
+import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
+import com.mlsdev.recipefinder.data.source.local.roomdb.dao.IngredientDao;
 import com.mlsdev.recipefinder.data.source.local.roomdb.dao.NutrientDao;
 import com.mlsdev.recipefinder.data.source.local.roomdb.dao.RecipeDao;
 import com.mlsdev.recipefinder.data.source.local.roomdb.dao.TotalNutrientsDao;
@@ -16,7 +18,8 @@ import com.mlsdev.recipefinder.data.source.local.roomdb.dao.TotalNutrientsDao;
         entities = {
                 Recipe.class,
                 TotalNutrients.class,
-                Nutrient.class},
+                Nutrient.class,
+                Ingredient.class},
         version = 1,
         exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
@@ -27,6 +30,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract NutrientDao nutrientDao();
 
     public abstract TotalNutrientsDao totalNutrientsDao();
+
+    public abstract IngredientDao ingredientDao();
 
     public static AppDatabase getDb() {
         return INSTANCE;

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
+import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseDataSource;
 import com.mlsdev.recipefinder.data.source.DataSource;
@@ -41,6 +42,7 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
                     totalNutrients.setProtein(db.nutrientDao().loadById(totalNutrients.getProteinNutrientId()));
 
                     recipe.setTotalNutrients(totalNutrients);
+                    recipe.setIngredients(db.ingredientDao().loadByRecipeUri(recipe.getUri()));
                 }
 
                 return favoriteRecipes;
@@ -66,6 +68,12 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
                 long totalNutrientsId = db.totalNutrientsDao().createIfNotExist(favoriteRecipe.getTotalNutrients());
 
                 favoriteRecipe.setTotalNutrientsId(totalNutrientsId);
+
+                for (Ingredient ingredient : favoriteRecipe.getIngredients())
+                    ingredient.setRecipeUri(favoriteRecipe.getUri());
+
+                db.ingredientDao().insert(favoriteRecipe.getIngredients());
+
                 return db.recipeDao().insert(favoriteRecipe) > -1;
             }
         });
@@ -82,6 +90,7 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
                 db.nutrientDao().delete(removedRecipe.getTotalNutrients().getFat());
                 db.nutrientDao().delete(removedRecipe.getTotalNutrients().getCarbs());
                 db.nutrientDao().delete(removedRecipe.getTotalNutrients().getProtein());
+                db.ingredientDao().deleteByRecipeUri(removedRecipe.getUri());
                 return true;
             }
         });
