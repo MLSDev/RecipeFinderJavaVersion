@@ -3,11 +3,13 @@ package com.mlsdev.recipefinder.data.entity.nutrition;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.mlsdev.recipefinder.view.utils.Utils;
 
 @Entity(tableName = "nutrients")
-public class Nutrient {
+public class Nutrient implements Parcelable{
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String label;
@@ -64,4 +66,35 @@ public class Nutrient {
         return label + " " + Utils.formatDecimalToString(quantity) + " " + unit;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.label);
+        dest.writeDouble(this.quantity);
+        dest.writeString(this.unit);
+    }
+
+    protected Nutrient(Parcel in) {
+        this.id = in.readLong();
+        this.label = in.readString();
+        this.quantity = in.readDouble();
+        this.unit = in.readString();
+    }
+
+    public static final Creator<Nutrient> CREATOR = new Creator<Nutrient>() {
+        @Override
+        public Nutrient createFromParcel(Parcel source) {
+            return new Nutrient(source);
+        }
+
+        @Override
+        public Nutrient[] newArray(int size) {
+            return new Nutrient[size];
+        }
+    };
 }

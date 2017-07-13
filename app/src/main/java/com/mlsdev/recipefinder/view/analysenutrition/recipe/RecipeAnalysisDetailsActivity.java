@@ -53,7 +53,7 @@ public class RecipeAnalysisDetailsActivity extends AppCompatActivity {
             chartVisibility = new ObservableInt(View.GONE);
 
             NutritionAnalysisResult nutritionAnalysisResult = (NutritionAnalysisResult) recipeAnalysingData
-                    .getSerializable(RECIPE_ANALYSING_RESULT_KEY);
+                    .getParcelable(RECIPE_ANALYSING_RESULT_KEY);
 
             showResults(nutritionAnalysisResult);
         }

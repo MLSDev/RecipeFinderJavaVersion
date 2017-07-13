@@ -6,10 +6,10 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
 
 @Entity(tableName = "total_nutrients",
         foreignKeys = {
@@ -36,7 +36,7 @@ import java.io.Serializable;
                 @Index("protein_id")
         }
 )
-public class TotalNutrients implements Serializable {
+public class TotalNutrients implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
@@ -149,4 +149,46 @@ public class TotalNutrients implements Serializable {
     }
 
     // endregion
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeParcelable(this.energy, flags);
+        dest.writeParcelable(this.fat, flags);
+        dest.writeParcelable(this.carbs, flags);
+        dest.writeParcelable(this.protein, flags);
+        dest.writeLong(this.energyNutrientId);
+        dest.writeLong(this.fatNutrientId);
+        dest.writeLong(this.carbsNutrientId);
+        dest.writeLong(this.proteinNutrientId);
+    }
+
+    protected TotalNutrients(Parcel in) {
+        this.id = in.readLong();
+        this.energy = in.readParcelable(Nutrient.class.getClassLoader());
+        this.fat = in.readParcelable(Nutrient.class.getClassLoader());
+        this.carbs = in.readParcelable(Nutrient.class.getClassLoader());
+        this.protein = in.readParcelable(Nutrient.class.getClassLoader());
+        this.energyNutrientId = in.readLong();
+        this.fatNutrientId = in.readLong();
+        this.carbsNutrientId = in.readLong();
+        this.proteinNutrientId = in.readLong();
+    }
+
+    public static final Creator<TotalNutrients> CREATOR = new Creator<TotalNutrients>() {
+        @Override
+        public TotalNutrients createFromParcel(Parcel source) {
+            return new TotalNutrients(source);
+        }
+
+        @Override
+        public TotalNutrients[] newArray(int size) {
+            return new TotalNutrients[size];
+        }
+    };
 }

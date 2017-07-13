@@ -1,35 +1,19 @@
 package com.mlsdev.recipefinder.data.entity.nutrition;
 
-import com.google.gson.annotations.SerializedName;
-import com.j256.ormlite.field.DataType;
-import com.j256.ormlite.field.DatabaseField;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NutritionAnalysisResult implements Serializable {
-    @DatabaseField(id = true)
-    private int hash;
-    @SerializedName("uri")
-    @DatabaseField
+public class NutritionAnalysisResult implements Parcelable {
     private String uri;
-    @SerializedName("calories")
-    @DatabaseField
     private int calories;
-    @SerializedName("totalWeight")
-    @DatabaseField
     private double totalWeight;
-    @SerializedName("yield")
     private double yield;
-    @SerializedName("dietLabels")
     private List<String> dietLabels = new ArrayList<>();
-    @SerializedName("healthLabels")
     private List<String> healthLabels = new ArrayList<>();
-    @SerializedName("cautions")
     private List<String> cautions = new ArrayList<>();
-    @SerializedName("totalNutrients")
-    @DatabaseField(columnName = "total_nutrients", dataType = DataType.SERIALIZABLE)
     private TotalNutrients totalNutrients;
 
     public String getUri() {
@@ -38,22 +22,6 @@ public class NutritionAnalysisResult implements Serializable {
 
     public int getCalories() {
         return calories;
-    }
-
-    public double getTotalWeight() {
-        return totalWeight;
-    }
-
-    public List<String> getDietLabels() {
-        return dietLabels;
-    }
-
-    public List<String> getHealthLabels() {
-        return healthLabels;
-    }
-
-    public List<String> getCautions() {
-        return cautions;
     }
 
     public TotalNutrients getTotalNutrients() {
@@ -67,7 +35,43 @@ public class NutritionAnalysisResult implements Serializable {
     public NutritionAnalysisResult() {
     }
 
-    public void setHash(int hash) {
-        this.hash = hash;
+    @Override
+    public int describeContents() {
+        return 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.uri);
+        dest.writeInt(this.calories);
+        dest.writeDouble(this.totalWeight);
+        dest.writeDouble(this.yield);
+        dest.writeStringList(this.dietLabels);
+        dest.writeStringList(this.healthLabels);
+        dest.writeStringList(this.cautions);
+        dest.writeParcelable(this.totalNutrients, flags);
+    }
+
+    protected NutritionAnalysisResult(Parcel in) {
+        this.uri = in.readString();
+        this.calories = in.readInt();
+        this.totalWeight = in.readDouble();
+        this.yield = in.readDouble();
+        this.dietLabels = in.createStringArrayList();
+        this.healthLabels = in.createStringArrayList();
+        this.cautions = in.createStringArrayList();
+        this.totalNutrients = in.readParcelable(TotalNutrients.class.getClassLoader());
+    }
+
+    public static final Creator<NutritionAnalysisResult> CREATOR = new Creator<NutritionAnalysisResult>() {
+        @Override
+        public NutritionAnalysisResult createFromParcel(Parcel source) {
+            return new NutritionAnalysisResult(source);
+        }
+
+        @Override
+        public NutritionAnalysisResult[] newArray(int size) {
+            return new NutritionAnalysisResult[size];
+        }
+    };
 }

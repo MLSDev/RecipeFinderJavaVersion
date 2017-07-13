@@ -119,23 +119,7 @@ public class DataRepository {
     }
 
     public Single<NutritionAnalysisResult> getIngredientData(final Map<String, String> params) {
-        return RemoteDataSource.getInstance().getIngredientData(params)
-                .flatMap(new Function<NutritionAnalysisResult, SingleSource<? extends NutritionAnalysisResult>>() {
-                    @Override
-                    public SingleSource<? extends NutritionAnalysisResult> apply(@io.reactivex.annotations.NonNull NutritionAnalysisResult analysisResult) throws Exception {
-                        if (analysisResult == null) {
-                            return RemoteDataSource.getInstance().getIngredientData(params)
-                                    .doOnSuccess(new Consumer<NutritionAnalysisResult>() {
-                                        @Override
-                                        public void accept(@io.reactivex.annotations.NonNull NutritionAnalysisResult analysisResult) throws Exception {
-                                            localDataSource.addAnalyzingResult(analysisResult, params);
-                                        }
-                                    });
-                        } else {
-                            return Single.just(analysisResult);
-                        }
-                    }
-                });
+        return RemoteDataSource.getInstance().getIngredientData(params);
     }
 
     public Single<NutritionAnalysisResult> getRecipeAnalysisData(final RecipeAnalysisParams params) {
