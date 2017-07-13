@@ -19,38 +19,25 @@ import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 public class RecipeViewModel extends BaseViewModel {
     private Recipe recipe;
-    public ObservableField<String> recipeTitle;
-    public ObservableField<String> recipeImageUrl;
-    public ObservableField<String> recipeHealthLabels;
-    public ObservableField<String> recipeDietLabels;
-    public ObservableField<String> recipeIngredients;
-    public ObservableBoolean favoriteImageStateChecked;
-    public final ObservableInt proteinProgressValue;
-    public final ObservableInt carbsProgressValue;
-    public final ObservableInt fatProgressValue;
-    private Disposable removeFromFavoritesSubscription;
-    private Disposable addFromFavoritesSubscription;
-    private Disposable isInFavoritesSubscription;
-    public ObservableField<String> imageTransitionName;
+    public final ObservableField<String> recipeTitle = new ObservableField<>();
+    public final ObservableField<String> recipeImageUrl = new ObservableField<>("");
+    public final ObservableField<String> recipeHealthLabels = new ObservableField<>();
+    public final ObservableField<String> recipeDietLabels = new ObservableField<>();
+    public final ObservableField<String> recipeIngredients = new ObservableField<>();
+    public final ObservableBoolean favoriteImageStateChecked = new ObservableBoolean(false);
+    public final ObservableInt proteinProgressValue = new ObservableInt(80);
+    public final ObservableInt carbsProgressValue = new ObservableInt(15);
+    public final ObservableInt fatProgressValue = new ObservableInt(43);
 
     public RecipeViewModel(Context context, Bundle recipeData) {
         super(context);
-        proteinProgressValue = new ObservableInt(80);
-        carbsProgressValue = new ObservableInt(15);
-        fatProgressValue = new ObservableInt(43);
-        recipeTitle = new ObservableField<>();
-        recipeImageUrl = new ObservableField<>();
-        recipeHealthLabels = new ObservableField<>();
-        recipeDietLabels = new ObservableField<>();
-        recipeIngredients = new ObservableField<>();
-        favoriteImageStateChecked = new ObservableBoolean(false);
-        imageTransitionName = new ObservableField<>();
+        subscriptions = new CompositeDisposable();
 
         if (recipeData != null && recipeData.containsKey(Extras.DATA)) {
             recipe = (Recipe) recipeData.getSerializable(Extras.DATA);
@@ -121,49 +108,29 @@ public class RecipeViewModel extends BaseViewModel {
     public void onFavoriteButtonClick(View view) {
 
         if (favoriteImageStateChecked.get()) {
-
-            if (removeFromFavoritesSubscription != null)
-                subscriptions.remove(removeFromFavoritesSubscription);
-
             repository.removeFromFavorites(recipe)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(new BaseObserver<Boolean>() {
+                    .subscribe(new Action() {
                         @Override
-                        public void onSuccess(Boolean removed) {
+                        public void run() throws Exception {
                             favoriteImageStateChecked.set(false);
-                        }
-
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-                            removeFromFavoritesSubscription = d;
                         }
                     });
         } else {
-            if (addFromFavoritesSubscription != null)
-                subscriptions.remove(addFromFavoritesSubscription);
-
             repository.addToFavorites(recipe)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(new BaseObserver<Boolean>() {
+                    .subscribe(new Action() {
                         @Override
-                        public void onSuccess(Boolean added) {
+                        public void run() throws Exception {
                             favoriteImageStateChecked.set(true);
-                        }
-
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-                            addFromFavoritesSubscription = d;
                         }
                     });
         }
     }
 
     private void checkIsTheRecipeInFavorites() {
-        if (isInFavoritesSubscription != null)
-            subscriptions.remove(isInFavoritesSubscription);
-
         repository.isInFavorites(recipe)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -171,11 +138,6 @@ public class RecipeViewModel extends BaseViewModel {
                     @Override
                     public void onSuccess(Boolean exist) {
                         favoriteImageStateChecked.set(exist);
-                    }
-
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        isInFavoritesSubscription = d;
                     }
                 });
     }

@@ -1,16 +1,12 @@
 package com.mlsdev.recipefinder.data.entity.recipe.stringwrapper;
 
-import com.j256.ormlite.field.DatabaseField;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 
 import java.io.Serializable;
 
 public abstract class Label implements Serializable {
-    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
     protected Recipe recipe;
-    @DatabaseField(generatedId = true)
     protected long id;
-    @DatabaseField
     protected String value;
 
     public Label() {

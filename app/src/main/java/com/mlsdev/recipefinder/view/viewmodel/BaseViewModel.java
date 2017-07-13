@@ -1,6 +1,7 @@
 package com.mlsdev.recipefinder.view.viewmodel;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.HttpException;
 
-public class BaseViewModel {
+public class BaseViewModel extends ViewModel {
     protected Context context;
     protected DataRepository repository;
     protected CompositeDisposable subscriptions;
@@ -32,6 +33,10 @@ public class BaseViewModel {
 
     public void onDestroy() {
         subscriptions.clear();
+    }
+
+    public void onStop() {
+
     }
 
     protected void showProgressDialog(boolean isShow, @Nullable String message) {

@@ -54,6 +54,7 @@ ext {
     okhttpVersion = '3.8.0'
     stethoVersion = '1.4.1'
     roomVersion = '1.0.0-alpha3'
+    lifecycleVersion = '1.0.0-alpha3'
 }
 
 dependencies {
@@ -98,6 +99,10 @@ dependencies {
     compile "android.arch.persistence.room:runtime:$roomVersion"
     compile "android.arch.persistence.room:rxjava2:$roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
+
+    // Lifecycle
+    compile "android.arch.lifecycle:extensions:$lifecycleVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$lifecycleVersion"
 
     // JSON parsing
     compile 'com.google.code.gson:gson:2.8.0'

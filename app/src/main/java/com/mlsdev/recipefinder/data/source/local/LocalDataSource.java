@@ -1,6 +1,7 @@
 package com.mlsdev.recipefinder.data.source.local;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
@@ -12,7 +13,10 @@ import com.mlsdev.recipefinder.data.source.local.roomdb.AppDatabase;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 public class LocalDataSource extends BaseDataSource implements DataSource {
     private AppDatabase db;
@@ -22,31 +26,33 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Single<List<Recipe>> getFavorites() {
-        return Single.fromCallable(new Callable<List<Recipe>>() {
-            @Override
-            public List<Recipe> call() throws Exception {
-                List<Recipe> favoriteRecipes = db.recipeDao().loadAll();
+    public Flowable<List<Recipe>> getFavorites() {
+        return db.recipeDao().loadAll()
+                .map(new Function<List<Recipe>, List<Recipe>>() {
+                    @Override
+                    public List<Recipe> apply(@io.reactivex.annotations.NonNull List<Recipe> recipes) throws Exception {
+                        for (Recipe recipe : recipes) {
+                            TotalNutrients totalNutrients = db.totalNutrientsDao().loadById(recipe.getTotalNutrientsId());
 
-                for (Recipe recipe : favoriteRecipes) {
-                    TotalNutrients totalNutrients = db.totalNutrientsDao().loadById(recipe.getTotalNutrientsId());
-                    totalNutrients.setEnergy(db.nutrientDao().loadById(totalNutrients.getEnergyNutrientId()));
-                    totalNutrients.setFat(db.nutrientDao().loadById(totalNutrients.getFatNutrientId()));
-                    totalNutrients.setCarbs(db.nutrientDao().loadById(totalNutrients.getCarbsNutrientId()));
-                    totalNutrients.setProtein(db.nutrientDao().loadById(totalNutrients.getProteinNutrientId()));
+                            if (totalNutrients == null)
+                                continue;
 
-                    recipe.setTotalNutrients(totalNutrients);
-                    recipe.setIngredients(db.ingredientDao().loadByRecipeUri(recipe.getUri()));
-                }
+                            totalNutrients.setEnergy(db.nutrientDao().loadById(totalNutrients.getEnergyNutrientId()));
+                            totalNutrients.setFat(db.nutrientDao().loadById(totalNutrients.getFatNutrientId()));
+                            totalNutrients.setCarbs(db.nutrientDao().loadById(totalNutrients.getCarbsNutrientId()));
+                            totalNutrients.setProtein(db.nutrientDao().loadById(totalNutrients.getProteinNutrientId()));
 
-                return favoriteRecipes;
-            }
-        });
+                            recipe.setTotalNutrients(totalNutrients);
+                            recipe.setIngredients(db.ingredientDao().loadByRecipeUri(recipe.getUri()));
+                        }
+                        return recipes;
+                    }
+                });
     }
 
     @Override
-    public Single<Boolean> addToFavorites(final Recipe favoriteRecipe) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable addToFavorites(final Recipe favoriteRecipe) {
+        return Completable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 long energyNutrientId = db.nutrientDao().createIfNotExist(favoriteRecipe.getTotalNutrients().getEnergy());
@@ -74,8 +80,8 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Single<Boolean> removeFromFavorites(final Recipe removedRecipe) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable removeFromFavorites(final Recipe removedRecipe) {
+        return Completable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 db.recipeDao().delete(removedRecipe);
@@ -91,12 +97,15 @@ public class LocalDataSource extends BaseDataSource implements DataSource {
     }
 
     @Override
-    public Single<Boolean> isInFavorites(final Recipe recipe) {
-        return Single.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return recipe != null && db.recipeDao().loadByUri(recipe.getUri()) != null;
-            }
-        });
+    public Single<Boolean> isInFavorites(@NonNull final Recipe recipe) {
+        return db.recipeDao().loadByUri(recipe.getUri())
+                .map(new Function<Recipe, Boolean>() {
+                    @Override
+                    public Boolean apply(@io.reactivex.annotations.NonNull Recipe recipe) throws Exception {
+                        return recipe != null;
+                    }
+                })
+                .first(false);
     }
+
 }

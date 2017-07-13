@@ -42,4 +42,10 @@ public class FavoriteRecipesFragment extends RecipeListFragment implements OnLas
         super.onStart();
         viewModel.getFavoriteRecipes();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        viewModel.onStop();
+    }
 }

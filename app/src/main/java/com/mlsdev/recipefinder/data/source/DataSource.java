@@ -8,6 +8,8 @@ import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public interface DataSource {
@@ -15,15 +17,13 @@ public interface DataSource {
 
     Single<NutritionAnalysisResult> getIngredientData(Map<String, String> params);
 
-    Single<List<Recipe>> getFavorites();
+    Flowable<List<Recipe>> getFavorites();
 
-    Single<Boolean> addToFavorites(Recipe favoriteRecipe);
+    Completable addToFavorites(Recipe favoriteRecipe);
 
-    Single<Boolean> removeFromFavorites(Recipe removedRecipe);
+    Completable removeFromFavorites(Recipe removedRecipe);
 
     Single<Boolean> isInFavorites(Recipe recipe);
 
     Single<NutritionAnalysisResult> getRecipeAnalysingResult(RecipeAnalysisParams params);
-
-    void addAnalyzingResult(NutritionAnalysisResult analysisResult, Map<String, String> params);
 }

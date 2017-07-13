@@ -1,14 +1,14 @@
 package com.mlsdev.recipefinder.view.fragments;
 
+import android.arch.lifecycle.LifecycleFragment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 import com.mlsdev.recipefinder.view.analysenutrition.AnalyseNutritionFragment;
 import com.mlsdev.recipefinder.view.enums.TabItemType;
 import com.mlsdev.recipefinder.view.favoriterecipes.FavoriteRecipesFragment;
 import com.mlsdev.recipefinder.view.searchrecipes.SearchRecipesFragment;
 
-public abstract class TabFragment extends Fragment {
+public abstract class TabFragment extends LifecycleFragment {
 
     @Nullable
     public static TabFragment getNewInstance(TabItemType tabItemType) {

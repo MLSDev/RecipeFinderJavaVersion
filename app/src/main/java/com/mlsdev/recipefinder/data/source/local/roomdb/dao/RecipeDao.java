@@ -10,6 +10,8 @@ import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface RecipeDao {
 
@@ -17,10 +19,10 @@ public interface RecipeDao {
     long insert(Recipe recipe);
 
     @Query("select uri from recipes where uri = :recipeUri")
-    Recipe loadByUri(String recipeUri);
+    Flowable<Recipe> loadByUri(String recipeUri);
 
     @Query("select * from recipes")
-    List<Recipe> loadAll();
+    Flowable<List<Recipe>> loadAll();
 
     @Delete
     int delete(Recipe recipe);

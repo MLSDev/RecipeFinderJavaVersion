@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Consumer;
@@ -102,15 +104,15 @@ public class DataRepository {
                 });
     }
 
-    public Single<List<Recipe>> getFavoriteRecipes() {
+    public Flowable<List<Recipe>> getFavoriteRecipes() {
         return localDataSource.getFavorites();
     }
 
-    public Single<Boolean> addToFavorites(Recipe favoriteRecipe) {
+    public Completable addToFavorites(Recipe favoriteRecipe) {
         return localDataSource.addToFavorites(favoriteRecipe);
     }
 
-    public Single<Boolean> removeFromFavorites(Recipe removedRecipe) {
+    public Completable removeFromFavorites(Recipe removedRecipe) {
         return localDataSource.removeFromFavorites(removedRecipe);
     }
 
