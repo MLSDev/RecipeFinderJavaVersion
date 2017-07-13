@@ -43,17 +43,16 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        if (binding == null || viewModel == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
-            ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
 
+        if (viewModel == null)
             viewModel = new SearchViewModel(getActivity(), this, this);
 
-            binding.setViewModel(viewModel);
-            swipeRefreshLayout = binding.swipeToRefreshView;
+        binding.setViewModel(viewModel);
+        swipeRefreshLayout = binding.swipeToRefreshView;
 
-            binding.searchView.setOnSearchViewListener(viewModel);
-        }
+        binding.searchView.setOnSearchViewListener(viewModel);
 
         initRecyclerView(binding.rvRecipeList);
         initSwipeRefreshLayout(binding.swipeToRefreshView, this);

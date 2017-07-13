@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 
@@ -47,15 +45,6 @@ public class MainActivity extends BaseActivity {
         bottonNavigationItemSelectedListener = new BottonNavigationItemSelectedListener(getSupportFragmentManager());
         binding.bnvNavigationView.setOnNavigationItemSelectedListener(bottonNavigationItemSelectedListener);
         bottonNavigationItemSelectedListener.onNavigationItemSelected(binding.bnvNavigationView.getMenu().getItem(0));
-    }
-
-    public void addFragmentToBackstack(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .addToBackStack("RecipeDetails")
-                .replace(R.id.fl_content, fragment)
-                .commit();
     }
 
     public class AppBroadcastReceiver extends BroadcastReceiver {
