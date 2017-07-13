@@ -52,7 +52,6 @@ ext {
     supportTestsLibVersion = '0.5'
     espressoVersion = '2.2.2'
     okhttpVersion = '3.8.0'
-    ormLiteVersion = '5.0'
     stethoVersion = '1.4.1'
     roomVersion = '1.0.0-alpha3'
 }
@@ -109,10 +108,6 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
-
-    // Local data source
-    compile "com.j256.ormlite:ormlite-core:$ormLiteVersion"
-    compile "com.j256.ormlite:ormlite-android:$ormLiteVersion"
 
     //Charts
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'

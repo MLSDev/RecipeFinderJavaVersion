@@ -15,12 +15,10 @@ import java.util.concurrent.Callable;
 import io.reactivex.Single;
 
 public class LocalDataSource extends BaseDataSource implements DataSource {
-    private DataBaseHelper dataBaseHelper;
     private AppDatabase db;
 
     public LocalDataSource(Context context) {
-        dataBaseHelper = new DataBaseHelper(context);
-        db = AppDatabase.getDb();
+        db = AppDatabase.init(context);
     }
 
     @Override

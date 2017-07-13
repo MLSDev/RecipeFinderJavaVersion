@@ -37,11 +37,13 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public static void init(Context context) {
+    public static AppDatabase init(Context context) {
         if (INSTANCE == null) {
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "recipes.db")
                             .build();
         }
+
+        return INSTANCE;
     }
 }
