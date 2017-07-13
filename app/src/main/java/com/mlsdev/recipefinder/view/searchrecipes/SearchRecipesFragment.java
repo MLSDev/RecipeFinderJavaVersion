@@ -57,7 +57,6 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
 
         initRecyclerView(binding.rvRecipeList);
         initSwipeRefreshLayout(binding.swipeToRefreshView, this);
-        scrollToTop();
 
         return binding.getRoot();
     }

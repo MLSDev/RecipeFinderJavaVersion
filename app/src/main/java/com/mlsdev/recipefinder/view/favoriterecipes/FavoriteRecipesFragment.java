@@ -29,8 +29,6 @@ public class FavoriteRecipesFragment extends RecipeListFragment implements OnLas
         }
 
         initRecyclerView(binding.rvRecipeList);
-        scrollToTop();
-
         return binding.getRoot();
     }
 
