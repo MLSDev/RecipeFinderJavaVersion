@@ -1,5 +1,9 @@
 package com.mlsdev.recipefinder.view;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
+import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
@@ -13,23 +17,40 @@ import static com.mlsdev.recipefinder.view.enums.TabItemType.ANALYSE;
 import static com.mlsdev.recipefinder.view.enums.TabItemType.FAVORITES;
 import static com.mlsdev.recipefinder.view.enums.TabItemType.SEARCH;
 
-public class BottonNavigationItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class BottonNavigationItemSelectedListener extends ViewModel implements BottomNavigationView.OnNavigationItemSelectedListener,
+        LifecycleObserver {
     private FragmentManager fragmentManager;
     private TabFragment analyseNutritionFragment;
     private TabFragment searchRecipesFragment;
     private TabFragment favoriteRecipesFragment;
     private TabFragment currentFragment;
     private int checkedItemId = -1;
+    private MenuItem currentMenuItem;
 
-    public BottonNavigationItemSelectedListener(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
+    public BottonNavigationItemSelectedListener() {
         analyseNutritionFragment = TabFragment.getNewInstance(ANALYSE);
         searchRecipesFragment = TabFragment.getNewInstance(SEARCH);
         favoriteRecipesFragment = TabFragment.getNewInstance(FAVORITES);
     }
 
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
+
+    public void setCurrentMenuItem(MenuItem currentMenuItem) {
+        if (this.currentMenuItem == null)
+            this.currentMenuItem = currentMenuItem;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    void start() {
+        if (currentMenuItem != null)
+            onNavigationItemSelected(currentMenuItem);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        currentMenuItem = item;
 
         if (checkedItemId == item.getItemId()) {
             currentFragment.scrollToTop();

@@ -1,6 +1,8 @@
 package com.mlsdev.recipefinder.view.searchrecipes;
 
 import android.app.Activity;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -22,19 +24,22 @@ import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
 import com.mlsdev.recipefinder.view.BaseActivity;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
+import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
 import java.util.List;
 
 public class SearchRecipesFragment extends RecipeListFragment implements RecipeListAdapter.OnLastItemShownListener,
-        SwipeRefreshLayout.OnRefreshListener, SearchViewModel.ActionListener {
+        SwipeRefreshLayout.OnRefreshListener, SearchViewModel.ActionListener, LifecycleOwner {
     public static final int FILTER_REQUEST_CODE = 0;
     private FragmentSearchRecipesBinding binding;
+    private ViewModelFactory viewModelFactory;
     private SearchViewModel viewModel;
     private MenuItem filterMenuItem;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        setRetainInstance(true);
         super.onCreate(savedInstanceState);
     }
 
@@ -46,8 +51,14 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipes, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
 
+        viewModelFactory = new ViewModelFactory(getActivity());
+
         if (viewModel == null)
-            viewModel = new SearchViewModel(getActivity(), this, this);
+            viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
+
+        getLifecycle().addObserver(viewModel);
+        viewModel.setActionListener(this);
+        viewModel.setOnRecipesLoadedListener(this);
 
         binding.setViewModel(viewModel);
         swipeRefreshLayout = binding.swipeToRefreshView;

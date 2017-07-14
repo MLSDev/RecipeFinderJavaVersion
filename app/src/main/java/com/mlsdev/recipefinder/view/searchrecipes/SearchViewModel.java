@@ -1,5 +1,8 @@
 package com.mlsdev.recipefinder.view.searchrecipes;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
@@ -28,7 +31,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class SearchViewModel extends BaseViewModel implements OnSearchViewListener {
+public class SearchViewModel extends BaseViewModel implements OnSearchViewListener, LifecycleObserver {
     public final ObservableInt loadMoreProgressBarVisibility = new ObservableInt(View.INVISIBLE);
     public final ObservableInt searchLabelVisibility = new ObservableInt(View.VISIBLE);
     public final ObservableField<String> searchText = new ObservableField<>();
@@ -38,15 +41,38 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
     private ActionListener actionListener;
     public final ObservableBoolean isSearchOpened = new ObservableBoolean(false);
     private String query = "";
+    private List<Recipe> recipes = new ArrayList<>();
 
-    public SearchViewModel(@NonNull Context context, @NonNull ActionListener actionListener,
-                           @NonNull OnRecipesLoadedListener onRecipesLoadedListener) {
+    public SearchViewModel(@NonNull Context context) {
         super(context);
-        this.onRecipesLoadedListener = onRecipesLoadedListener;
-        this.actionListener = actionListener;
         searchLabelText = new ObservableField<>(context.getString(R.string.label_search));
         searchParams = new ArrayMap<>();
         keyboardListener = actionListener;
+    }
+
+    public void setOnRecipesLoadedListener(OnRecipesLoadedListener onRecipesLoadedListener) {
+        this.onRecipesLoadedListener = onRecipesLoadedListener;
+    }
+
+    public void setActionListener(ActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    void start() {
+        populateRecipeList();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    void stop() {
+        Log.d("RF", "lifecycle stop");
+    }
+
+    private void populateRecipeList() {
+        if (!recipes.isEmpty()) {
+            onRecipesLoadedListener.onRecipesLoaded(recipes);
+            searchLabelVisibility.set(View.INVISIBLE);
+        }
     }
 
     /**
@@ -77,11 +103,12 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
                     @Override
                     public void onSuccess(List<Recipe> recipes) {
                         showProgressDialog(false, null);
+                        SearchViewModel.this.recipes = recipes;
                         String commonSearchLabelText = context.getString(R.string.label_search);
                         String nothingFoundText = context.getString(R.string.label_search_nothing_found);
                         searchLabelText.set(recipes.isEmpty() ? nothingFoundText : commonSearchLabelText);
                         searchLabelVisibility.set(recipes.isEmpty() ? View.VISIBLE : View.INVISIBLE);
-                        onRecipesLoadedListener.onRecipesLoaded(recipes);
+                        populateRecipeList();
                     }
                 });
     }
@@ -99,6 +126,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
                     @Override
                     public void onSuccess(@io.reactivex.annotations.NonNull List<Recipe> recipes) {
                         onRecipesLoadedListener.onMoreRecipesLoaded(recipes);
+                        SearchViewModel.this.recipes.addAll(recipes);
                     }
                 });
 

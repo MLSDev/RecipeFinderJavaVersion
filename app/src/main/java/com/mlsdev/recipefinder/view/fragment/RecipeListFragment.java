@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
 import android.transition.TransitionInflater;
@@ -74,10 +74,13 @@ public class RecipeListFragment extends TabFragment implements RecipeListAdapter
     }
 
     protected void initRecyclerView(RecyclerView recyclerView) {
-        recipeRecyclerView = recyclerView;
+        int columns = getActivity().getResources().getConfiguration().orientation;
+
         if (recipeListAdapter == null)
             recipeListAdapter = new RecipeListAdapter(this, this);
-        recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        recipeRecyclerView = recyclerView;
+        recipeRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columns, GridLayoutManager.VERTICAL, false));
         recipeRecyclerView.setHasFixedSize(true);
         recipeRecyclerView.setAdapter(recipeListAdapter);
     }

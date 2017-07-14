@@ -39,6 +39,10 @@ public class BaseViewModel extends ViewModel {
 
     }
 
+    public void onStart() {
+
+    }
+
     protected void showProgressDialog(boolean isShow, @Nullable String message) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(context, R.style.AlertDialogAppCompat);

@@ -1,5 +1,8 @@
 package com.mlsdev.recipefinder.view;
 
+import android.arch.lifecycle.LifecycleRegistry;
+import android.arch.lifecycle.LifecycleRegistryOwner;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +14,16 @@ import android.support.v7.app.AlertDialog;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.ActivityMainBinding;
+import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements LifecycleRegistryOwner {
     public static final String LOG_TAG = "RECIPE_FINDER";
     private ActivityMainBinding binding;
     private BottonNavigationItemSelectedListener bottonNavigationItemSelectedListener;
     private AppBroadcastReceiver broadcastReceiver;
+    private ViewModelFactory viewModelFactory;
+    private LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
+
 
 
     @Override
@@ -42,9 +49,17 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initNavigation() {
-        bottonNavigationItemSelectedListener = new BottonNavigationItemSelectedListener(getSupportFragmentManager());
+        viewModelFactory = new ViewModelFactory(this);
+        bottonNavigationItemSelectedListener = ViewModelProviders.of(this, viewModelFactory).get(BottonNavigationItemSelectedListener.class);
+        getLifecycle().addObserver(bottonNavigationItemSelectedListener);
+        bottonNavigationItemSelectedListener.setCurrentMenuItem(binding.bnvNavigationView.getMenu().getItem(0));
+        bottonNavigationItemSelectedListener.setFragmentManager(getSupportFragmentManager());
         binding.bnvNavigationView.setOnNavigationItemSelectedListener(bottonNavigationItemSelectedListener);
-        bottonNavigationItemSelectedListener.onNavigationItemSelected(binding.bnvNavigationView.getMenu().getItem(0));
+    }
+
+    @Override
+    public LifecycleRegistry getLifecycle() {
+        return lifecycleRegistry;
     }
 
     public class AppBroadcastReceiver extends BroadcastReceiver {
