@@ -16,11 +16,14 @@ import com.mlsdev.recipefinder.view.BaseActivity;
 
 public class AddIngredientDialogFragment extends DialogFragment {
     public static final String INGREDIENT_TITLE_KEY = "ingredient_label_key";
+    private DialogFragmentAddIngredientBinding binding;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final DialogFragmentAddIngredientBinding binding = DataBindingUtil
+        binding = DataBindingUtil
                 .inflate(LayoutInflater.from(getActivity()), R.layout.dialog_fragment_add_ingredient, null, false);
+
+        ((BaseActivity) getActivity()).showSoftKeyboard();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogAppCompat);
         builder.setTitle("Add Ingredient")
@@ -29,7 +32,6 @@ public class AddIngredientDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.btn_add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        ((BaseActivity)getActivity()).hideSoftKeyboard();
                         Intent data = new Intent();
                         data.putExtra(INGREDIENT_TITLE_KEY, binding.etIngredientInput.getText().toString());
 
@@ -49,7 +51,8 @@ public class AddIngredientDialogFragment extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        ((BaseActivity) getActivity()).hideSoftKeyboard();
         super.onDismiss(dialog);
-        ((BaseActivity)getActivity()).hideSoftKeyboard();
     }
+
 }

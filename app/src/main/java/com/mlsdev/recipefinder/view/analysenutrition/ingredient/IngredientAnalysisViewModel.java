@@ -1,11 +1,14 @@
 package com.mlsdev.recipefinder.view.analysenutrition.ingredient;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
-import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -18,7 +21,7 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
-import com.mlsdev.recipefinder.view.MainActivity;
+import com.mlsdev.recipefinder.view.OnKeyboardStateChangedListener;
 import com.mlsdev.recipefinder.view.listener.OnIngredientAnalyzedListener;
 import com.mlsdev.recipefinder.view.utils.DiagramUtils;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
@@ -31,8 +34,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class IngredientAnalysisViewModel extends BaseViewModel {
+public class IngredientAnalysisViewModel extends BaseViewModel implements LifecycleObserver {
     private OnIngredientAnalyzedListener onIngredientAnalyzedListener;
+    private OnKeyboardStateChangedListener keyboardListener;
     public final ObservableField<String> ingredientText = new ObservableField<>("");
     public final ObservableField<String> nutrientText = new ObservableField<>("");
     public final ObservableField<String> fatText = new ObservableField<>("");
@@ -46,23 +50,39 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
     public final ObservableInt proteinLabelVisibility = new ObservableInt(View.GONE);
     public final ObservableInt analysisResultsWrapperVisibility = new ObservableInt(View.INVISIBLE);
     public final ObservableBoolean ingredientTextFocused = new ObservableBoolean(false);
-    private AppCompatActivity activity;
+    private TotalNutrients totalNutrients;
 
-    public IngredientAnalysisViewModel(@NonNull AppCompatActivity activity, @NonNull OnIngredientAnalyzedListener listener) {
-        super(activity);
-        this.activity = activity;
-        onIngredientAnalyzedListener = listener;
+    public IngredientAnalysisViewModel(Context context) {
+        super(context);
+    }
+
+    public void setKeyboardListener(OnKeyboardStateChangedListener keyboardListener) {
+        this.keyboardListener = keyboardListener;
+    }
+
+    public void setOnIngredientAnalyzedListener(OnIngredientAnalyzedListener onIngredientAnalyzedListener) {
+        this.onIngredientAnalyzedListener = onIngredientAnalyzedListener;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    void start() {
+        prepareDiagramData(totalNutrients);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    void stop() {
+        Log.d("RF", "lifecycle stop");
     }
 
     public void onAnalyzeButtonClick(View view) {
-        ((MainActivity) activity).hideSoftKeyboard();
+        keyboardListener.hideKeyboard();
 
         if (ingredientText.get().isEmpty()) {
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ingredientTextFocused.set(true);
-                    ((MainActivity) activity).showSoftKeyboard();
+                    keyboardListener.showKeyboard();
                 }
             };
 
@@ -109,6 +129,7 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
                         fatLabelVisibility.set(fatText.get().isEmpty() ? View.GONE : View.VISIBLE);
                         energyLabelVisibility.set(energyText.get().isEmpty() ? View.GONE : View.VISIBLE);
 
+                        IngredientAnalysisViewModel.this.totalNutrients = totalNutrients;
                         prepareDiagramData(totalNutrients);
                     }
 
@@ -126,7 +147,7 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
 
         if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
             onAnalyzeButtonClick(null);
-            ((MainActivity) activity).hideSoftKeyboard();
+            keyboardListener.hideKeyboard();
             return true;
         }
 
@@ -134,6 +155,9 @@ public class IngredientAnalysisViewModel extends BaseViewModel {
     }
 
     private void prepareDiagramData(TotalNutrients nutrients) {
+        if (nutrients == null)
+            return;
+
         ArrayList<PieEntry> entries = DiagramUtils.preparePieEntries(nutrients);
         diagramVisibility.set(entries.isEmpty() ? View.GONE : View.VISIBLE);
         PieDataSet pieDataSet = DiagramUtils.createPieDataSet(context, entries, "Nutrients", null);
