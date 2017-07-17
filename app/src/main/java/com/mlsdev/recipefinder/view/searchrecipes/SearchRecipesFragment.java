@@ -32,7 +32,6 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
         SwipeRefreshLayout.OnRefreshListener, SearchViewModel.ActionListener, LifecycleOwner {
     public static final int FILTER_REQUEST_CODE = 0;
     private FragmentSearchRecipesBinding binding;
-    private ViewModelFactory viewModelFactory;
     private SearchViewModel viewModel;
     private MenuItem filterMenuItem;
 

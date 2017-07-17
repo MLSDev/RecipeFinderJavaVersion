@@ -22,6 +22,7 @@ import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
 import com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter;
 import com.mlsdev.recipefinder.view.utils.Utils;
+import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class RecipeListFragment extends TabFragment implements RecipeListAdapter
     protected RecipeListAdapter recipeListAdapter;
     protected RecyclerView recipeRecyclerView;
     protected SwipeRefreshLayout swipeRefreshLayout;
-
+    protected ViewModelFactory viewModelFactory;
 
     @Override
     public void onItemClicked(Recipe recipe, RecipeListItemBinding itemBinding) {

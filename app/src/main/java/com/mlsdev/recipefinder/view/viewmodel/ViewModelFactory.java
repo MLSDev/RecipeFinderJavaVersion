@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 
 import com.mlsdev.recipefinder.view.BottonNavigationItemSelectedListener;
+import com.mlsdev.recipefinder.view.favoriterecipes.FavoritesViewModel;
 import com.mlsdev.recipefinder.view.searchrecipes.SearchViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
@@ -21,6 +22,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new SearchViewModel(context);
         } else if (modelClass.isAssignableFrom(BottonNavigationItemSelectedListener.class)) {
             return (T) new BottonNavigationItemSelectedListener();
+        } else if (modelClass.isAssignableFrom(FavoritesViewModel.class)){
+            return (T) new FavoritesViewModel(context);
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class");

@@ -1,5 +1,8 @@
 package com.mlsdev.recipefinder.view.favoriterecipes;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.databinding.ObservableInt;
 import android.view.View;
@@ -16,20 +19,32 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class FavoritesViewModel extends BaseViewModel {
+public class FavoritesViewModel extends BaseViewModel implements LifecycleObserver {
     private OnRecipesLoadedListener onRecipesLoadedListener;
     public final ObservableInt emptyViewVisibility;
 
-    public FavoritesViewModel(Context context, OnRecipesLoadedListener onRecipesLoadedListener) {
+    public FavoritesViewModel(Context context) {
         super(context);
-        this.onRecipesLoadedListener = onRecipesLoadedListener;
         emptyViewVisibility = new ObservableInt(View.VISIBLE);
+    }
+
+    public void setOnRecipesLoadedListener(OnRecipesLoadedListener onRecipesLoadedListener) {
+        this.onRecipesLoadedListener = onRecipesLoadedListener;
     }
 
     @Override
     public void onStop() {
         super.onStop();
         subscriptions.clear();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void start() {
+        getFavoriteRecipes();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void stop() {
     }
 
     public void getFavoriteRecipes() {

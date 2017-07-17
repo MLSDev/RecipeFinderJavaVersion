@@ -1,5 +1,6 @@
 package com.mlsdev.recipefinder.view.favoriterecipes;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentFavoriteRecipesBinding;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
+import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
 import static com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter.OnLastItemShownListener;
 
@@ -22,13 +24,17 @@ public class FavoriteRecipesFragment extends RecipeListFragment implements OnLas
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        if (binding == null || viewModel == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite_recipes, container, false);
-            viewModel = new FavoritesViewModel(getActivity(), this);
-            binding.setViewModel(viewModel);
-        }
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite_recipes, container, false);
+        viewModelFactory = new ViewModelFactory(getActivity());
         initRecyclerView(binding.rvRecipeList);
+
+        if (viewModel == null)
+            viewModel = ViewModelProviders.of(this, viewModelFactory).get(FavoritesViewModel.class);
+
+        getLifecycle().addObserver(viewModel);
+        viewModel.setOnRecipesLoadedListener(this);
+        binding.setViewModel(viewModel);
+
         return binding.getRoot();
     }
 
@@ -38,14 +44,8 @@ public class FavoriteRecipesFragment extends RecipeListFragment implements OnLas
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        viewModel.getFavoriteRecipes();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        viewModel.onStop();
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroy();
     }
 }
