@@ -28,7 +28,7 @@ import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
 import java.util.List;
 
-public class SearchRecipesFragment extends RecipeListFragment implements RecipeListAdapter.OnLastItemShownListener,
+public class SearchRecipeFragment extends RecipeListFragment implements RecipeListAdapter.OnLastItemShownListener,
         SwipeRefreshLayout.OnRefreshListener, SearchViewModel.ActionListener, LifecycleOwner {
     public static final int FILTER_REQUEST_CODE = 0;
     private FragmentSearchRecipesBinding binding;
@@ -57,7 +57,7 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
 
         getLifecycle().addObserver(viewModel);
         viewModel.setActionListener(this);
-        viewModel.setOnRecipesLoadedListener(this);
+        viewModel.setOnDataLoadedListener(this);
 
         binding.setViewModel(viewModel);
         swipeRefreshLayout = binding.swipeToRefreshView;
@@ -115,8 +115,8 @@ public class SearchRecipesFragment extends RecipeListFragment implements RecipeL
     }
 
     @Override
-    public void onRecipesLoaded(List<Recipe> recipes) {
-        super.onRecipesLoaded(recipes);
+    public void onDataLoaded(List<Recipe> recipes) {
+        super.onDataLoaded(recipes);
         filterMenuItem.setVisible(!recipes.isEmpty());
     }
 

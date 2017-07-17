@@ -149,4 +149,9 @@ public class IngredientsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 onAddIngredientClickListener.onAddIngredientButtonClick();
         }
     }
+
+    public void setData(List<String> ingredientList) {
+        this.ingredientList = ingredientList;
+        notifyDataSetChanged();
+    }
 }

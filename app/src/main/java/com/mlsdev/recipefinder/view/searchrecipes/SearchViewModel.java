@@ -18,7 +18,7 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
 import com.mlsdev.recipefinder.view.MainActivity;
-import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
+import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.utils.ParamsHelper;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
@@ -36,7 +36,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
     public final ObservableInt searchLabelVisibility = new ObservableInt(View.VISIBLE);
     public final ObservableField<String> searchText = new ObservableField<>();
     public final ObservableField<String> searchLabelText;
-    private OnRecipesLoadedListener onRecipesLoadedListener;
+    private OnDataLoadedListener onDataLoadedListener;
     private Map<String, String> searchParams;
     private ActionListener actionListener;
     public final ObservableBoolean isSearchOpened = new ObservableBoolean(false);
@@ -50,8 +50,8 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
         keyboardListener = actionListener;
     }
 
-    public void setOnRecipesLoadedListener(OnRecipesLoadedListener onRecipesLoadedListener) {
-        this.onRecipesLoadedListener = onRecipesLoadedListener;
+    public void setOnDataLoadedListener(OnDataLoadedListener onDataLoadedListener) {
+        this.onDataLoadedListener = onDataLoadedListener;
     }
 
     public void setActionListener(ActionListener actionListener) {
@@ -70,7 +70,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
 
     private void populateRecipeList() {
         if (!recipes.isEmpty()) {
-            onRecipesLoadedListener.onRecipesLoaded(recipes);
+            onDataLoadedListener.onDataLoaded(recipes);
             searchLabelVisibility.set(View.INVISIBLE);
         }
     }
@@ -82,7 +82,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
      */
     public void searchRecipes(String searchText, boolean forceUpdate) {
         if (searchText == null || searchText.isEmpty()) {
-            onRecipesLoadedListener.onRecipesLoaded(new ArrayList<Recipe>());
+            onDataLoadedListener.onDataLoaded(new ArrayList<Recipe>());
             return;
         }
 
@@ -125,7 +125,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
                 .subscribe(new SearchRecipesObserver<List<Recipe>>() {
                     @Override
                     public void onSuccess(@io.reactivex.annotations.NonNull List<Recipe> recipes) {
-                        onRecipesLoadedListener.onMoreRecipesLoaded(recipes);
+                        onDataLoadedListener.onMoreDataLoaded(recipes);
                         SearchViewModel.this.recipes.addAll(recipes);
                     }
                 });

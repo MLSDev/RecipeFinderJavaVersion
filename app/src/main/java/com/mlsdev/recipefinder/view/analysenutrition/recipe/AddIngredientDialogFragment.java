@@ -51,7 +51,8 @@ public class AddIngredientDialogFragment extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        ((BaseActivity) getActivity()).hideSoftKeyboard();
+        if (getActivity() != null)
+            ((BaseActivity) getActivity()).hideSoftKeyboard();
         super.onDismiss(dialog);
     }
 

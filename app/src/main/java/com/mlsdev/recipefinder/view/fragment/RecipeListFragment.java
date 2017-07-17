@@ -18,7 +18,7 @@ import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.databinding.RecipeListItemBinding;
 import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.fragments.TabFragment;
-import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
+import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
 import com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter;
 import com.mlsdev.recipefinder.view.utils.Utils;
@@ -27,7 +27,7 @@ import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 import java.util.List;
 
 public class RecipeListFragment extends TabFragment implements RecipeListAdapter.OnItemClickListener,
-        RecipeListAdapter.OnLastItemShownListener, OnRecipesLoadedListener {
+        RecipeListAdapter.OnLastItemShownListener, OnDataLoadedListener<List<Recipe>> {
     protected RecipeListAdapter recipeListAdapter;
     protected RecyclerView recipeRecyclerView;
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -97,13 +97,13 @@ public class RecipeListFragment extends TabFragment implements RecipeListAdapter
     }
 
     @Override
-    public void onRecipesLoaded(List<Recipe> recipes) {
+    public void onDataLoaded(List<Recipe> recipes) {
         recipeListAdapter.setData(recipes);
         stopRefreshing();
     }
 
     @Override
-    public void onMoreRecipesLoaded(List<Recipe> moreRecipes) {
+    public void onMoreDataLoaded(List<Recipe> moreRecipes) {
         recipeListAdapter.setMoreData(moreRecipes);
         stopRefreshing();
     }

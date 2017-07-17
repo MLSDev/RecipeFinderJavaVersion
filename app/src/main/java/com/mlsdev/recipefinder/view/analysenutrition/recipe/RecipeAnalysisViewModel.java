@@ -1,5 +1,8 @@
 package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableField;
@@ -12,6 +15,7 @@ import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
 import com.mlsdev.recipefinder.view.MainActivity;
+import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.ArrayList;
@@ -21,19 +25,35 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class RecipeAnalysisViewModel extends BaseViewModel {
+public class RecipeAnalysisViewModel extends BaseViewModel implements LifecycleObserver {
     public static final int ADD_INGREDIENT_REQUEST_CODE = 0;
     public final ObservableField<String> title = new ObservableField<>();
     public final ObservableField<String> preparation = new ObservableField<>();
     public final ObservableField<String> yield = new ObservableField<>();
     private List<String> ingredients = new ArrayList<>();
-    OnAddIngredientClickListener addIngredientListener;
+    private OnAddIngredientClickListener addIngredientListener;
+    private OnDataLoadedListener<List<String>> dataLoadedListener;
 
-    public RecipeAnalysisViewModel(@NonNull Context context, @NonNull KeyboardListener keyboardListener,
-                                   OnAddIngredientClickListener addIngredientListener) {
+    public RecipeAnalysisViewModel(@NonNull Context context) {
         super(context);
-        this.keyboardListener = keyboardListener;
+    }
+
+    public void setDataLoadedListener(OnDataLoadedListener<List<String>> dataLoadedListener) {
+        this.dataLoadedListener = dataLoadedListener;
+    }
+
+    public void setAddIngredientListener(OnAddIngredientClickListener addIngredientListener) {
         this.addIngredientListener = addIngredientListener;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    void start() {
+        dataLoadedListener.onDataLoaded(ingredients);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    void stop() {
+        Log.d("RF", "lifecycle stop");
     }
 
     public void onAnalyzeButtonClick(View view) {

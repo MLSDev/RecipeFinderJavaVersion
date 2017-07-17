@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.mlsdev.recipefinder.view.analysenutrition.AnalyseNutritionFragment;
 import com.mlsdev.recipefinder.view.enums.TabItemType;
 import com.mlsdev.recipefinder.view.favoriterecipes.FavoriteRecipesFragment;
-import com.mlsdev.recipefinder.view.searchrecipes.SearchRecipesFragment;
+import com.mlsdev.recipefinder.view.searchrecipes.SearchRecipeFragment;
 
 public abstract class TabFragment extends LifecycleFragment {
 
@@ -17,7 +17,7 @@ public abstract class TabFragment extends LifecycleFragment {
             case ANALYSE:
                 return new AnalyseNutritionFragment();
             case SEARCH:
-                return new SearchRecipesFragment();
+                return new SearchRecipeFragment();
             case FAVORITES:
                 return new FavoriteRecipesFragment();
             default:

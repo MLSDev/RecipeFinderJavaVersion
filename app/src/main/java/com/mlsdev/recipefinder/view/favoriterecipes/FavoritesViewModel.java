@@ -8,7 +8,7 @@ import android.databinding.ObservableInt;
 import android.view.View;
 
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
-import com.mlsdev.recipefinder.view.listener.OnRecipesLoadedListener;
+import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class FavoritesViewModel extends BaseViewModel implements LifecycleObserver {
-    private OnRecipesLoadedListener onRecipesLoadedListener;
+    private OnDataLoadedListener onDataLoadedListener;
     public final ObservableInt emptyViewVisibility;
 
     public FavoritesViewModel(Context context) {
@@ -28,8 +28,8 @@ public class FavoritesViewModel extends BaseViewModel implements LifecycleObserv
         emptyViewVisibility = new ObservableInt(View.VISIBLE);
     }
 
-    public void setOnRecipesLoadedListener(OnRecipesLoadedListener onRecipesLoadedListener) {
-        this.onRecipesLoadedListener = onRecipesLoadedListener;
+    public void setOnDataLoadedListener(OnDataLoadedListener onDataLoadedListener) {
+        this.onDataLoadedListener = onDataLoadedListener;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class FavoritesViewModel extends BaseViewModel implements LifecycleObserv
                     @Override
                     public void accept(@NonNull List<Recipe> recipes) throws Exception {
                         emptyViewVisibility.set(recipes.isEmpty() ? View.VISIBLE : View.INVISIBLE);
-                        onRecipesLoadedListener.onRecipesLoaded(recipes);
+                        onDataLoadedListener.onDataLoaded(recipes);
                     }
                 });
 

@@ -32,7 +32,7 @@ public class FavoriteRecipesFragment extends RecipeListFragment implements OnLas
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(FavoritesViewModel.class);
 
         getLifecycle().addObserver(viewModel);
-        viewModel.setOnRecipesLoadedListener(this);
+        viewModel.setOnDataLoadedListener(this);
         binding.setViewModel(viewModel);
 
         return binding.getRoot();
