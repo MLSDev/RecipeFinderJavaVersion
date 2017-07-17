@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.mlsdev.recipefinder.view.analysenutrition.ingredient.IngredientAnalysisViewModel" />
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/til_ingredient_input_holder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_ingredient_analysis">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/et_ingredient_input"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusableInTouchMode="true"
+                                android:imeOptions="actionGo"
+                                android:inputType="textCapSentences"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:onEditorAction="@{viewModel.onEditorAction}"
+                                android:text="@={viewModel.ingredientText}"
+                                app:focused="@{viewModel.ingredientTextFocused}" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/tv_ingredient_title"
+                                style="@style/BaseTextViewStyle.NutrientTextStyle"
+                                android:gravity="center"
+                                android:text="@{viewModel.nutrientText}"
+                                android:textSize="30sp" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/tv_energy"
+                                style="@style/BaseTextViewStyle.NutrientTextStyle"
+                                android:text="@{viewModel.energyText}"
+                                android:visibility="@{viewModel.energyLabelVisibility}" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/tv_fat"
+                                style="@style/BaseTextViewStyle.NutrientTextStyle"
+                                android:text="@{viewModel.fatText}"
+                                android:visibility="@{viewModel.fatLabelVisibility}" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/tv_protein"
+                                style="@style/BaseTextViewStyle.NutrientTextStyle"
+                                android:text="@{viewModel.proteinText}"
+                                android:visibility="@{viewModel.proteinLabelVisibility}" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/tv_carbs"
+                                style="@style/BaseTextViewStyle.NutrientTextStyle"
+                                android:text="@{viewModel.carbsText}"
+                                android:visibility="@{viewModel.carbsLabelVisibility}" />
+
+                        </LinearLayout>
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/btn_analyze_ingredient"
+                            style="@style/AnalyzeButtonStyle"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:onClick="@{viewModel.onAnalyzeButtonClick}" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/cv_analysis_results_wrapper"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="@{viewModel.analysisResultsWrapperVisibility}">
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pie_chart"
+                            android:layout_width="300dp"
+                            android:layout_height="300dp"
+                            android:layout_gravity="center"
+                            android:visibility="@{viewModel.diagramVisibility}" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>

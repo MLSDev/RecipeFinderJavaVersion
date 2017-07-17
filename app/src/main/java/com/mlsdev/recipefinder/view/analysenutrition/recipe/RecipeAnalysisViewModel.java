@@ -95,7 +95,6 @@ public class RecipeAnalysisViewModel extends BaseViewModel implements LifecycleO
                     @Override
                     public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
                         subscriptions.add(d);
-                        showProgressDialog(false, null);
                     }
 
                     @Override

@@ -102,12 +102,12 @@ public class IngredientAnalysisViewModel extends BaseViewModel implements Lifecy
 
                     @Override
                     public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-                        showProgressDialog(false, null);
                         subscriptions.add(d);
                     }
 
                     @Override
                     public void onSuccess(@io.reactivex.annotations.NonNull NutritionAnalysisResult result) {
+                        showProgressDialog(false, null);
                         TotalNutrients totalNutrients = result.getTotalNutrients();
                         analysisResultsWrapperVisibility.set(View.VISIBLE);
 
@@ -135,7 +135,6 @@ public class IngredientAnalysisViewModel extends BaseViewModel implements Lifecy
 
                     @Override
                     public void onError(Throwable e) {
-                        showProgressDialog(false, null);
                         showError(e);
                     }
 

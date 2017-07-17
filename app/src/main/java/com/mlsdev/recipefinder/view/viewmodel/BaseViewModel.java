@@ -61,6 +61,7 @@ public class BaseViewModel extends ViewModel {
     }
 
     protected void showError(Throwable throwable) {
+        showProgressDialog(false, null);
         String errorMessage = context.getString(R.string.error_message_common);
 
         if (throwable instanceof HttpException) {
