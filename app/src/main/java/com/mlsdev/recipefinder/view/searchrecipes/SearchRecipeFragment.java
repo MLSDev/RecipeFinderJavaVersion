@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
-import com.mlsdev.recipefinder.view.BaseActivity;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
 import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
@@ -107,11 +106,6 @@ public class SearchRecipeFragment extends RecipeListFragment implements RecipeLi
         DialogFragment filterDialogFragment = new FilterDialogFragment();
         filterDialogFragment.setTargetFragment(this, FILTER_REQUEST_CODE);
         filterDialogFragment.show(getFragmentManager(), "Filter");
-    }
-
-    @Override
-    public void onHideKeyboard() {
-        ((BaseActivity) getActivity()).hideSoftKeyboard();
     }
 
     @Override

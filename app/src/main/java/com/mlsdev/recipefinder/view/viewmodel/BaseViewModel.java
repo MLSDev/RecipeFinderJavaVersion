@@ -23,7 +23,6 @@ public class BaseViewModel extends ViewModel {
     protected DataRepository repository;
     protected CompositeDisposable subscriptions;
     private ProgressDialog progressDialog;
-    protected KeyboardListener keyboardListener;
 
     public BaseViewModel(Context context) {
         this.context = context;
@@ -54,10 +53,6 @@ public class BaseViewModel extends ViewModel {
             progressDialog.show();
         else
             progressDialog.dismiss();
-    }
-
-    public interface KeyboardListener {
-        void onHideKeyboard();
     }
 
     protected void showError(Throwable throwable) {

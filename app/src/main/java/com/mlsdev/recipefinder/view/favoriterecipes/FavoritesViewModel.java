@@ -20,7 +20,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class FavoritesViewModel extends BaseViewModel implements LifecycleObserver {
-    private OnDataLoadedListener onDataLoadedListener;
+    private OnDataLoadedListener<List<Recipe>> onDataLoadedListener;
     public final ObservableInt emptyViewVisibility;
 
     public FavoritesViewModel(Context context) {
@@ -28,7 +28,7 @@ public class FavoritesViewModel extends BaseViewModel implements LifecycleObserv
         emptyViewVisibility = new ObservableInt(View.VISIBLE);
     }
 
-    public void setOnDataLoadedListener(OnDataLoadedListener onDataLoadedListener) {
+    public void setOnDataLoadedListener(OnDataLoadedListener<List<Recipe>> onDataLoadedListener) {
         this.onDataLoadedListener = onDataLoadedListener;
     }
 

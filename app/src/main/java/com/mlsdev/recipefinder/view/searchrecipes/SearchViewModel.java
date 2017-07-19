@@ -36,7 +36,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
     public final ObservableInt searchLabelVisibility = new ObservableInt(View.VISIBLE);
     public final ObservableField<String> searchText = new ObservableField<>();
     public final ObservableField<String> searchLabelText;
-    private OnDataLoadedListener onDataLoadedListener;
+    private OnDataLoadedListener<List<Recipe>> onDataLoadedListener;
     private Map<String, String> searchParams;
     private ActionListener actionListener;
     public final ObservableBoolean isSearchOpened = new ObservableBoolean(false);
@@ -47,10 +47,9 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
         super(context);
         searchLabelText = new ObservableField<>(context.getString(R.string.label_search));
         searchParams = new ArrayMap<>();
-        keyboardListener = actionListener;
     }
 
-    public void setOnDataLoadedListener(OnDataLoadedListener onDataLoadedListener) {
+    public void setOnDataLoadedListener(OnDataLoadedListener<List<Recipe>> onDataLoadedListener) {
         this.onDataLoadedListener = onDataLoadedListener;
     }
 
@@ -155,7 +154,6 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
         actionListener.onStartFilter();
     }
 
-
     @Override
     public void onSearchViewShown() {
         isSearchOpened.set(true);
@@ -178,7 +176,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
         searchText.set(s);
     }
 
-    public interface ActionListener extends KeyboardListener {
+    public interface ActionListener {
         void onStartFilter();
     }
 
