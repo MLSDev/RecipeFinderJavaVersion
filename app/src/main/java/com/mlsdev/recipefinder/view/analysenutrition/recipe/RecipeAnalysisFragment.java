@@ -14,15 +14,13 @@ import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentRecipeAnalysisBinding;
-import com.mlsdev.recipefinder.view.BaseActivity;
 import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
-import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
 import java.util.List;
 
 public class RecipeAnalysisFragment extends LifecycleFragment implements OnAddIngredientClickListener,
-        BaseViewModel.KeyboardListener, OnDataLoadedListener<List<String>> {
+        OnDataLoadedListener<List<String>> {
     private FragmentRecipeAnalysisBinding binding;
     private RecipeAnalysisViewModel viewModel;
     private IngredientsAdapter adapter;
@@ -70,11 +68,6 @@ public class RecipeAnalysisFragment extends LifecycleFragment implements OnAddIn
         AddIngredientDialogFragment dialogFragment = new AddIngredientDialogFragment();
         dialogFragment.setTargetFragment(this, RecipeAnalysisViewModel.ADD_INGREDIENT_REQUEST_CODE);
         dialogFragment.show(getFragmentManager(), "add_ingredient");
-    }
-
-    @Override
-    public void onHideKeyboard() {
-        ((BaseActivity) getActivity()).hideSoftKeyboard();
     }
 
     @Override
