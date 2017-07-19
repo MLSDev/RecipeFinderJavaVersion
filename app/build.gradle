@@ -41,6 +41,10 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
+    }
 }
 
 ext {
@@ -55,6 +59,7 @@ ext {
     stethoVersion = '1.4.1'
     roomVersion = '1.0.0-alpha3'
     lifecycleVersion = '1.0.0-alpha3'
+    daggerVersion = '2.10'
 }
 
 dependencies {
@@ -103,6 +108,13 @@ dependencies {
     // Lifecycle
     compile "android.arch.lifecycle:extensions:$lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycleVersion"
+
+    // Dagger
+    compile "com.google.dagger:dagger:$daggerVersion"
+    compile "com.google.dagger:dagger-android:$daggerVersion"
+    compile "com.google.dagger:dagger-android-support:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
 
     // JSON parsing
     compile 'com.google.code.gson:gson:2.8.0'
