@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.databinding.FragmentRecipeAnalysisBinding;
 import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
@@ -25,6 +26,12 @@ public class RecipeAnalysisFragment extends LifecycleFragment implements OnAddIn
     private RecipeAnalysisViewModel viewModel;
     private IngredientsAdapter adapter;
     private ViewModelFactory viewModelFactory;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        RecipeApplication.getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

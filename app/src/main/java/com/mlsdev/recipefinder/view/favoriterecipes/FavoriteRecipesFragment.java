@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.databinding.FragmentFavoriteRecipesBinding;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
 import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
@@ -18,6 +19,12 @@ import static com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter.OnLas
 public class FavoriteRecipesFragment extends RecipeListFragment implements OnLastItemShownListener {
     private FragmentFavoriteRecipesBinding binding;
     private FavoritesViewModel viewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        RecipeApplication.getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,

@@ -12,22 +12,29 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.databinding.ActivityRecipeAnalysisDetailsBinding;
 import com.mlsdev.recipefinder.view.utils.DiagramUtils;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class RecipeAnalysisDetailsActivity extends AppCompatActivity {
     public static final String RECIPE_ANALYSING_RESULT_KEY = "recipe_analysing_result";
     private ActivityRecipeAnalysisDetailsBinding binding;
 
+    @Inject
+    DiagramUtils diagramUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RecipeApplication.getApplicationComponent().inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_analysis_details);
         binding.setViewModel(new ViewModel(getIntent().getExtras()));
-        DiagramUtils.preparePieChart(this, binding.pieChart);
+        diagramUtils.preparePieChart(binding.pieChart);
 
         setSupportActionBar(binding.toolbar);
 
@@ -65,16 +72,16 @@ public class RecipeAnalysisDetailsActivity extends AppCompatActivity {
             calories.set(getString(R.string.calories, nutritionAnalysisResult.getCalories()));
             yield.set(getString(R.string.yields, String.valueOf(nutritionAnalysisResult.getYield())));
 
-            List<PieEntry> pieEntries = DiagramUtils.preparePieEntries(nutritionAnalysisResult.getTotalNutrients());
+            List<PieEntry> pieEntries = diagramUtils.preparePieEntries(nutritionAnalysisResult.getTotalNutrients());
             chartVisibility.set(pieEntries.isEmpty() ? View.GONE : View.VISIBLE);
 
             if (pieEntries.isEmpty())
                 return;
 
-            PieDataSet pieDataSet = DiagramUtils.createPieDataSet(RecipeAnalysisDetailsActivity.this, pieEntries, "Nutrients", null);
-            PieData pieData = DiagramUtils.createPieData(RecipeAnalysisDetailsActivity.this, pieDataSet);
+            PieDataSet pieDataSet = diagramUtils.createPieDataSet(pieEntries, "Nutrients", null);
+            PieData pieData = diagramUtils.createPieData(pieDataSet);
 
-            DiagramUtils.setData(binding.pieChart, pieData);
+            diagramUtils.setData(binding.pieChart, pieData);
         }
     }
 }

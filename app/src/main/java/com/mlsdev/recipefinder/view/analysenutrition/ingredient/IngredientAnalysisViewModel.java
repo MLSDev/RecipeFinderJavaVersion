@@ -29,6 +29,8 @@ import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -51,6 +53,12 @@ public class IngredientAnalysisViewModel extends BaseViewModel implements Lifecy
     public final ObservableInt analysisResultsWrapperVisibility = new ObservableInt(View.INVISIBLE);
     public final ObservableBoolean ingredientTextFocused = new ObservableBoolean(false);
     private TotalNutrients totalNutrients;
+
+    @Inject
+    Context context;
+
+    @Inject
+    DiagramUtils diagramUtils;
 
     public IngredientAnalysisViewModel(Context context) {
         super(context);
@@ -157,10 +165,10 @@ public class IngredientAnalysisViewModel extends BaseViewModel implements Lifecy
         if (nutrients == null)
             return;
 
-        ArrayList<PieEntry> entries = DiagramUtils.preparePieEntries(nutrients);
+        ArrayList<PieEntry> entries = diagramUtils.preparePieEntries(nutrients);
         diagramVisibility.set(entries.isEmpty() ? View.GONE : View.VISIBLE);
-        PieDataSet pieDataSet = DiagramUtils.createPieDataSet(context, entries, "Nutrients", null);
-        PieData pieData = DiagramUtils.createPieData(context, pieDataSet);
+        PieDataSet pieDataSet = diagramUtils.createPieDataSet(entries, "Nutrients", null);
+        PieData pieData = diagramUtils.createPieData(pieDataSet);
 
         onIngredientAnalyzedListener.onIngredientAnalyzed(pieData);
         diagramVisibility.set(View.VISIBLE);

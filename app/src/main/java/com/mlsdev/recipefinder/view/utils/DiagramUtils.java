@@ -17,8 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DiagramUtils {
+    private Context context;
+    private UtilsUI utilsUI;
 
-    public static ArrayList<PieEntry> preparePieEntries(TotalNutrients nutrients) {
+    public DiagramUtils(Context context, UtilsUI utilsUI) {
+        this.context = context;
+        this.utilsUI = utilsUI;
+    }
+
+    public ArrayList<PieEntry> preparePieEntries(TotalNutrients nutrients) {
         ArrayList<PieEntry> entries = new ArrayList<>(3);
         if (nutrients.getProtein() != null)
             entries.add(new PieEntry((float) nutrients.getProtein().getQuantity(), nutrients.getProtein().getLabel()));
@@ -30,7 +37,7 @@ public class DiagramUtils {
         return entries;
     }
 
-    public static PieChart preparePieChart(Context context, PieChart pieChart) {
+    public PieChart preparePieChart(PieChart pieChart) {
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
@@ -39,7 +46,7 @@ public class DiagramUtils {
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(android.R.color.transparent);
 
-        pieChart.setTransparentCircleColor(Utils.getColor(context, android.R.color.white));
+        pieChart.setTransparentCircleColor(utilsUI.getColor(android.R.color.white));
         pieChart.setTransparentCircleAlpha(50);
 
         pieChart.setHoleRadius(40f);
@@ -53,7 +60,7 @@ public class DiagramUtils {
         pieChart.setRotationEnabled(false);
         pieChart.setHighlightPerTapEnabled(true);
         pieChart.setDrawEntryLabels(true);
-        pieChart.setEntryLabelColor(Utils.getColor(context, android.R.color.white));
+        pieChart.setEntryLabelColor(utilsUI.getColor(android.R.color.white));
         pieChart.setEntryLabelTextSize(15f);
 
         Legend l = pieChart.getLegend();
@@ -65,10 +72,9 @@ public class DiagramUtils {
         return pieChart;
     }
 
-    public static PieDataSet createPieDataSet(Context context,
-                                              List<PieEntry> pieEntryList,
-                                              @Nullable String label,
-                                              @Nullable List<Integer> colors) {
+    public PieDataSet createPieDataSet(List<PieEntry> pieEntryList,
+                                       @Nullable String label,
+                                       @Nullable List<Integer> colors) {
         PieDataSet pieDataSet = new PieDataSet(pieEntryList, label);
         pieDataSet.setSliceSpace(1.5f);
         pieDataSet.setSelectionShift(2f);
@@ -77,24 +83,24 @@ public class DiagramUtils {
 
         if (colors == null) {
             colors = new ArrayList<>(3);
-            colors.add(Utils.getColor(context, R.color.colorPrimaryDark));
-            colors.add(Utils.getColor(context, R.color.colorPrimary));
-            colors.add(Utils.getColor(context, R.color.colorAccent));
+            colors.add(utilsUI.getColor(R.color.colorPrimaryDark));
+            colors.add(utilsUI.getColor(R.color.colorPrimary));
+            colors.add(utilsUI.getColor(R.color.colorAccent));
         }
 
         pieDataSet.setColors(colors);
         return pieDataSet;
     }
 
-    public static PieData createPieData(Context context, PieDataSet pieDataSet) {
+    public PieData createPieData(PieDataSet pieDataSet) {
         PieData pieData = new PieData(pieDataSet);
         pieData.setValueFormatter(new PercentFormatter());
         pieData.setValueTextSize(15f);
-        pieData.setValueTextColor(Utils.getColor(context, android.R.color.white));
+        pieData.setValueTextColor(utilsUI.getColor(android.R.color.white));
         return pieData;
     }
 
-    public static void setData(PieChart pieChart, PieData pieData) {
+    public void setData(PieChart pieChart, PieData pieData) {
         pieChart.setData(pieData);
         pieChart.highlightValue(null);
         pieChart.invalidate();

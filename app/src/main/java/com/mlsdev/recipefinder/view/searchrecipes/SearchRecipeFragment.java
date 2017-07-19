@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
@@ -36,9 +37,10 @@ public class SearchRecipeFragment extends RecipeListFragment implements RecipeLi
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-        super.onCreate(savedInstanceState);
+        RecipeApplication.getApplicationComponent().inject(this);
     }
 
     @Nullable

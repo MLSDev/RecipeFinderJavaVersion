@@ -12,7 +12,7 @@ import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
 import com.mlsdev.recipefinder.view.Extras;
-import com.mlsdev.recipefinder.view.utils.Utils;
+import com.mlsdev.recipefinder.view.utils.UtilsUI;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.Collection;
@@ -65,9 +65,9 @@ public class RecipeViewModel extends BaseViewModel {
         double fatValue = recipe.getTotalNutrients().getFat() != null
                 ? recipe.getTotalNutrients().getFat().getQuantity() : 0d;
 
-        proteinProgressValue.set(Utils.getPersents(totalWeight, proteinValue));
-        carbsProgressValue.set(Utils.getPersents(totalWeight, carbsValue));
-        fatProgressValue.set(Utils.getPersents(totalWeight, fatValue));
+        proteinProgressValue.set(UtilsUI.getPersents(totalWeight, proteinValue));
+        carbsProgressValue.set(UtilsUI.getPersents(totalWeight, carbsValue));
+        fatProgressValue.set(UtilsUI.getPersents(totalWeight, fatValue));
     }
 
     public void onStart() {
@@ -85,7 +85,7 @@ public class RecipeViewModel extends BaseViewModel {
                     context.getString(
                             R.string.ingredient_item,
                             ingredient.getText(),
-                            Utils.formatDecimalToString(ingredient.getWeight()))
+                            UtilsUI.formatDecimalToString(ingredient.getWeight()))
             );
         }
 

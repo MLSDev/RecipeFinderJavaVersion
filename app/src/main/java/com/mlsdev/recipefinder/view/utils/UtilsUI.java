@@ -6,9 +6,15 @@ import android.support.annotation.ColorRes;
 
 import java.text.DecimalFormat;
 
-public class Utils {
+public class UtilsUI {
+    private Context context;
 
-    public static @ColorInt int getColor(Context context, @ColorRes int colorResId) {
+    public UtilsUI(Context context) {
+        this.context = context;
+    }
+
+    @ColorInt
+    public int getColor(@ColorRes int colorResId) {
         @ColorInt int color = 0;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             color = context.getResources().getColor(colorResId, context.getTheme());

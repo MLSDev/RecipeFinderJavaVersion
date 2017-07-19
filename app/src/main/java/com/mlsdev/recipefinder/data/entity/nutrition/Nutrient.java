@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mlsdev.recipefinder.view.utils.Utils;
+import com.mlsdev.recipefinder.view.utils.UtilsUI;
 
 @Entity(tableName = "nutrients")
 public class Nutrient implements Parcelable{
@@ -63,7 +63,7 @@ public class Nutrient implements Parcelable{
     // endregion
 
     public String getFormattedFullText() {
-        return label + " " + Utils.formatDecimalToString(quantity) + " " + unit;
+        return label + " " + UtilsUI.formatDecimalToString(quantity) + " " + unit;
     }
 
     @Override

@@ -21,10 +21,12 @@ import com.mlsdev.recipefinder.view.fragments.TabFragment;
 import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
 import com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter;
-import com.mlsdev.recipefinder.view.utils.Utils;
+import com.mlsdev.recipefinder.view.utils.UtilsUI;
 import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class RecipeListFragment extends TabFragment implements RecipeListAdapter.OnItemClickListener,
         RecipeListAdapter.OnLastItemShownListener, OnDataLoadedListener<List<Recipe>> {
@@ -32,6 +34,9 @@ public class RecipeListFragment extends TabFragment implements RecipeListAdapter
     protected RecyclerView recipeRecyclerView;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected ViewModelFactory viewModelFactory;
+
+    @Inject
+    UtilsUI utilsUI;
 
     @Override
     public void onItemClicked(Recipe recipe, RecipeListItemBinding itemBinding) {
@@ -90,9 +95,9 @@ public class RecipeListFragment extends TabFragment implements RecipeListAdapter
         swipeRefreshLayout = refreshLayout;
         swipeRefreshLayout.setOnRefreshListener(listener);
         swipeRefreshLayout.setColorSchemeColors(
-                Utils.getColor(getActivity(), R.color.colorPrimaryDark),
-                Utils.getColor(getActivity(), R.color.colorPrimary),
-                Utils.getColor(getActivity(), R.color.colorAccent)
+                utilsUI.getColor(R.color.colorPrimaryDark),
+                utilsUI.getColor(R.color.colorPrimary),
+                utilsUI.getColor(R.color.colorAccent)
         );
     }
 
