@@ -4,13 +4,15 @@ import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 
+import com.mlsdev.recipefinder.RecipeApplication;
+
 import java.text.DecimalFormat;
 
 public class UtilsUI {
     private Context context;
 
-    public UtilsUI(Context context) {
-        this.context = context;
+    public UtilsUI() {
+        this.context = RecipeApplication.getInstance();
     }
 
     @ColorInt

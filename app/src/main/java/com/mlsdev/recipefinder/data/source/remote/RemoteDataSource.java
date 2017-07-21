@@ -24,7 +24,7 @@ public class RemoteDataSource extends BaseDataSource implements DataSource {
     private NutritionAnalysisService nutritionAnalysisService;
     private static RemoteDataSource instance;
 
-    private RemoteDataSource() {
+    public RemoteDataSource() {
         initApiServices();
     }
 

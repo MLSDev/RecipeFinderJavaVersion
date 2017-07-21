@@ -12,7 +12,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.databinding.ActivityRecipeAnalysisDetailsBinding;
 import com.mlsdev.recipefinder.view.utils.DiagramUtils;
@@ -31,7 +30,6 @@ public class RecipeAnalysisDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RecipeApplication.getApplicationComponent().inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_analysis_details);
         binding.setViewModel(new ViewModel(getIntent().getExtras()));
         diagramUtils.preparePieChart(binding.pieChart);

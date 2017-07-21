@@ -1,6 +1,5 @@
 package com.mlsdev.recipefinder.view.recipedetails;
 
-import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
@@ -17,6 +16,8 @@ import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.Collection;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -35,10 +36,12 @@ public class RecipeViewModel extends BaseViewModel {
     public final ObservableInt carbsProgressValue = new ObservableInt(15);
     public final ObservableInt fatProgressValue = new ObservableInt(43);
 
-    public RecipeViewModel(Context context, Bundle recipeData) {
-        super(context);
+    @Inject
+    public RecipeViewModel() {
         subscriptions = new CompositeDisposable();
+    }
 
+    public void setRecipeData(Bundle recipeData) {
         if (recipeData != null && recipeData.containsKey(Extras.DATA)) {
             recipe = (Recipe) recipeData.getSerializable(Extras.DATA);
             if (recipe != null) {

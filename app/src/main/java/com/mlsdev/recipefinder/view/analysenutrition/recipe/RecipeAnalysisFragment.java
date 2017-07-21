@@ -2,6 +2,7 @@ package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 
 import android.app.Activity;
 import android.arch.lifecycle.LifecycleFragment;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -13,29 +14,30 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.databinding.FragmentRecipeAnalysisBinding;
+import com.mlsdev.recipefinder.di.Injectable;
 import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
-import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class RecipeAnalysisFragment extends LifecycleFragment implements OnAddIngredientClickListener,
-        OnDataLoadedListener<List<String>> {
+        OnDataLoadedListener<List<String>>, Injectable {
     private FragmentRecipeAnalysisBinding binding;
     private RecipeAnalysisViewModel viewModel;
     private IngredientsAdapter adapter;
-    private ViewModelFactory viewModelFactory;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RecipeApplication.getApplicationComponent().inject(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewModelFactory = new ViewModelFactory(getActivity());
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_analysis, container, false);
 
         if (viewModel == null)

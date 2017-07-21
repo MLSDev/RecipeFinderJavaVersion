@@ -22,7 +22,6 @@ import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
 import com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter;
 import com.mlsdev.recipefinder.view.utils.UtilsUI;
-import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class RecipeListFragment extends TabFragment implements RecipeListAdapter
     protected RecipeListAdapter recipeListAdapter;
     protected RecyclerView recipeRecyclerView;
     protected SwipeRefreshLayout swipeRefreshLayout;
-    protected ViewModelFactory viewModelFactory;
 
     @Inject
     UtilsUI utilsUI;

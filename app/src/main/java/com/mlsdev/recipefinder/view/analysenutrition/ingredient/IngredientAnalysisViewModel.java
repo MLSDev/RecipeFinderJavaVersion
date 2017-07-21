@@ -3,7 +3,6 @@ package com.mlsdev.recipefinder.view.analysenutrition.ingredient;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
-import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
@@ -53,15 +52,11 @@ public class IngredientAnalysisViewModel extends BaseViewModel implements Lifecy
     public final ObservableInt analysisResultsWrapperVisibility = new ObservableInt(View.INVISIBLE);
     public final ObservableBoolean ingredientTextFocused = new ObservableBoolean(false);
     private TotalNutrients totalNutrients;
+    private DiagramUtils diagramUtils;
 
     @Inject
-    Context context;
-
-    @Inject
-    DiagramUtils diagramUtils;
-
-    public IngredientAnalysisViewModel(Context context) {
-        super(context);
+    public IngredientAnalysisViewModel(DiagramUtils diagramUtils) {
+        this.diagramUtils = diagramUtils;
     }
 
     public void setKeyboardListener(OnKeyboardStateChangedListener keyboardListener) {

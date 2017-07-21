@@ -1,6 +1,5 @@
 package com.mlsdev.recipefinder.view.utils;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -17,11 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DiagramUtils {
-    private Context context;
     private UtilsUI utilsUI;
 
-    public DiagramUtils(Context context, UtilsUI utilsUI) {
-        this.context = context;
+    public DiagramUtils(UtilsUI utilsUI) {
         this.utilsUI = utilsUI;
     }
 

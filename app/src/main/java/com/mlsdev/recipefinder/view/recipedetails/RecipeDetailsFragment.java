@@ -1,5 +1,7 @@
 package com.mlsdev.recipefinder.view.recipedetails;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,13 +17,18 @@ import com.mlsdev.recipefinder.databinding.FragmentRecipeDetailsBinding;
 import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.MainActivity;
 
+import javax.inject.Inject;
+
 public class RecipeDetailsFragment extends Fragment {
     private FragmentRecipeDetailsBinding binding;
     private RecipeViewModel viewModel;
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewModel = new RecipeViewModel(getActivity(), getArguments());
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeViewModel.class);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_details, container, false);
         binding.setViewModel(viewModel);
 

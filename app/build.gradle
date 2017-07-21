@@ -59,7 +59,7 @@ ext {
     stethoVersion = '1.4.1'
     roomVersion = '1.0.0-alpha3'
     lifecycleVersion = '1.0.0-alpha3'
-    daggerVersion = '2.10'
+    daggerVersion = '2.11'
 }
 
 dependencies {

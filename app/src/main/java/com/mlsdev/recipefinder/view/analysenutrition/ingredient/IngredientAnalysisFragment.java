@@ -1,6 +1,7 @@
 package com.mlsdev.recipefinder.view.analysenutrition.ingredient;
 
 import android.arch.lifecycle.LifecycleFragment;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -11,21 +12,22 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.data.PieData;
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.databinding.FragmentIngredientAnalysisBinding;
+import com.mlsdev.recipefinder.di.Injectable;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.OnKeyboardStateChangedListener;
 import com.mlsdev.recipefinder.view.listener.OnIngredientAnalyzedListener;
 import com.mlsdev.recipefinder.view.utils.DiagramUtils;
-import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
 import javax.inject.Inject;
 
 public class IngredientAnalysisFragment extends LifecycleFragment implements OnIngredientAnalyzedListener,
-        OnKeyboardStateChangedListener {
+        OnKeyboardStateChangedListener, Injectable {
     private FragmentIngredientAnalysisBinding binding;
     private IngredientAnalysisViewModel viewModel;
-    private ViewModelFactory viewModelFactory;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @Inject
     DiagramUtils diagramUtils;
@@ -33,13 +35,11 @@ public class IngredientAnalysisFragment extends LifecycleFragment implements OnI
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RecipeApplication.getApplicationComponent().inject(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ingredient_analysis, container, false);
-        viewModelFactory = new ViewModelFactory(getActivity());
 
         if (viewModel == null)
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(IngredientAnalysisViewModel.class);

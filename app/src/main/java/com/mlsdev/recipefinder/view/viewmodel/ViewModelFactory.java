@@ -2,37 +2,43 @@ package com.mlsdev.recipefinder.view.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
-import android.content.Context;
 
-import com.mlsdev.recipefinder.view.BottonNavigationItemSelectedListener;
-import com.mlsdev.recipefinder.view.analysenutrition.ingredient.IngredientAnalysisViewModel;
-import com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisViewModel;
-import com.mlsdev.recipefinder.view.favoriterecipes.FavoritesViewModel;
-import com.mlsdev.recipefinder.view.searchrecipes.SearchViewModel;
+import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
+@Singleton
 public class ViewModelFactory implements ViewModelProvider.Factory {
-    private Context context;
+    private Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
 
-    public ViewModelFactory(Context context) {
-        this.context = context;
+    @Inject
+    public ViewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
+        this.creators = creators;
     }
 
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
+        Provider<? extends ViewModel> creator = creators.get(modelClass);
 
-        if (modelClass.isAssignableFrom(SearchViewModel.class)) {
-            return (T) new SearchViewModel(context);
-        } else if (modelClass.isAssignableFrom(BottonNavigationItemSelectedListener.class)) {
-            return (T) new BottonNavigationItemSelectedListener();
-        } else if (modelClass.isAssignableFrom(FavoritesViewModel.class)){
-            return (T) new FavoritesViewModel(context);
-        } else if (modelClass.isAssignableFrom(IngredientAnalysisViewModel.class)) {
-            return (T) new IngredientAnalysisViewModel(context);
-        } else if (modelClass.isAssignableFrom(RecipeAnalysisViewModel.class)) {
-            return (T) new RecipeAnalysisViewModel(context);
+        if (creator == null) {
+            for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry : creators.entrySet()) {
+                if (modelClass.isAssignableFrom(entry.getKey())) {
+                    creator = entry.getValue();
+                    break;
+                }
+            }
         }
 
-        throw new IllegalArgumentException("Unknown ViewModel class");
+        if (creator == null)
+            throw new IllegalArgumentException("unknown model class " + modelClass);
+
+        try {
+            return (T) creator.get();
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
 }

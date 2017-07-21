@@ -3,7 +3,6 @@ package com.mlsdev.recipefinder.view.favoriterecipes;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
-import android.content.Context;
 import android.databinding.ObservableInt;
 import android.view.View;
 
@@ -12,6 +11,8 @@ import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -23,8 +24,8 @@ public class FavoritesViewModel extends BaseViewModel implements LifecycleObserv
     private OnDataLoadedListener<List<Recipe>> onDataLoadedListener;
     public final ObservableInt emptyViewVisibility;
 
-    public FavoritesViewModel(Context context) {
-        super(context);
+    @Inject
+    public FavoritesViewModel() {
         emptyViewVisibility = new ObservableInt(View.VISIBLE);
     }
 

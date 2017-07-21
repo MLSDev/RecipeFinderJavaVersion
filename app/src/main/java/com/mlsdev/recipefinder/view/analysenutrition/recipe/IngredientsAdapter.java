@@ -1,6 +1,5 @@
 package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
@@ -95,7 +94,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void bindViewModel() {
             if (binding.getViewModel() == null)
-                binding.setViewModel(new IngredientViewModel(binding.getRoot().getContext()));
+                binding.setViewModel(new IngredientViewModel());
 
             binding.getViewModel().setIngredient(ingredientList.get(getAdapterPosition()), getAdapterPosition() + 1);
         }
@@ -112,7 +111,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void bindViewModel() {
             if (binding.getViewModel() == null)
-                binding.setViewModel(new AddIngredientViewModel(binding.getRoot().getContext()));
+                binding.setViewModel(new AddIngredientViewModel());
         }
     }
 
@@ -121,8 +120,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public final ObservableField<String> text;
         public final ObservableField<String> number;
 
-        public IngredientViewModel(Context context) {
-            super(context);
+        public IngredientViewModel() {
             text = new ObservableField<>();
             number = new ObservableField<>();
         }
@@ -140,8 +138,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public class AddIngredientViewModel extends BaseViewModel {
 
-        public AddIngredientViewModel(Context context) {
-            super(context);
+        public AddIngredientViewModel() {
         }
 
         public void onAddIngredientButtonClick(View view) {

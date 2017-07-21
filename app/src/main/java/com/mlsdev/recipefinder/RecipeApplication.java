@@ -1,30 +1,34 @@
 package com.mlsdev.recipefinder;
 
+import android.app.Activity;
 import android.app.Application;
 
-import com.mlsdev.recipefinder.di.component.ApplicationComponent;
-import com.mlsdev.recipefinder.di.component.DaggerApplicationComponent;
-import com.mlsdev.recipefinder.di.module.ApplicationModule;
-import com.mlsdev.recipefinder.di.module.UtilsModule;
+import com.mlsdev.recipefinder.di.ApplicationInjector;
 
-public class RecipeApplication extends Application {
-    private static ApplicationComponent applicationComponent;
+import javax.inject.Inject;
 
-    public static ApplicationComponent getApplicationComponent() {
-        return applicationComponent;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+
+public class RecipeApplication extends Application implements HasActivityInjector {
+    private static RecipeApplication instance;
+
+    public static RecipeApplication getInstance() {
+        return instance;
     }
+
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        applicationComponent = buildApplicationComponent();
+        instance = this;
+        ApplicationInjector.init(this);
     }
 
-    private ApplicationComponent buildApplicationComponent() {
-        return DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(this))
-                .utilsModule(new UtilsModule())
-                .build();
+    @Override
+    public DispatchingAndroidInjector<Activity> activityInjector() {
+        return dispatchingAndroidInjector;
     }
-
 }

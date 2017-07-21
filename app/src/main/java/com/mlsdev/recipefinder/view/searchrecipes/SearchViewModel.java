@@ -3,12 +3,10 @@ package com.mlsdev.recipefinder.view.searchrecipes;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
-import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +15,7 @@ import com.claudiodegio.msv.OnSearchViewListener;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
+import com.mlsdev.recipefinder.data.source.repository.DataRepository;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.utils.ParamsHelper;
@@ -25,6 +24,8 @@ import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -43,8 +44,9 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
     private String query = "";
     private List<Recipe> recipes = new ArrayList<>();
 
-    public SearchViewModel(@NonNull Context context) {
-        super(context);
+    @Inject
+    public SearchViewModel(DataRepository repository) {
+        this.repository = repository;
         searchLabelText = new ObservableField<>(context.getString(R.string.label_search));
         searchParams = new ArrayMap<>();
     }

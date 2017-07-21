@@ -1,5 +1,6 @@
 package com.mlsdev.recipefinder.view.favoriterecipes;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,21 +10,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
-import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.databinding.FragmentFavoriteRecipesBinding;
+import com.mlsdev.recipefinder.di.Injectable;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
-import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
+
+import javax.inject.Inject;
 
 import static com.mlsdev.recipefinder.view.searchrecipes.RecipeListAdapter.OnLastItemShownListener;
 
-public class FavoriteRecipesFragment extends RecipeListFragment implements OnLastItemShownListener {
+public class FavoriteRecipesFragment extends RecipeListFragment implements OnLastItemShownListener,
+        Injectable {
     private FragmentFavoriteRecipesBinding binding;
     private FavoritesViewModel viewModel;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RecipeApplication.getApplicationComponent().inject(this);
     }
 
     @Override
@@ -32,7 +37,6 @@ public class FavoriteRecipesFragment extends RecipeListFragment implements OnLas
                              @Nullable Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite_recipes, container, false);
-        viewModelFactory = new ViewModelFactory(getActivity());
         initRecyclerView(binding.rvRecipeList);
 
         if (viewModel == null)

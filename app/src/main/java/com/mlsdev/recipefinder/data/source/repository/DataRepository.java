@@ -1,6 +1,5 @@
 package com.mlsdev.recipefinder.data.source.repository;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
@@ -9,9 +8,7 @@ import com.mlsdev.recipefinder.data.entity.recipe.Hit;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
 import com.mlsdev.recipefinder.data.source.DataSource;
-import com.mlsdev.recipefinder.data.source.local.LocalDataSource;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
-import com.mlsdev.recipefinder.data.source.remote.RemoteDataSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,22 +27,16 @@ public class DataRepository {
     private int to = offset;
     private boolean more = true;
 
-    private static DataRepository instance;
     private DataSource localDataSource;
+    private DataSource remoteDataSource;
 
     private List<Recipe> cachedRecipes;
     private boolean cacheIsDirty = false;
 
-    private DataRepository(Context context) {
-        localDataSource = new LocalDataSource(context);
+    public DataRepository(DataSource local, DataSource remote) {
+        localDataSource = local;
+        remoteDataSource = remote;
         cachedRecipes = new ArrayList<>();
-    }
-
-    public static DataRepository getInstance(Context context) {
-        if (instance == null)
-            instance = new DataRepository(context);
-
-        return instance;
     }
 
     public void setCacheIsDirty() {
@@ -79,7 +70,7 @@ public class DataRepository {
 
     @NonNull
     private Single<List<Recipe>> getRecipes(Map<String, String> params) {
-        return RemoteDataSource.getInstance().searchRecipes(params)
+        return remoteDataSource.searchRecipes(params)
                 .map(new Function<SearchResult, List<Recipe>>() {
                     @Override
                     public List<Recipe> apply(@io.reactivex.annotations.NonNull SearchResult searchResult) throws Exception {
@@ -121,11 +112,11 @@ public class DataRepository {
     }
 
     public Single<NutritionAnalysisResult> getIngredientData(final Map<String, String> params) {
-        return RemoteDataSource.getInstance().getIngredientData(params);
+        return remoteDataSource.getIngredientData(params);
     }
 
     public Single<NutritionAnalysisResult> getRecipeAnalysisData(final RecipeAnalysisParams params) {
-        return RemoteDataSource.getInstance().getRecipeAnalysingResult(params);
+        return remoteDataSource.getRecipeAnalysingResult(params);
     }
 
 }

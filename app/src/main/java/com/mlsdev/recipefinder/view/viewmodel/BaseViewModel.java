@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
 import com.mlsdev.recipefinder.data.source.repository.DataRepository;
 
@@ -19,14 +20,12 @@ import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.HttpException;
 
 public class BaseViewModel extends ViewModel {
-    protected Context context;
+    protected Context context = RecipeApplication.getInstance();
     protected DataRepository repository;
     protected CompositeDisposable subscriptions;
     private ProgressDialog progressDialog;
 
-    public BaseViewModel(Context context) {
-        this.context = context;
-        repository = DataRepository.getInstance(context);
+    public BaseViewModel() {
         subscriptions = new CompositeDisposable();
     }
 

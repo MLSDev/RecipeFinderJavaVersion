@@ -1,6 +1,5 @@
 package com.mlsdev.recipefinder.data.source.local;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
@@ -21,8 +20,8 @@ import io.reactivex.functions.Function;
 public class LocalDataSource extends BaseDataSource implements DataSource {
     private AppDatabase db;
 
-    public LocalDataSource(Context context) {
-        db = AppDatabase.init(context);
+    public LocalDataSource(AppDatabase database) {
+        db = database;
     }
 
     @Override

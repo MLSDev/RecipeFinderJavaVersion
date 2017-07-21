@@ -2,32 +2,41 @@ package com.mlsdev.recipefinder.view;
 
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.ActivityMainBinding;
-import com.mlsdev.recipefinder.view.viewmodel.ViewModelFactory;
 
-public class MainActivity extends BaseActivity implements LifecycleRegistryOwner {
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
+
+public class MainActivity extends BaseActivity implements LifecycleRegistryOwner,
+        HasSupportFragmentInjector {
     public static final String LOG_TAG = "RECIPE_FINDER";
     private ActivityMainBinding binding;
-    private BottonNavigationItemSelectedListener bottonNavigationItemSelectedListener;
     private AppBroadcastReceiver broadcastReceiver;
-    private ViewModelFactory viewModelFactory;
     private LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
 
+    @Inject
+    DispatchingAndroidInjector<Fragment> supportFragmentInjector;
 
+    @Inject
+    BottomNavigationItemSelectedListener bottomNavigationItemSelectedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         broadcastReceiver = new AppBroadcastReceiver();
@@ -49,17 +58,20 @@ public class MainActivity extends BaseActivity implements LifecycleRegistryOwner
     }
 
     private void initNavigation() {
-        viewModelFactory = new ViewModelFactory(this);
-        bottonNavigationItemSelectedListener = ViewModelProviders.of(this, viewModelFactory).get(BottonNavigationItemSelectedListener.class);
-        getLifecycle().addObserver(bottonNavigationItemSelectedListener);
-        bottonNavigationItemSelectedListener.setCurrentMenuItem(binding.bnvNavigationView.getMenu().getItem(0));
-        bottonNavigationItemSelectedListener.setFragmentManager(getSupportFragmentManager());
-        binding.bnvNavigationView.setOnNavigationItemSelectedListener(bottonNavigationItemSelectedListener);
+        getLifecycle().addObserver(bottomNavigationItemSelectedListener);
+        bottomNavigationItemSelectedListener.setCurrentMenuItem(binding.bnvNavigationView.getMenu().getItem(0));
+        bottomNavigationItemSelectedListener.setFragmentManager(getSupportFragmentManager());
+        binding.bnvNavigationView.setOnNavigationItemSelectedListener(bottomNavigationItemSelectedListener);
     }
 
     @Override
     public LifecycleRegistry getLifecycle() {
         return lifecycleRegistry;
+    }
+
+    @Override
+    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
+        return supportFragmentInjector;
     }
 
     public class AppBroadcastReceiver extends BroadcastReceiver {

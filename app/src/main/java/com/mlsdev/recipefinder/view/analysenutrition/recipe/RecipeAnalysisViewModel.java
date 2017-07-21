@@ -3,10 +3,8 @@ package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableField;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 
@@ -21,6 +19,8 @@ import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -34,8 +34,8 @@ public class RecipeAnalysisViewModel extends BaseViewModel implements LifecycleO
     private OnAddIngredientClickListener addIngredientListener;
     private OnDataLoadedListener<List<String>> dataLoadedListener;
 
-    public RecipeAnalysisViewModel(@NonNull Context context) {
-        super(context);
+    @Inject
+    public RecipeAnalysisViewModel() {
     }
 
     public void setDataLoadedListener(OnDataLoadedListener<List<String>> dataLoadedListener) {

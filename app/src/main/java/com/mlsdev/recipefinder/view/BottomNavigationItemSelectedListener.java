@@ -3,9 +3,7 @@ package com.mlsdev.recipefinder.view;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
-import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
@@ -13,11 +11,14 @@ import android.view.MenuItem;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.view.fragments.TabFragment;
 
+import javax.inject.Inject;
+
+import static android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import static com.mlsdev.recipefinder.view.enums.TabItemType.ANALYSE;
 import static com.mlsdev.recipefinder.view.enums.TabItemType.FAVORITES;
 import static com.mlsdev.recipefinder.view.enums.TabItemType.SEARCH;
 
-public class BottonNavigationItemSelectedListener extends ViewModel implements BottomNavigationView.OnNavigationItemSelectedListener,
+public class BottomNavigationItemSelectedListener implements OnNavigationItemSelectedListener,
         LifecycleObserver {
     private FragmentManager fragmentManager;
     private TabFragment analyseNutritionFragment;
@@ -27,7 +28,8 @@ public class BottonNavigationItemSelectedListener extends ViewModel implements B
     private int checkedItemId = -1;
     private MenuItem currentMenuItem;
 
-    public BottonNavigationItemSelectedListener() {
+    @Inject
+    public BottomNavigationItemSelectedListener() {
         analyseNutritionFragment = TabFragment.getNewInstance(ANALYSE);
         searchRecipesFragment = TabFragment.getNewInstance(SEARCH);
         favoriteRecipesFragment = TabFragment.getNewInstance(FAVORITES);

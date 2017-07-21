@@ -1,42 +1,42 @@
 package com.mlsdev.recipefinder.di.component;
 
-import android.content.Context;
+import android.app.Application;
 
-import com.mlsdev.recipefinder.di.module.ApplicationModule;
+import com.mlsdev.recipefinder.RecipeApplication;
+import com.mlsdev.recipefinder.di.module.ApiModule;
+import com.mlsdev.recipefinder.di.module.DataSourceModule;
+import com.mlsdev.recipefinder.di.module.DatabaseModule;
+import com.mlsdev.recipefinder.di.module.MainActivityModule;
+import com.mlsdev.recipefinder.di.module.RecipeAnalysisActivityModule;
 import com.mlsdev.recipefinder.di.module.UtilsModule;
-import com.mlsdev.recipefinder.view.analysenutrition.ingredient.IngredientAnalysisFragment;
-import com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisDetailsActivity;
-import com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisFragment;
-import com.mlsdev.recipefinder.view.favoriterecipes.FavoriteRecipesFragment;
-import com.mlsdev.recipefinder.view.searchrecipes.SearchRecipeFragment;
-import com.mlsdev.recipefinder.view.utils.DiagramUtils;
-import com.mlsdev.recipefinder.view.utils.ParamsHelper;
-import com.mlsdev.recipefinder.view.utils.UtilsUI;
+import com.mlsdev.recipefinder.di.module.ViewModelModule;
 
 import javax.inject.Singleton;
 
+import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjectionModule;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, UtilsModule.class})
+@Component(modules = {
+        AndroidInjectionModule.class,
+        UtilsModule.class,
+        DataSourceModule.class,
+        DatabaseModule.class,
+        ApiModule.class,
+        MainActivityModule.class,
+        RecipeAnalysisActivityModule.class,
+        ViewModelModule.class})
 public interface ApplicationComponent {
 
-    Context context();
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        Builder application(Application application);
 
-    DiagramUtils diagramUtils();
+        ApplicationComponent build();
+    }
 
-    UtilsUI utilsUI();
-
-    ParamsHelper paramsHelper();
-
-    void inject(SearchRecipeFragment fragment);
-
-    void inject(FavoriteRecipesFragment fragment);
-
-    void inject(IngredientAnalysisFragment fragment);
-
-    void inject(RecipeAnalysisFragment fragment);
-
-    void inject(RecipeAnalysisDetailsActivity activity);
+    void inject(RecipeApplication application);
 
 }
