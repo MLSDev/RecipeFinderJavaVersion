@@ -65,11 +65,11 @@ public class RecipeAnalysisViewModel extends BaseViewModel implements LifecycleO
                 }
             };
 
-            showSnackbar(R.string.no_ingredients_error_message, R.string.btn_add, listener);
+            actionListener.showSnackbar(R.string.no_ingredients_error_message, R.string.btn_add, listener);
             return;
         }
 
-        showProgressDialog(true, "Analysing...");
+        actionListener.showProgressDialog(true, "Analysing...");
 
         RecipeAnalysisParams recipeAnalysisParams = new RecipeAnalysisParams();
         recipeAnalysisParams.setTitle(title.get());
@@ -85,7 +85,7 @@ public class RecipeAnalysisViewModel extends BaseViewModel implements LifecycleO
                 .subscribe(new BaseObserver<NutritionAnalysisResult>() {
                     @Override
                     public void onSuccess(@io.reactivex.annotations.NonNull NutritionAnalysisResult nutritionAnalysisResult) {
-                        showProgressDialog(false, null);
+                        actionListener.showProgressDialog(false, null);
                         Log.d(MainActivity.LOG_TAG, "onNext()");
                         Intent intent = new Intent(context, RecipeAnalysisDetailsActivity.class);
                         intent.putExtra(RecipeAnalysisDetailsActivity.RECIPE_ANALYSING_RESULT_KEY, nutritionAnalysisResult);

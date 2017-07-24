@@ -7,6 +7,7 @@ import android.databinding.ObservableInt;
 import android.view.View;
 
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
+import com.mlsdev.recipefinder.data.source.repository.DataRepository;
 import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
 
@@ -25,7 +26,8 @@ public class FavoritesViewModel extends BaseViewModel implements LifecycleObserv
     public final ObservableInt emptyViewVisibility;
 
     @Inject
-    public FavoritesViewModel() {
+    public FavoritesViewModel(DataRepository repository) {
+        this.repository = repository;
         emptyViewVisibility = new ObservableInt(View.VISIBLE);
     }
 

@@ -3,6 +3,7 @@ package com.mlsdev.recipefinder.di.module;
 import com.mlsdev.recipefinder.view.analysenutrition.ingredient.IngredientAnalysisFragment;
 import com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisFragment;
 import com.mlsdev.recipefinder.view.favoriterecipes.FavoriteRecipesFragment;
+import com.mlsdev.recipefinder.view.recipedetails.RecipeDetailsFragment;
 import com.mlsdev.recipefinder.view.searchrecipes.SearchRecipeFragment;
 
 import dagger.Module;
@@ -22,5 +23,8 @@ public abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract RecipeAnalysisFragment contributeRecipeAnalysisFragment();
+
+    @ContributesAndroidInjector
+    abstract RecipeDetailsFragment contribureRecipeDetailsFragment();
 
 }

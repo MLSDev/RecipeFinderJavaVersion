@@ -10,6 +10,7 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Ingredient;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
+import com.mlsdev.recipefinder.data.source.repository.DataRepository;
 import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.utils.UtilsUI;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
@@ -37,7 +38,8 @@ public class RecipeViewModel extends BaseViewModel {
     public final ObservableInt fatProgressValue = new ObservableInt(43);
 
     @Inject
-    public RecipeViewModel() {
+    public RecipeViewModel(DataRepository repository) {
+        this.repository = repository;
         subscriptions = new CompositeDisposable();
     }
 

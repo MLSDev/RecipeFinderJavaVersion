@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +13,14 @@ import android.view.ViewGroup;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentRecipeDetailsBinding;
+import com.mlsdev.recipefinder.di.Injectable;
 import com.mlsdev.recipefinder.view.Extras;
 import com.mlsdev.recipefinder.view.MainActivity;
+import com.mlsdev.recipefinder.view.fragment.BaseFragment;
 
 import javax.inject.Inject;
 
-public class RecipeDetailsFragment extends Fragment {
+public class RecipeDetailsFragment extends BaseFragment implements Injectable {
     private FragmentRecipeDetailsBinding binding;
     private RecipeViewModel viewModel;
 
@@ -29,6 +30,8 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeViewModel.class);
+        viewModel.setRecipeData(getArguments());
+        viewModel.setActionListener(this);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_details, container, false);
         binding.setViewModel(viewModel);
 

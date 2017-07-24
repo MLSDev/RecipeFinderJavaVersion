@@ -89,11 +89,11 @@ public class IngredientAnalysisViewModel extends BaseViewModel implements Lifecy
                 }
             };
 
-            showSnackbar(R.string.error_empty_ingredient_field, R.string.btn_fill_in, listener);
+            actionListener.showSnackbar(R.string.error_empty_ingredient_field, R.string.btn_fill_in, listener);
             return;
         }
 
-        showProgressDialog(true, "Analysing...");
+        actionListener.showProgressDialog(true, "Analysing...");
         subscriptions.clear();
 
         Map<String, String> params = new ArrayMap<>();
@@ -110,7 +110,7 @@ public class IngredientAnalysisViewModel extends BaseViewModel implements Lifecy
 
                     @Override
                     public void onSuccess(@io.reactivex.annotations.NonNull NutritionAnalysisResult result) {
-                        showProgressDialog(false, null);
+                        actionListener.showProgressDialog(false, null);
                         TotalNutrients totalNutrients = result.getTotalNutrients();
                         analysisResultsWrapperVisibility.set(View.VISIBLE);
 

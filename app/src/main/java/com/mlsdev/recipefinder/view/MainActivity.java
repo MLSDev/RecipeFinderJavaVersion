@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivity implements LifecycleRegistryOwner
     BottomNavigationItemSelectedListener bottomNavigationItemSelectedListener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);

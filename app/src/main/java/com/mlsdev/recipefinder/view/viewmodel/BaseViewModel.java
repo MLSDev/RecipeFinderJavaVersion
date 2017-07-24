@@ -1,18 +1,14 @@
 package com.mlsdev.recipefinder.view.viewmodel;
 
-import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.support.annotation.NonNull;
 
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.RecipeApplication;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
 import com.mlsdev.recipefinder.data.source.repository.DataRepository;
+import com.mlsdev.recipefinder.view.ActionListener;
 
 import java.io.IOException;
 
@@ -23,7 +19,7 @@ public class BaseViewModel extends ViewModel {
     protected Context context = RecipeApplication.getInstance();
     protected DataRepository repository;
     protected CompositeDisposable subscriptions;
-    private ProgressDialog progressDialog;
+    protected ActionListener actionListener;
 
     public BaseViewModel() {
         subscriptions = new CompositeDisposable();
@@ -41,21 +37,12 @@ public class BaseViewModel extends ViewModel {
 
     }
 
-    protected void showProgressDialog(boolean isShow, @Nullable String message) {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(context, R.style.AlertDialogAppCompat);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage(message);
-        }
-
-        if (isShow)
-            progressDialog.show();
-        else
-            progressDialog.dismiss();
+    public void setActionListener(@NonNull ActionListener actionListener) {
+        this.actionListener = actionListener;
     }
 
     protected void showError(Throwable throwable) {
-        showProgressDialog(false, null);
+        actionListener.showProgressDialog(false, null);
         String errorMessage = context.getString(R.string.error_message_common);
 
         if (throwable instanceof HttpException) {
@@ -67,36 +54,6 @@ public class BaseViewModel extends ViewModel {
             errorMessage = context.getString(R.string.error_message_connection);
         }
 
-        showSnackbar(errorMessage);
-    }
-
-    protected void showSnackbar(@StringRes int message) {
-        if (context != null)
-            showSnackbar(context.getString(message));
-    }
-
-    protected void showSnackbar(String message) {
-        showSnackbar(message, null, null);
-    }
-
-    protected void showSnackbar(@StringRes int message, @StringRes int action, View.OnClickListener listener) {
-        if (context != null)
-            showSnackbar(context.getString(message), context.getString(action), listener);
-    }
-
-    protected void showSnackbar(String message, String action, View.OnClickListener listener) {
-        if (context != null) {
-            String tag = context.getString(R.string.content_tag);
-            View view = ((AppCompatActivity) context).getWindow().getDecorView().findViewWithTag(tag);
-            if (view != null) {
-                Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
-
-                if (action != null && listener != null)
-                    snackbar.setAction(action, listener);
-
-                snackbar.show();
-            }
-
-        }
+        actionListener.showSnackbar(errorMessage);
     }
 }

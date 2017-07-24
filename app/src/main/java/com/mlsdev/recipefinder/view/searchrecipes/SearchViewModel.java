@@ -39,7 +39,6 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
     public final ObservableField<String> searchLabelText;
     private OnDataLoadedListener<List<Recipe>> onDataLoadedListener;
     private Map<String, String> searchParams;
-    private ActionListener actionListener;
     public final ObservableBoolean isSearchOpened = new ObservableBoolean(false);
     private String query = "";
     private List<Recipe> recipes = new ArrayList<>();
@@ -53,10 +52,6 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
 
     public void setOnDataLoadedListener(OnDataLoadedListener<List<Recipe>> onDataLoadedListener) {
         this.onDataLoadedListener = onDataLoadedListener;
-    }
-
-    public void setActionListener(ActionListener actionListener) {
-        this.actionListener = actionListener;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -103,7 +98,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
                 .subscribe(new SearchRecipesObserver<List<Recipe>>() {
                     @Override
                     public void onSuccess(List<Recipe> recipes) {
-                        showProgressDialog(false, null);
+                        actionListener.showProgressDialog(false, null);
                         SearchViewModel.this.recipes = recipes;
                         String commonSearchLabelText = context.getString(R.string.label_search);
                         String nothingFoundText = context.getString(R.string.label_search_nothing_found);
@@ -168,7 +163,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
 
     @Override
     public boolean onQueryTextSubmit(String s) {
-        showProgressDialog(true, "Searching recipes for " + s);
+        actionListener.showProgressDialog(true, "Searching recipes for " + s);
         searchRecipes(s, true);
         return false;
     }
@@ -176,10 +171,6 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
     @Override
     public void onQueryTextChange(String s) {
         searchText.set(s);
-    }
-
-    public interface ActionListener {
-        void onStartFilter();
     }
 
     public abstract class SearchRecipesObserver<T> implements SingleObserver<T> {
@@ -196,7 +187,7 @@ public class SearchViewModel extends BaseViewModel implements OnSearchViewListen
         @Override
         public void onError(Throwable e) {
             loadMoreProgressBarVisibility.set(View.INVISIBLE);
-            showProgressDialog(false, null);
+            actionListener.showProgressDialog(false, null);
             Log.d(MainActivity.LOG_TAG, e.getMessage());
             showError(e);
         }

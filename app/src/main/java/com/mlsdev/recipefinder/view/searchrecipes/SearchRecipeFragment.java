@@ -24,6 +24,7 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.databinding.FragmentSearchRecipesBinding;
 import com.mlsdev.recipefinder.di.Injectable;
+import com.mlsdev.recipefinder.view.ActionListener;
 import com.mlsdev.recipefinder.view.fragment.RecipeListFragment;
 
 import java.util.List;
@@ -31,7 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class SearchRecipeFragment extends RecipeListFragment implements RecipeListAdapter.OnLastItemShownListener,
-        SwipeRefreshLayout.OnRefreshListener, SearchViewModel.ActionListener, LifecycleOwner,
+        SwipeRefreshLayout.OnRefreshListener, ActionListener, LifecycleOwner,
         Injectable {
     public static final int FILTER_REQUEST_CODE = 0;
     private FragmentSearchRecipesBinding binding;
