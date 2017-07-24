@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.mlsdev.recipefinder.view.analysenutrition.ingredient.IngredientAnalysisViewModel;
+import com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisDetailsActivity;
 import com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisViewModel;
 import com.mlsdev.recipefinder.view.favoriterecipes.FavoritesViewModel;
 import com.mlsdev.recipefinder.view.recipedetails.RecipeViewModel;
@@ -41,6 +42,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RecipeViewModel.class)
     abstract ViewModel bindRecipeViewModel(RecipeViewModel recipeViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RecipeAnalysisDetailsActivity.ViewModel.class)
+    abstract ViewModel bindRecipeAnalysisDetailsActivityViewModel(RecipeAnalysisDetailsActivity.ViewModel viewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

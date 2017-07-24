@@ -12,6 +12,7 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
 import com.mlsdev.recipefinder.data.source.BaseObserver;
+import com.mlsdev.recipefinder.data.source.repository.DataRepository;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 import com.mlsdev.recipefinder.view.viewmodel.BaseViewModel;
@@ -35,7 +36,8 @@ public class RecipeAnalysisViewModel extends BaseViewModel implements LifecycleO
     private OnDataLoadedListener<List<String>> dataLoadedListener;
 
     @Inject
-    public RecipeAnalysisViewModel() {
+    public RecipeAnalysisViewModel(DataRepository repository) {
+        this.repository = repository;
     }
 
     public void setDataLoadedListener(OnDataLoadedListener<List<String>> dataLoadedListener) {
@@ -68,6 +70,7 @@ public class RecipeAnalysisViewModel extends BaseViewModel implements LifecycleO
             actionListener.showSnackbar(R.string.no_ingredients_error_message, R.string.btn_add, listener);
             return;
         }
+
 
         actionListener.showProgressDialog(true, "Analysing...");
 

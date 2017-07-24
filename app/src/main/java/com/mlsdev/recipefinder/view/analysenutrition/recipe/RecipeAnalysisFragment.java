@@ -1,7 +1,6 @@
 package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 
 import android.app.Activity;
-import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -16,13 +15,14 @@ import android.view.ViewGroup;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.databinding.FragmentRecipeAnalysisBinding;
 import com.mlsdev.recipefinder.di.Injectable;
+import com.mlsdev.recipefinder.view.fragment.BaseFragment;
 import com.mlsdev.recipefinder.view.listener.OnDataLoadedListener;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class RecipeAnalysisFragment extends LifecycleFragment implements OnAddIngredientClickListener,
+public class RecipeAnalysisFragment extends BaseFragment implements OnAddIngredientClickListener,
         OnDataLoadedListener<List<String>>, Injectable {
     private FragmentRecipeAnalysisBinding binding;
     private RecipeAnalysisViewModel viewModel;
@@ -45,6 +45,7 @@ public class RecipeAnalysisFragment extends LifecycleFragment implements OnAddIn
 
         viewModel.setAddIngredientListener(this);
         viewModel.setDataLoadedListener(this);
+        viewModel.setActionListener(this);
 
         getLifecycle().addObserver(viewModel);
 

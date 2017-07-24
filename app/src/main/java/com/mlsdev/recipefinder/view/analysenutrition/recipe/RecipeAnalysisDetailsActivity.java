@@ -1,10 +1,12 @@
 package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -14,24 +16,32 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.databinding.ActivityRecipeAnalysisDetailsBinding;
+import com.mlsdev.recipefinder.view.BaseActivity;
 import com.mlsdev.recipefinder.view.utils.DiagramUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class RecipeAnalysisDetailsActivity extends AppCompatActivity {
+import dagger.android.AndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
+
+public class RecipeAnalysisDetailsActivity extends BaseActivity implements HasSupportFragmentInjector {
     public static final String RECIPE_ANALYSING_RESULT_KEY = "recipe_analysing_result";
     private ActivityRecipeAnalysisDetailsBinding binding;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @Inject
     DiagramUtils diagramUtils;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_analysis_details);
-        binding.setViewModel(new ViewModel(getIntent().getExtras()));
+        binding.setViewModel(ViewModelProviders.of(this, viewModelFactory).get(ViewModel.class));
+        binding.getViewModel().setData(getIntent().getExtras());
         diagramUtils.preparePieChart(binding.pieChart);
 
         setSupportActionBar(binding.toolbar);
@@ -47,17 +57,22 @@ public class RecipeAnalysisDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class ViewModel {
-        public final ObservableField<String> calories;
-        public final ObservableField<String> yield;
-        public final ObservableInt chartVisibility;
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return null;
+    }
 
-        public ViewModel(Bundle recipeAnalysingData) {
-            calories = new ObservableField<>();
-            yield = new ObservableField<>();
-            chartVisibility = new ObservableInt(View.GONE);
+    public class ViewModel extends android.arch.lifecycle.ViewModel {
+        public final ObservableField<String> calories = new ObservableField<>();
+        public final ObservableField<String> yield = new ObservableField<>();
+        public final ObservableInt chartVisibility = new ObservableInt(View.GONE);
 
-            NutritionAnalysisResult nutritionAnalysisResult = (NutritionAnalysisResult) recipeAnalysingData
+        @Inject
+        public ViewModel() {
+        }
+
+        public void setData(Bundle recipeAnalysingData) {
+            NutritionAnalysisResult nutritionAnalysisResult = recipeAnalysingData
                     .getParcelable(RECIPE_ANALYSING_RESULT_KEY);
 
             showResults(nutritionAnalysisResult);

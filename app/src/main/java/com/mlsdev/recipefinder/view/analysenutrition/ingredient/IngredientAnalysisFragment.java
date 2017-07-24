@@ -1,6 +1,5 @@
 package com.mlsdev.recipefinder.view.analysenutrition.ingredient;
 
-import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
@@ -16,12 +15,13 @@ import com.mlsdev.recipefinder.databinding.FragmentIngredientAnalysisBinding;
 import com.mlsdev.recipefinder.di.Injectable;
 import com.mlsdev.recipefinder.view.MainActivity;
 import com.mlsdev.recipefinder.view.OnKeyboardStateChangedListener;
+import com.mlsdev.recipefinder.view.fragment.BaseFragment;
 import com.mlsdev.recipefinder.view.listener.OnIngredientAnalyzedListener;
 import com.mlsdev.recipefinder.view.utils.DiagramUtils;
 
 import javax.inject.Inject;
 
-public class IngredientAnalysisFragment extends LifecycleFragment implements OnIngredientAnalyzedListener,
+public class IngredientAnalysisFragment extends BaseFragment implements OnIngredientAnalyzedListener,
         OnKeyboardStateChangedListener, Injectable {
     private FragmentIngredientAnalysisBinding binding;
     private IngredientAnalysisViewModel viewModel;
@@ -47,6 +47,7 @@ public class IngredientAnalysisFragment extends LifecycleFragment implements OnI
         getLifecycle().addObserver(viewModel);
         viewModel.setKeyboardListener(this);
         viewModel.setOnIngredientAnalyzedListener(this);
+        viewModel.setActionListener(this);
 
         binding.setViewModel(viewModel);
         diagramUtils.preparePieChart(binding.pieChart);

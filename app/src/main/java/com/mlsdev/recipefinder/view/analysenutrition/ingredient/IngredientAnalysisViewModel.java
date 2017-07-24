@@ -20,6 +20,7 @@ import com.mlsdev.recipefinder.R;
 import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.nutrition.TotalNutrients;
 import com.mlsdev.recipefinder.data.source.remote.ParameterKeys;
+import com.mlsdev.recipefinder.data.source.repository.DataRepository;
 import com.mlsdev.recipefinder.view.OnKeyboardStateChangedListener;
 import com.mlsdev.recipefinder.view.listener.OnIngredientAnalyzedListener;
 import com.mlsdev.recipefinder.view.utils.DiagramUtils;
@@ -55,8 +56,9 @@ public class IngredientAnalysisViewModel extends BaseViewModel implements Lifecy
     private DiagramUtils diagramUtils;
 
     @Inject
-    public IngredientAnalysisViewModel(DiagramUtils diagramUtils) {
+    public IngredientAnalysisViewModel(DiagramUtils diagramUtils, DataRepository repository) {
         this.diagramUtils = diagramUtils;
+        this.repository = repository;
     }
 
     public void setKeyboardListener(OnKeyboardStateChangedListener keyboardListener) {
