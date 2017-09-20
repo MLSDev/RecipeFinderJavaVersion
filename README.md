@@ -1,4 +1,4 @@
-![Travis-ci](https://api.travis-ci.org/MLSDev/RecipeFinder.svg)
+![Travis-ci](https://api.travis-ci.org/MLSDev/RecipeFinderJavaVersion.svg)
 
 # RecipeFinder
 
