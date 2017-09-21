@@ -4,6 +4,8 @@
 
 This is a sample app with **MVVM**, **RxJava** and **Data Binding**
 
+## [Kotlin version](https://github.com/MLSDev/RecipeFinderKotlinVersion)
+
 ## Authors
 * [Sergey Petrosyuk](mailto:petrosyuk@mlsdev.com), MLSDev 
 
