@@ -11,7 +11,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 
 public class RecipeApplication extends Application implements HasActivityInjector {
-    private static RecipeApplication instance;
+    protected static RecipeApplication instance;
 
     public static RecipeApplication getInstance() {
         return instance;

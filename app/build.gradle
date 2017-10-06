@@ -10,7 +10,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.mlsdev.recipefinder.TestRunner"
     }
     buildTypes {
 
@@ -71,6 +71,7 @@ dependencies {
     testCompile "junit:junit:$junitVersion"
 
     // UI tests
+    androidTestCompile 'org.mockito:mockito-android:2.10.0'
     androidTestCompile "junit:junit:$junitVersion"
     androidTestCompile "com.android.support.test:runner:$supportTestsLibVersion"
     androidTestCompile "com.android.support.test:rules:$supportTestsLibVersion"
@@ -96,7 +97,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
 
     // RxJava
-    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 
@@ -115,6 +116,7 @@ dependencies {
     compile "com.google.dagger:dagger-android-support:$daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
 
     // JSON parsing
     compile 'com.google.code.gson:gson:2.8.0'

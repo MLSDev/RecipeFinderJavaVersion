@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class ApiModule {
     public static final String HTTP_LOGGING = "http_logging_interceptor";
-    private String baseUrl = PathConstants.BASE_URL;
+    public String baseUrl = PathConstants.BASE_URL;
 
     @Provides
     @Singleton
