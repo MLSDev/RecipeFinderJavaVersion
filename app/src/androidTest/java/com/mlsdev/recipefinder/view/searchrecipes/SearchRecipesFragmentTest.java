@@ -26,7 +26,6 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -64,7 +63,7 @@ public class SearchRecipesFragmentTest {
     }
 
     @Test
-    public void testStartSearching() throws InterruptedException {
+    public void testStartSearching() {
         when(repository.searchRecipes(Mockito.<String, String>anyMap()))
                 .thenReturn(Single.just(AssetUtils.getRecipeList(context)));
         when(repository.loadMore(Mockito.<String, String>anyMap()))
@@ -89,16 +88,15 @@ public class SearchRecipesFragmentTest {
         onView(withId(R.id.toolbar)).check(matches(isDisplayed()));
     }
 
-    private void performSearch() throws InterruptedException {
+    private void performSearch() {
         onView(withId(R.id.action_search)).perform(ViewActions.click());
         onView(withId(R.id.ed_search_text)).perform(ViewActions.typeText(searchText));
         onView(withId(R.id.ed_search_text)).perform(ViewActions.pressImeActionButton());
         closeSoftKeyboard();
-        TimeUnit.MILLISECONDS.sleep(500);
     }
 
     @Test
-    public void testNothingFound() throws InterruptedException {
+    public void testNothingFound() {
         when(repository.searchRecipes(ArgumentMatchers.<String, String>anyMap()))
                 .thenReturn(Single.just(Collections.<Recipe>emptyList()));
         rule.launchActivity(new Intent());
@@ -107,7 +105,7 @@ public class SearchRecipesFragmentTest {
     }
 
     @Test
-    public void testServerError() throws InterruptedException {
+    public void testServerError() {
         HttpException exception = mock(HttpException.class);
         when(exception.code()).thenReturn(500);
         when(exception.getMessage()).thenReturn("");
@@ -120,7 +118,7 @@ public class SearchRecipesFragmentTest {
     }
 
     @Test
-    public void testNetworkError() throws InterruptedException {
+    public void testNetworkError() {
         when(repository.searchRecipes(ArgumentMatchers.<String, String>anyMap()))
                 .thenReturn(Single.<List<Recipe>>error(new IOException("Network error")));
         rule.launchActivity(new Intent());
