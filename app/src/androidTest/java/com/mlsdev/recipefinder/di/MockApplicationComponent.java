@@ -10,6 +10,8 @@ import com.mlsdev.recipefinder.di.module.MainActivityModule;
 import com.mlsdev.recipefinder.di.module.RecipeAnalysisActivityModule;
 import com.mlsdev.recipefinder.di.module.UtilsModule;
 import com.mlsdev.recipefinder.di.module.ViewModelModule;
+import com.mlsdev.recipefinder.view.analysenutrition.ingredient.IngredientAnalysisFragmentTest;
+import com.mlsdev.recipefinder.view.analysenutrition.recipe.RecipeAnalysisFragmentTest;
 import com.mlsdev.recipefinder.view.searchrecipes.SearchRecipesFragmentTest;
 
 import javax.inject.Singleton;
@@ -40,5 +42,7 @@ public interface MockApplicationComponent {
 
     void inject(MockApp application);
     void inject(SearchRecipesFragmentTest fragmentTest);
+    void inject(IngredientAnalysisFragmentTest fragmentTest);
+    void inject(RecipeAnalysisFragmentTest fragmentTest);
 
 }

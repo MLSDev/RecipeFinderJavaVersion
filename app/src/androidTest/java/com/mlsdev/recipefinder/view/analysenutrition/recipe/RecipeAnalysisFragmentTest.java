@@ -1,24 +1,33 @@
 package com.mlsdev.recipefinder.view.analysenutrition.recipe;
 
+import android.app.Instrumentation;
+import android.content.Context;
+import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.mlsdev.recipefinder.AssetUtils;
-import com.mlsdev.recipefinder.BaseTest;
+import com.mlsdev.recipefinder.MockApp;
 import com.mlsdev.recipefinder.R;
+import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
+import com.mlsdev.recipefinder.data.entity.nutrition.RecipeAnalysisParams;
+import com.mlsdev.recipefinder.data.source.repository.DataRepository;
+import com.mlsdev.recipefinder.di.MockApplicationComponent;
 import com.mlsdev.recipefinder.view.MainActivity;
-import com.squareup.spoon.Spoon;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.mockwebserver.MockResponse;
+import javax.inject.Inject;
+
+import io.reactivex.Single;
+import retrofit2.HttpException;
 
 import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onView;
@@ -29,43 +38,48 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-public class RecipeAnalysisFragmentTest extends BaseTest {
+public class RecipeAnalysisFragmentTest {
+    private Context context;
     private final String spoonTag = "Recipe_Analysis";
 
+    @Inject
+    DataRepository repository;
+
     @Rule
-    public IntentsTestRule<MainActivity> rule = new IntentsTestRule<>(MainActivity.class);
+    public IntentsTestRule<MainActivity> rule = new IntentsTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setUp() throws IOException {
-        super.setUp();
-    }
-
-    @After
-    public void tearDown() throws IOException {
-        super.tearDown();
+        context = InstrumentationRegistry.getContext();
+        Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+        MockApp app = (MockApp) instrumentation.getTargetContext().getApplicationContext();
+        MockApplicationComponent component = app.getComponent();
+        component.inject(this);
     }
 
     @Test
     public void testRecipeAnalysis() {
-        mockWebServer.enqueue(new MockResponse().setBody(AssetUtils.getRecipeAnalysisJsonData(context)));
+        when(repository.getRecipeAnalysisData(ArgumentMatchers.<RecipeAnalysisParams>any()))
+                .thenReturn(Single.just(AssetUtils.getRecipeAnalysisResult(context)));
+
+        rule.launchActivity(new Intent());
 
         selectTab();
         inputFields();
 
         onView(withId(R.id.btn_analyze)).perform(click());
         Intents.intended(IntentMatchers.hasComponent(RecipeAnalysisDetailsActivity.class.getName()));
-
-        Spoon.screenshot(rule.getActivity(), spoonTag);
     }
 
     @Test
     public void testRecipeAnalyses_NoIngredients() {
+        rule.launchActivity(new Intent());
         selectTab();
         onView(withId(R.id.btn_analyze)).perform(click());
         onView(withText(R.string.no_ingredients_error_message)).check(matches(isDisplayed()));
-
-        Spoon.screenshot(rule.getActivity(), spoonTag);
 
         onView(withText(R.string.btn_add)).perform(click());
         onView(withId(R.id.et_ingredient_input))
@@ -75,13 +89,18 @@ public class RecipeAnalysisFragmentTest extends BaseTest {
         onView(withText(R.string.btn_add)).perform(click());
 
         closeSoftKeyboard();
-
-        Spoon.screenshot(rule.getActivity(), spoonTag);
     }
 
     @Test
     public void testServerError() {
-        mockWebServer.enqueue(new MockResponse().setResponseCode(500));
+        HttpException exception = mock(HttpException.class);
+        when(exception.code()).thenReturn(500);
+        when(exception.getMessage()).thenReturn("");
+        when(repository.getRecipeAnalysisData(ArgumentMatchers.<RecipeAnalysisParams>any()))
+                .thenReturn(Single.<NutritionAnalysisResult>error(exception));
+
+        rule.launchActivity(new Intent());
+
         selectTab();
         inputFields();
         onView(withId(R.id.btn_analyze)).perform(click());
@@ -90,7 +109,9 @@ public class RecipeAnalysisFragmentTest extends BaseTest {
 
     @Test
     public void testNetworkError() {
-        mockWebServer.enqueue(new MockResponse().throttleBody(1024, 1, TimeUnit.SECONDS));
+        when(repository.getRecipeAnalysisData(ArgumentMatchers.<RecipeAnalysisParams>any()))
+                .thenReturn(Single.<NutritionAnalysisResult>error(new IOException("Network error")));
+        rule.launchActivity(new Intent());
         selectTab();
         inputFields();
         onView(withId(R.id.btn_analyze)).perform(click());

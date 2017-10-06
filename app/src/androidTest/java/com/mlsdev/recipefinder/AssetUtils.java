@@ -3,6 +3,7 @@ package com.mlsdev.recipefinder;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.mlsdev.recipefinder.data.entity.nutrition.NutritionAnalysisResult;
 import com.mlsdev.recipefinder.data.entity.recipe.Hit;
 import com.mlsdev.recipefinder.data.entity.recipe.Recipe;
 import com.mlsdev.recipefinder.data.entity.recipe.SearchResult;
@@ -46,8 +47,16 @@ public class AssetUtils {
         return getJsonStringFromAssets(context, "ingredient_analysis.json");
     }
 
+    public static NutritionAnalysisResult getNutritionAnalysisResult(Context context) {
+        return new Gson().fromJson(getIngredientAnalysisJsonData(context), NutritionAnalysisResult.class);
+    }
+
     public static String getRecipeAnalysisJsonData(Context context) {
         return getJsonStringFromAssets(context, "recipe_analysis.json");
+    }
+
+    public static NutritionAnalysisResult getRecipeAnalysisResult(Context context) {
+        return new Gson().fromJson(getRecipeAnalysisJsonData(context), NutritionAnalysisResult.class);
     }
 
     private static List<Recipe> getResipesFromSearchResult(SearchResult searchResult) {
